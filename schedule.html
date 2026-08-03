@@ -112,54 +112,71 @@
             font-weight: 700;
         }
 
-        /* Timetable Grid */
-        .timetable {
+        /* Batch-wise Schedule Grid */
+        .batch-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
+            gap: 1.2rem;
         }
 
-        .slot-card {
+        .batch-card {
             background: #FFFFFF;
-            border-left: 4px solid var(--navy);
-            border-radius: 8px;
-            padding: 1rem;
-            border-top: 1px solid #E2E8F0;
-            border-right: 1px solid #E2E8F0;
-            border-bottom: 1px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 1.2rem;
+            border: 1px solid #E2E8F0;
+            border-top: 4px solid var(--navy);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s;
         }
 
-        .slot-card.kiran { border-left-color: #0284C7; }
-        .slot-card.prabha { border-left-color: #EA580C; }
-        .slot-card.pradeep { border-left-color: #16A34A; }
-        .slot-card.agni { border-left-color: #DC2626; }
+        .batch-card:hover {
+            transform: translateY(-3px);
+        }
 
-        .slot-day {
+        .batch-card.kiran { border-top-color: #0284C7; }
+        .batch-card.prabha { border-top-color: #EA580C; }
+        .batch-card.pradeep { border-top-color: #16A34A; }
+        .batch-card.agni { border-top-color: #DC2626; }
+
+        .batch-title {
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--navy);
-            font-size: 1.05rem;
+            margin-bottom: 2px;
         }
 
-        .slot-badge {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 12px;
-            margin-top: 4px;
-            text-transform: uppercase;
+        .batch-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 1rem;
         }
 
-        .badge-kiran { background: #E0F2FE; color: #0369A1; }
-        .badge-prabha { background: #FFEDD5; color: #C2410C; }
-        .badge-pradeep { background: #DCFCE7; color: #15803D; }
-        .badge-agni { background: #FEE2E2; color: #B91C1C; }
-
-        .slot-time {
+        .timing-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #E2E8F0;
             font-size: 0.9rem;
+        }
+
+        .timing-row:last-child {
+            border-bottom: none;
+        }
+
+        .day-label {
             font-weight: 700;
             color: var(--navy);
-            margin-top: 6px;
+        }
+
+        .time-label {
+            font-weight: 600;
+            color: #334155;
+            background-color: #F8FAFC;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid #E2E8F0;
         }
 
         /* Daily Log Timeline */
@@ -243,65 +260,75 @@
 
     <div class="container">
         
-        <!-- Master Timetable Card -->
+        <!-- Batch-wise Schedule Card -->
         <div class="card">
             <div class="section-header">
-                <h2>Master Class Schedule</h2>
-                <span style="font-size: 0.85rem; color: var(--text-muted);">Weekly Live Timetable</span>
+                <h2>Batch-wise Class Timetable</h2>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Weekly Schedule</span>
             </div>
 
-            <div class="timetable">
-                <!-- Monday -->
-                <div class="slot-card pradeep">
-                    <div class="slot-day">Monday</div>
-                    <span class="slot-badge badge-pradeep">Pradeep Batch (Class 11)</span>
-                    <div class="slot-time">⏰ 09:00 PM – 11:00 PM</div>
-                </div>
-
-                <!-- Tuesday -->
-                <div class="slot-card prabha">
-                    <div class="slot-day">Tuesday</div>
-                    <span class="slot-badge badge-prabha">Prabha Batch (Class 9)</span>
-                    <div class="slot-time">⏰ 06:00 PM – 07:30 PM</div>
+            <div class="batch-grid">
+                
+                <!-- Kiran Batch -->
+                <div class="batch-card kiran">
+                    <div class="batch-title">Kiran Batch</div>
+                    <div class="batch-subtitle">Class 8 Foundation</div>
                     
-                    <div style="margin-top: 12px; border-top: 1px dashed #E2E8F0; padding-top: 8px;">
-                        <span class="slot-badge badge-kiran">Kiran Batch (Class 8)</span>
-                        <div class="slot-time">⏰ 10:00 PM – 11:30 PM</div>
+                    <div class="timing-row">
+                        <span class="day-label">Tuesday</span>
+                        <span class="time-label">10:00 PM – 11:30 PM</span>
+                    </div>
+                    <div class="timing-row">
+                        <span class="day-label">Saturday</span>
+                        <span class="time-label">09:30 PM – 11:00 PM</span>
                     </div>
                 </div>
 
-                <!-- Wednesday -->
-                <div class="slot-card agni">
-                    <div class="slot-day">Wednesday</div>
-                    <span class="slot-badge badge-agni">Agni Batch (NEET Repeater)</span>
-                    <div class="slot-time">⏰ 06:00 PM – 08:00 PM</div>
-                </div>
-
-                <!-- Thursday -->
-                <div class="slot-card pradeep">
-                    <div class="slot-day">Thursday</div>
-                    <span class="slot-badge badge-pradeep">Pradeep Batch (Class 11)</span>
-                    <div class="slot-time">⏰ 09:00 PM – 11:00 PM</div>
-                </div>
-
-                <!-- Friday -->
-                <div class="slot-card prabha">
-                    <div class="slot-day">Friday</div>
-                    <span class="slot-badge badge-prabha">Prabha Batch (Class 9)</span>
-                    <div class="slot-time">⏰ 08:30 PM – 10:00 PM</div>
-                </div>
-
-                <!-- Saturday -->
-                <div class="slot-card agni">
-                    <div class="slot-day">Saturday</div>
-                    <span class="slot-badge badge-agni">Agni Batch (NEET Repeater)</span>
-                    <div class="slot-time">⏰ 06:00 PM – 08:00 PM</div>
-
-                    <div style="margin-top: 12px; border-top: 1px dashed #E2E8F0; padding-top: 8px;">
-                        <span class="slot-badge badge-kiran">Kiran Batch (Class 8)</span>
-                        <div class="slot-time">⏰ 09:30 PM – 11:00 PM</div>
+                <!-- Prabha Batch -->
+                <div class="batch-card prabha">
+                    <div class="batch-title">Prabha Batch</div>
+                    <div class="batch-subtitle">Class 9 Foundation</div>
+                    
+                    <div class="timing-row">
+                        <span class="day-label">Tuesday</span>
+                        <span class="time-label">06:00 PM – 07:30 PM</span>
+                    </div>
+                    <div class="timing-row">
+                        <span class="day-label">Friday</span>
+                        <span class="time-label">08:30 PM – 10:00 PM</span>
                     </div>
                 </div>
+
+                <!-- Pradeep Batch -->
+                <div class="batch-card pradeep">
+                    <div class="batch-title">Pradeep Batch</div>
+                    <div class="batch-subtitle">Class 11 Target</div>
+                    
+                    <div class="timing-row">
+                        <span class="day-label">Monday</span>
+                        <span class="time-label">09:00 PM – 11:00 PM</span>
+                    </div>
+                    <div class="timing-row">
+                        <span class="day-label">Thursday</span>
+                        <span class="time-label">09:00 PM – 11:00 PM</span>
+                    </div>
+                </div>
+
+                <!-- Agni Batch -->
+                <div class="batch-card agni">
+                    <div class="batch-title">Agni Batch</div>
+                    <div class="batch-subtitle">NEET Repeater</div>
+                    
+                    <div class="timing-row">
+                        <span class="day-label">Wednesday</span>
+                        <span class="time-label">06:00 PM – 08:00 PM</span>
+                    </div>
+                    <div class="timing-row">
+                        <span class="day-label">Saturday</span>
+                        <span class="time-label">06:00 PM – 08:00 PM</span>
+                    </div>
+                </div>
+
             </div>
         </div>
 
