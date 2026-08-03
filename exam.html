@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Examination Portal | Vidyaalok Classes</title>
+    
+    <!-- Browser Tab Favicon -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+
+    <style>
+        :root {
+            --navy: #0B2545;
+            --gold: #E5A93C;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #F1F5F9;
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Test Header */
+        header {
+            background-color: var(--navy);
+            color: #FFFFFF;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .test-info h2 {
+            font-size: 1.1rem;
+            color: #FFFFFF;
+        }
+
+        .test-info p {
+            font-size: 0.8rem;
+            color: var(--gold);
+        }
+
+        .timer-box {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--gold);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* Split-Screen Main Container */
+        .exam-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 65px);
+        }
+
+        /* Left Split: PDF Viewer */
+        .pdf-viewer {
+            width: 60%;
+            height: 100%;
+            background-color: #525659;
+            border-right: 2px solid #CBD5E1;
+        }
+
+        .pdf-viewer iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Right Split: Answer Palette */
+        .answer-palette {
+            width: 40%;
+            height: 100%;
+            background-color: #FFFFFF;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-y: auto;
+        }
+
+        .palette-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--navy);
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Question Answer Row */
+        .q-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+
+        .q-num {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 0.95rem;
+            width: 50px;
+        }
+
+        .options-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .options-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Submit Footer Bar */
+        .submit-bar {
+            border-top: 2px solid #E2E8F0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-exit {
+            background-color: #E2E8F0;
+            color: var(--text-dark);
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn-submit {
+            background-color: #16A34A;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #15803D;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Examination Header -->
+    <header>
+        <div class="test-info">
+            <h2>Weekly Test #01: Rotational Motion & Kinematics</h2>
+            <p>Pradeep Batch (Class 11) • Max Marks: 100</p>
+        </div>
+        <div class="timer-box">
+            ⏱️ Time Remaining: <span id="timer">60:00</span>
+        </div>
+    </header>
+
+    <!-- Split-Screen Body -->
+    <div class="exam-container">
+        
+        <!-- Left Side: PDF Document Viewer -->
+        <div class="pdf-viewer">
+            <!-- Replace sample.pdf with your actual test PDF link -->
+            <iframe src="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf#toolbar=0"></iframe>
+        </div>
+
+        <!-- Right Side: Interactive Response Sheet -->
+        <div class="answer-palette">
+            <div>
+                <div class="palette-title">Response Sheet</div>
+
+                <!-- Question 1 -->
+                <div class="q-row">
+                    <span class="q-num">Q. 1</span>
+                    <div class="options-group">
+                        <label><input type="radio" name="q1" value="A"> A</label>
+                        <label><input type="radio" name="q1" value="B"> B</label>
+                        <label><input type="radio" name="q1" value="C"> C</label>
+                        <label><input type="radio" name="q1" value="D"> D</label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="q-row">
+                    <span class="q-num">Q. 2</span>
+                    <div class="options-group">
+                        <label><input type="radio" name="q2" value="A"> A</label>
+                        <label><input type="radio" name="q2" value="B"> B</label>
+                        <label><input type="radio" name="q2" value="C"> C</label>
+                        <label><input type="radio" name="q2" value="D"> D</label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="q-row">
+                    <span class="q-num">Q. 3</span>
+                    <div class="options-group">
+                        <label><input type="radio" name="q3" value="A"> A</label>
+                        <label><input type="radio" name="q3" value="B"> B</label>
+                        <label><input type="radio" name="q3" value="C"> C</label>
+                        <label><input type="radio" name="q3" value="D"> D</label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="q-row">
+                    <span class="q-num">Q. 4</span>
+                    <div class="options-group">
+                        <label><input type="radio" name="q4" value="A"> A</label>
+                        <label><input type="radio" name="q4" value="B"> B</label>
+                        <label><input type="radio" name="q4" value="C"> C</label>
+                        <label><input type="radio" name="q4" value="D"> D</label>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="q-row">
+                    <span class="q-num">Q. 5</span>
+                    <div class="options-group">
+                        <label><input type="radio" name="q5" value="A"> A</label>
+                        <label><input type="radio" name="q5" value="B"> B</label>
+                        <label><input type="radio" name="q5" value="C"> C</label>
+                        <label><input type="radio" name="q5" value="D"> D</label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Submit Controls -->
+            <div class="submit-bar">
+                <a href="index.html" class="btn-exit">Exit Test</a>
+                <button class="btn-submit" onclick="alert('Test submitted successfully!')">Submit Examination</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Countdown Timer Script -->
+    <script>
+        let duration = 60 * 60; // 60 minutes in seconds
+        const timerDisplay = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            let minutes = Math.floor(duration / 60);
+            let seconds = duration % 60;
+
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+
+            if (--duration < 0) {
+                clearInterval(countdown);
+                alert("Time is up! Your responses have been automatically submitted.");
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
