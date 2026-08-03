@@ -129,10 +129,10 @@
             border-bottom: 1px solid #E2E8F0;
         }
 
-        .slot-card.today {
-            border-left-color: var(--gold);
-            background-color: #FFFDF5;
-        }
+        .slot-card.kiran { border-left-color: #0284C7; }
+        .slot-card.prabha { border-left-color: #EA580C; }
+        .slot-card.pradeep { border-left-color: #16A34A; }
+        .slot-card.agni { border-left-color: #DC2626; }
 
         .slot-day {
             font-weight: 700;
@@ -140,17 +140,26 @@
             font-size: 1.05rem;
         }
 
-        .slot-time {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 2px;
+        .slot-badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-top: 4px;
+            text-transform: uppercase;
         }
 
-        .slot-details {
-            margin-top: 8px;
+        .badge-kiran { background: #E0F2FE; color: #0369A1; }
+        .badge-prabha { background: #FFEDD5; color: #C2410C; }
+        .badge-pradeep { background: #DCFCE7; color: #15803D; }
+        .badge-agni { background: #FEE2E2; color: #B91C1C; }
+
+        .slot-time {
             font-size: 0.9rem;
-            font-weight: 600;
-            color: #334155;
+            font-weight: 700;
+            color: var(--navy);
+            margin-top: 6px;
         }
 
         /* Daily Log Timeline */
@@ -234,30 +243,64 @@
 
     <div class="container">
         
-        <!-- Weekly Timetable Card -->
+        <!-- Master Timetable Card -->
         <div class="card">
             <div class="section-header">
-                <h2>Weekly Class Timetable</h2>
-                <span style="font-size: 0.85rem; color: var(--text-muted);">Batch: Class 11 Science</span>
+                <h2>Master Class Schedule</h2>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Weekly Live Timetable</span>
             </div>
 
             <div class="timetable">
-                <div class="slot-card today">
+                <!-- Monday -->
+                <div class="slot-card pradeep">
                     <div class="slot-day">Monday</div>
-                    <div class="slot-time">05:00 PM – 06:30 PM</div>
-                    <div class="slot-details">Live Lecture & Interactive Session</div>
+                    <span class="slot-badge badge-pradeep">Pradeep Batch (Class 11)</span>
+                    <div class="slot-time">⏰ 09:00 PM – 11:00 PM</div>
                 </div>
 
-                <div class="slot-card">
+                <!-- Tuesday -->
+                <div class="slot-card prabha">
+                    <div class="slot-day">Tuesday</div>
+                    <span class="slot-badge badge-prabha">Prabha Batch (Class 9)</span>
+                    <div class="slot-time">⏰ 06:00 PM – 07:30 PM</div>
+                    
+                    <div style="margin-top: 12px; border-top: 1px dashed #E2E8F0; padding-top: 8px;">
+                        <span class="slot-badge badge-kiran">Kiran Batch (Class 8)</span>
+                        <div class="slot-time">⏰ 10:00 PM – 11:30 PM</div>
+                    </div>
+                </div>
+
+                <!-- Wednesday -->
+                <div class="slot-card agni">
                     <div class="slot-day">Wednesday</div>
-                    <div class="slot-time">05:00 PM – 06:30 PM</div>
-                    <div class="slot-details">Problem Solving & Numerical Practice</div>
+                    <span class="slot-badge badge-agni">Agni Batch (NEET Repeater)</span>
+                    <div class="slot-time">⏰ 06:00 PM – 08:00 PM</div>
                 </div>
 
-                <div class="slot-card">
+                <!-- Thursday -->
+                <div class="slot-card pradeep">
+                    <div class="slot-day">Thursday</div>
+                    <span class="slot-badge badge-pradeep">Pradeep Batch (Class 11)</span>
+                    <div class="slot-time">⏰ 09:00 PM – 11:00 PM</div>
+                </div>
+
+                <!-- Friday -->
+                <div class="slot-card prabha">
                     <div class="slot-day">Friday</div>
-                    <div class="slot-time">05:00 PM – 06:30 PM</div>
-                    <div class="slot-details">Weekly Assessment & Doubt Clearing</div>
+                    <span class="slot-badge badge-prabha">Prabha Batch (Class 9)</span>
+                    <div class="slot-time">⏰ 08:30 PM – 10:00 PM</div>
+                </div>
+
+                <!-- Saturday -->
+                <div class="slot-card agni">
+                    <div class="slot-day">Saturday</div>
+                    <span class="slot-badge badge-agni">Agni Batch (NEET Repeater)</span>
+                    <div class="slot-time">⏰ 06:00 PM – 08:00 PM</div>
+
+                    <div style="margin-top: 12px; border-top: 1px dashed #E2E8F0; padding-top: 8px;">
+                        <span class="slot-badge badge-kiran">Kiran Batch (Class 8)</span>
+                        <div class="slot-time">⏰ 09:30 PM – 11:00 PM</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,21 +313,11 @@
             </div>
 
             <div style="margin-top: 1rem;">
-                <!-- Entry 1 -->
                 <div class="log-item latest">
                     <div class="log-date">03 Aug 2026 (Today)</div>
-                    <div class="log-topic">Rotational Motion: Moment of Inertia & Parallel Axis Theorem</div>
+                    <div class="log-topic">Pradeep Batch (Class 11): Rotational Motion & Moment of Inertia</div>
                     <div class="log-homework">
-                        <strong>📌 Homework:</strong> Complete DPP #04 (Questions 1 to 15) before Wednesday's session.
-                    </div>
-                </div>
-
-                <!-- Entry 2 -->
-                <div class="log-item" style="margin-top: 1.5rem;">
-                    <div class="log-date">01 Aug 2026</div>
-                    <div class="log-topic">Center of Mass of System of Particles & Rigid Bodies</div>
-                    <div class="log-homework">
-                        <strong>📌 Homework:</strong> Review Class Notes PDF and solve Exercise 3.1.
+                        <strong>📌 Homework:</strong> Solve DPP #04 Questions 1 to 15.
                     </div>
                 </div>
             </div>
