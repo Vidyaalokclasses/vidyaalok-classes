@@ -75,7 +75,7 @@
             transition: all 0.2s;
         }
 
-        nav a:hover {
+        nav a:hover, nav a.active {
             color: var(--gold);
             background-color: #F1F5F9;
         }
@@ -281,13 +281,15 @@
     <!-- Header Navigation -->
     <header>
         <div class="brand">
-            <img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge">
+            <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
         </div>
         <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="schedule.html">Schedule</a>
             <a href="#about">About</a>
             <a href="#courses">Courses</a>
             <a href="#contact">Contact</a>
-            <a href="#" class="btn-portal">Student Portal</a>
+            <a href="schedule.html" class="btn-portal">Student Portal</a>
         </nav>
     </header>
 
