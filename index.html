@@ -12,7 +12,7 @@
         :root {
             --navy: #0B2545;
             --gold: #E5A93C;
-            --card-bg: rgba(255, 255, 255, 0.94); /* Semi-transparent white card background */
+            --card-bg: rgba(255, 255, 255, 0.78); /* Made cards more transparent */
             --text-dark: #1E293B;
             --text-muted: #64748B;
         }
@@ -24,29 +24,16 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Full Page Background with Logo Watermark */
+        /* Fixed Background Watermark */
         body {
-            background-color: #F4F7FA;
+            background-color: #F1F5F9;
             background-image: url('logo.png');
             background-repeat: no-repeat;
             background-position: center center;
             background-attachment: fixed;
-            background-size: 600px; /* Size of the logo watermark */
+            background-size: 550px;
             color: var(--text-dark);
             min-height: 100vh;
-            position: relative;
-        }
-
-        /* Subtle overlay layer to ensure text remains 100% readable */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(244, 247, 250, 0.85); /* Adjust opacity if you want logo darker/lighter */
-            z-index: -1;
         }
 
         /* Navigation Header */
@@ -99,19 +86,19 @@
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
             border-radius: 12px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(11, 37, 69, 0.08);
-            border: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 8px 32px rgba(11, 37, 69, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         .profile-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #F1F5F9;
+            border-bottom: 2px solid rgba(226, 232, 240, 0.8);
             padding-bottom: 1rem;
             margin-bottom: 1rem;
         }
@@ -139,7 +126,7 @@
         }
 
         .stat-card {
-            background: rgba(248, 250, 252, 0.95);
+            background: rgba(255, 255, 255, 0.85);
             border-left: 4px solid var(--navy);
             padding: 1rem;
             border-radius: 8px;
@@ -168,7 +155,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid #F1F5F9;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .test-item:last-child {
@@ -211,7 +198,7 @@
         
         <!-- Student Information Card -->
         <div class="card">
-            <div class profile-header">
+            <div class="profile-header">
                 <div>
                     <h2 class="student-name">Aarav Sharma</h2>
                     <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Batch: Class 11 Science | Roll No: VAK-2026-04</p>
