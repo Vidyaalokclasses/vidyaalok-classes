@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule & Topic Log | Vidyaalok Classes</title>
+    
+    <!-- Browser Tab Favicon -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+
+    <style>
+        :root {
+            --navy: #0B2545;
+            --gold: #E5A93C;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Background Watermark */
+        body {
+            background-color: #F1F5F9;
+            background-image: url('logo.png');
+            background-repeat: no-repeat;
+            background-position: center 250px;
+            background-attachment: fixed;
+            background-size: 550px;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Navigation */
+        header {
+            background-color: #FFFFFF;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #E2E8F0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand img {
+            height: 52px;
+            width: auto;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--gold);
+            background-color: #F1F5F9;
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 1000px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            color: var(--navy);
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* Timetable Grid */
+        .timetable {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .slot-card {
+            background: #FFFFFF;
+            border-left: 4px solid var(--navy);
+            border-radius: 8px;
+            padding: 1rem;
+            border-top: 1px solid #E2E8F0;
+            border-right: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .slot-card.today {
+            border-left-color: var(--gold);
+            background-color: #FFFDF5;
+        }
+
+        .slot-day {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1.05rem;
+        }
+
+        .slot-time {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .slot-details {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        /* Daily Log Timeline */
+        .log-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 1.5rem;
+            border-left: 2px solid #CBD5E1;
+        }
+
+        .log-item:last-child {
+            padding-bottom: 0;
+            border-left-color: transparent;
+        }
+
+        .log-item::before {
+            content: "";
+            position: absolute;
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--navy);
+        }
+
+        .log-item.latest::before {
+            background-color: var(--gold);
+        }
+
+        .log-date {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .log-topic {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-top: 2px;
+        }
+
+        .log-homework {
+            background: #F8FAFC;
+            border: 1px dashed #CBD5E1;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy);
+            color: #94A3B8;
+            padding: 2rem 1rem;
+            border-top: 3px solid var(--gold);
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="brand">
+            <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="schedule.html" class="active">Schedule</a>
+            <a href="#">Class Notes</a>
+            <a href="#">Online Exams</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        
+        <!-- Weekly Timetable Card -->
+        <div class="card">
+            <div class="section-header">
+                <h2>Weekly Class Timetable</h2>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Batch: Class 11 Science</span>
+            </div>
+
+            <div class="timetable">
+                <div class="slot-card today">
+                    <div class="slot-day">Monday</div>
+                    <div class="slot-time">05:00 PM – 06:30 PM</div>
+                    <div class="slot-details">Live Lecture & Interactive Session</div>
+                </div>
+
+                <div class="slot-card">
+                    <div class="slot-day">Wednesday</div>
+                    <div class="slot-time">05:00 PM – 06:30 PM</div>
+                    <div class="slot-details">Problem Solving & Numerical Practice</div>
+                </div>
+
+                <div class="slot-card">
+                    <div class="slot-day">Friday</div>
+                    <div class="slot-time">05:00 PM – 06:30 PM</div>
+                    <div class="slot-details">Weekly Assessment & Doubt Clearing</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Taught Topics Log -->
+        <div class="card">
+            <div class="section-header">
+                <h2>Daily Topic & Homework Log</h2>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Updated Daily</span>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <!-- Entry 1 -->
+                <div class="log-item latest">
+                    <div class="log-date">03 Aug 2026 (Today)</div>
+                    <div class="log-topic">Rotational Motion: Moment of Inertia & Parallel Axis Theorem</div>
+                    <div class="log-homework">
+                        <strong>📌 Homework:</strong> Complete DPP #04 (Questions 1 to 15) before Wednesday's session.
+                    </div>
+                </div>
+
+                <!-- Entry 2 -->
+                <div class="log-item" style="margin-top: 1.5rem;">
+                    <div class="log-date">01 Aug 2026</div>
+                    <div class="log-topic">Center of Mass of System of Particles & Rigid Bodies</div>
+                    <div class="log-homework">
+                        <strong>📌 Homework:</strong> Review Class Notes PDF and solve Exercise 3.1.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
+        <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
+    </footer>
+
+</body>
+</html>
