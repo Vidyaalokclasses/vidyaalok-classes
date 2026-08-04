@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent & Student Portal | Vidyaalok Classes</title>
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+
+    <style>
+        :root {
+            --navy: #0B2545;
+            --gold: #E5A93C;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #F1F5F9;
+            background-image: url('logo.png');
+            background-repeat: no-repeat;
+            background-position: center 250px;
+            background-attachment: fixed;
+            background-size: 550px;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #FFFFFF;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #E2E8F0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand img {
+            height: 52px;
+            width: auto;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(11, 37, 69, 0.08);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--navy);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .btn-login {
+            width: 100%;
+            background-color: var(--navy);
+            color: #FFFFFF;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-login:hover {
+            background-color: #133966;
+            color: var(--gold);
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-paid { background-color: #DCFCE7; color: #15803D; }
+        .status-partial { background-color: #FEF3C7; color: #92400E; }
+        .status-pending { background-color: #FEE2E2; color: #B91C1C; }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #E2E8F0;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background-color: var(--navy);
+            color: #94A3B8;
+            padding: 2rem 1rem;
+            border-top: 3px solid var(--gold);
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="schedule.html">Schedule</a>
+            <a href="notes.html">Class Notes</a>
+            <a href="exam.html">Online Exams</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Login Form Card -->
+        <div class="card" id="loginCard">
+            <h2 style="color: var(--navy); text-align: center; margin-bottom: 1.5rem;">Parent & Student Login</h2>
+            <div id="errorMsg" style="color: #DC2626; font-size: 0.88rem; margin-bottom: 1rem; text-align: center;"></div>
+            
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="studentId" placeholder="Enter Student ID (e.g., VAL101)">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter Password">
+            </div>
+            <button class="btn-login" onclick="login()">Login to Dashboard</button>
+        </div>
+
+        <!-- Student Dashboard (Hidden until login) -->
+        <div class="card dashboard" id="dashboardCard">
+            <h2 style="color: var(--navy); border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; margin-bottom: 1rem;" id="dashName">Student Profile</h2>
+            
+            <div class="info-row">
+                <strong>Batch:</strong>
+                <span id="dashBatch">--</span>
+            </div>
+            <div class="info-row">
+                <strong>Attendance Rate:</strong>
+                <span id="dashAttendance" style="font-weight: 700; color: var(--navy);">--</span>
+            </div>
+            
+            <h3 style="color: var(--navy); margin-top: 1.5rem; margin-bottom: 0.8rem; font-size: 1.1rem;">Fee Details</h3>
+            <div class="info-row">
+                <strong>Total Annual Fees:</strong>
+                <span id="dashTotalFees">₹0</span>
+            </div>
+            <div class="info-row">
+                <strong>Amount Paid:</strong>
+                <span id="dashAmountPaid" style="color: #16A34A; font-weight: 700;">₹0</span>
+            </div>
+            <div class="info-row">
+                <strong>Remaining Balance:</strong>
+                <span id="dashBalance" style="color: #DC2626; font-weight: 700;">₹0</span>
+            </div>
+            <div class="info-row" style="border-bottom: none; margin-top: 8px;">
+                <strong>Payment Status:</strong>
+                <span id="dashStatus" class="status-badge status-pending">Pending</span>
+            </div>
+
+            <button class="btn-login" onclick="logout()" style="margin-top: 1.5rem; background-color: #64748B;">Logout</button>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
+        <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
+    </footer>
+
+    <script>
+        // REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+
+        function login() {
+            const studentId = document.getElementById('studentId').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!studentId || !password) {
+                errorMsg.textContent = "Please enter both Student ID and Password.";
+                return;
+            }
+
+            errorMsg.style.color = "#0284C7";
+            errorMsg.textContent = "Verifying credentials...";
+
+            fetch(`${SCRIPT_URL}?studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('loginCard').style.display = 'none';
+                        document.getElementById('dashboardCard').style.display = 'block';
+
+                        document.getElementById('dashName').textContent = data.studentName;
+                        document.getElementById('dashBatch').textContent = data.batch;
+                        document.getElementById('dashAttendance').textContent = data.attendance;
+                        document.getElementById('dashTotalFees').textContent = '₹' + data.totalFees;
+                        document.getElementById('dashAmountPaid').textContent = '₹' + data.amountPaid;
+                        
+                        const balance = data.totalFees - data.amountPaid;
+                        document.getElementById('dashBalance').textContent = '₹' + balance;
+
+                        const statusElem = document.getElementById('dashStatus');
+                        statusElem.textContent = data.feeStatus;
+
+                        if (data.feeStatus.toLowerCase().includes('paid') && !data.feeStatus.toLowerCase().includes('partial')) {
+                            statusElem.className = 'status-badge status-paid';
+                        } else if (data.feeStatus.toLowerCase().includes('partial')) {
+                            statusElem.className = 'status-badge status-partial';
+                        } else {
+                            statusElem.className = 'status-badge status-pending';
+                        }
+                    } else {
+                        errorMsg.style.color = "#DC2626";
+                        errorMsg.textContent = data.message || "Invalid Student ID or Password.";
+                    }
+                })
+                .catch(error => {
+                    errorMsg.style.color = "#DC2626";
+                    errorMsg.textContent = "Error connecting to server. Please try again.";
+                });
+        }
+
+        function logout() {
+            document.getElementById('studentId').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('errorMsg').textContent = '';
+            document.getElementById('dashboardCard').style.display = 'none';
+            document.getElementById('loginCard').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
