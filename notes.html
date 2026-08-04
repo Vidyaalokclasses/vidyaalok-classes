@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class Notes & Study Material | Vidyaalok Classes</title>
-    
-    <!-- Browser Tab Favicon -->
     <link rel="icon" type="image/jpeg" href="icon.jpg">
 
     <style>
@@ -24,7 +22,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Page Background with Watermark */
         body {
             background-color: #F1F5F9;
             background-image: url('logo.png');
@@ -38,7 +35,6 @@
             flex-direction: column;
         }
 
-        /* Header Navigation */
         header {
             background-color: #FFFFFF;
             padding: 0.8rem 2rem;
@@ -79,7 +75,18 @@
             background-color: #F1F5F9;
         }
 
-        /* Container & Layout */
+        .btn-portal {
+            background-color: var(--navy);
+            color: #FFFFFF !important;
+            border-radius: 6px;
+            padding: 8px 16px !important;
+        }
+
+        .btn-portal:hover {
+            background-color: #133966;
+            color: var(--gold) !important;
+        }
+
         .container {
             max-width: 1000px;
             margin: 2.5rem auto;
@@ -112,7 +119,6 @@
             font-weight: 700;
         }
 
-        /* Material List */
         .material-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -171,7 +177,6 @@
             color: var(--gold);
         }
 
-        /* Footer */
         footer {
             background-color: var(--navy);
             color: #94A3B8;
@@ -185,7 +190,6 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header>
         <div class="brand">
             <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
@@ -195,12 +199,12 @@
             <a href="schedule.html">Schedule</a>
             <a href="notes.html" class="active">Class Notes</a>
             <a href="exam.html">Online Exams</a>
+            <a href="login.html" class="btn-portal">Student Portal</a>
         </nav>
     </header>
 
     <div class="container">
         
-        <!-- Study Material Header -->
         <div class="card">
             <div class="section-header">
                 <h2>Class Notes & Practice Sheets</h2>
@@ -209,7 +213,6 @@
 
             <div class="material-grid">
                 
-                <!-- PDF Item 1 -->
                 <div class="file-card">
                     <div>
                         <div class="file-icon">📄</div>
@@ -219,7 +222,6 @@
                     <a href="#" class="btn-download">View / Download PDF</a>
                 </div>
 
-                <!-- PDF Item 2 -->
                 <div class="file-card">
                     <div>
                         <div class="file-icon">📝</div>
@@ -229,7 +231,6 @@
                     <a href="#" class="btn-download">View / Download PDF</a>
                 </div>
 
-                <!-- PDF Item 3 -->
                 <div class="file-card">
                     <div>
                         <div class="file-icon">📘</div>
@@ -239,7 +240,6 @@
                     <a href="#" class="btn-download">View / Download PDF</a>
                 </div>
 
-                <!-- PDF Item 4 -->
                 <div class="file-card">
                     <div>
                         <div class="file-icon">📐</div>
@@ -254,7 +254,6 @@
 
     </div>
 
-    <!-- Footer -->
     <footer>
         <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
         <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
