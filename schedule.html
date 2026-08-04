@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class Schedule & Topic Log | Vidyaalok Classes</title>
-    
-    <!-- Browser Tab Favicon -->
     <link rel="icon" type="image/jpeg" href="icon.jpg">
 
     <style>
@@ -24,7 +22,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Background Watermark */
         body {
             background-color: #F1F5F9;
             background-image: url('logo.png');
@@ -38,7 +35,6 @@
             flex-direction: column;
         }
 
-        /* Header Navigation */
         header {
             background-color: #FFFFFF;
             padding: 0.8rem 2rem;
@@ -79,7 +75,18 @@
             background-color: #F1F5F9;
         }
 
-        /* Layout Container */
+        .btn-portal {
+            background-color: var(--navy);
+            color: #FFFFFF !important;
+            border-radius: 6px;
+            padding: 8px 16px !important;
+        }
+
+        .btn-portal:hover {
+            background-color: #133966;
+            color: var(--gold) !important;
+        }
+
         .container {
             max-width: 1000px;
             margin: 2.5rem auto;
@@ -112,7 +119,6 @@
             font-weight: 700;
         }
 
-        /* Batch-wise Schedule Grid */
         .batch-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -179,7 +185,6 @@
             border: 1px solid #E2E8F0;
         }
 
-        /* Daily Log Timeline */
         .log-item {
             position: relative;
             padding-left: 2rem;
@@ -231,7 +236,6 @@
             color: var(--text-dark);
         }
 
-        /* Footer */
         footer {
             background-color: var(--navy);
             color: #94A3B8;
@@ -245,7 +249,6 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header>
         <div class="brand">
             <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
@@ -255,12 +258,12 @@
             <a href="schedule.html" class="active">Schedule</a>
             <a href="notes.html">Class Notes</a>
             <a href="exam.html">Online Exams</a>
+            <a href="login.html" class="btn-portal">Student Portal</a>
         </nav>
     </header>
 
     <div class="container">
         
-        <!-- Batch-wise Schedule Card -->
         <div class="card">
             <div class="section-header">
                 <h2>Batch-wise Class Timetable</h2>
@@ -269,7 +272,6 @@
 
             <div class="batch-grid">
                 
-                <!-- Kiran Batch -->
                 <div class="batch-card kiran">
                     <div class="batch-title">Kiran Batch</div>
                     <div class="batch-subtitle">Class 8 Foundation</div>
@@ -284,7 +286,6 @@
                     </div>
                 </div>
 
-                <!-- Prabha Batch -->
                 <div class="batch-card prabha">
                     <div class="batch-title">Prabha Batch</div>
                     <div class="batch-subtitle">Class 9 Foundation</div>
@@ -299,7 +300,6 @@
                     </div>
                 </div>
 
-                <!-- Pradeep Batch -->
                 <div class="batch-card pradeep">
                     <div class="batch-title">Pradeep Batch</div>
                     <div class="batch-subtitle">Class 11 Target</div>
@@ -314,7 +314,6 @@
                     </div>
                 </div>
 
-                <!-- Agni Batch -->
                 <div class="batch-card agni">
                     <div class="batch-title">Agni Batch</div>
                     <div class="batch-subtitle">NEET Repeater</div>
@@ -332,7 +331,6 @@
             </div>
         </div>
 
-        <!-- Daily Taught Topics Log -->
         <div class="card">
             <div class="section-header">
                 <h2>Daily Topic & Homework Log</h2>
@@ -352,7 +350,6 @@
 
     </div>
 
-    <!-- Footer -->
     <footer>
         <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
         <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
