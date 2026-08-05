@@ -1,263 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Notes & Study Material | Vidyaalok Classes</title>
-    <link rel="icon" type="image/jpeg" href="icon.jpg">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <title>Class Notes & Study Material | Vidyaalok Classes</title>
+ <link rel="icon" type="image/jpeg" href="icon.jpg">
+ <style>
+ :root {
+ --navy: #0B2545;
+ --gold: #E5A93C;
+ --light-bg: #F1F5F9;
+ --card-bg: rgba(255, 255, 255, 0.92);
+ --text-dark: #1E293B;
+ --text-muted: #64748B;
+ }
 
-    <style>
-        :root {
-            --navy: #0B2545;
-            --gold: #E5A93C;
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-        }
+ * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+ html, body { width: 100%; overflow-x: hidden; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+ body {
+ background-color: var(--light-bg);
+ background-image: url('logo.png');
+ background-repeat: no-repeat;
+ background-position: center 250px;
+ background-attachment: fixed;
+ background-size: 550px;
+ color: var(--text-dark);
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ }
 
-        body {
-            background-color: #F1F5F9;
-            background-image: url('logo.png');
-            background-repeat: no-repeat;
-            background-position: center 250px;
-            background-attachment: fixed;
-            background-size: 550px;
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+ header {
+ background-color: #FFFFFF;
+ padding: 0.8rem 2rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border-bottom: 1px solid #E2E8F0;
+ box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+ position: sticky;
+ top: 0;
+ z-index: 100;
+ }
 
-        header {
-            background-color: #FFFFFF;
-            padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #E2E8F0;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+ .brand img { height: 52px; width: auto; display: block; }
 
-        .brand img {
-            height: 52px;
-            width: auto;
-            display: block;
-        }
+ nav { display: flex; gap: 1.2rem; align-items: center; }
+ nav a { color: var(--navy); text-decoration: none; font-size: 0.95rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; }
+ nav a:hover, nav a.active { color: var(--gold); background-color: #F1F5F9; }
+ .btn-portal { background-color: var(--navy); color: #FFFFFF !important; border-radius: 6px; padding: 8px 16px !important; }
 
-        nav {
-            display: flex;
-            gap: 1.2rem;
-            align-items: center;
-        }
+ .container { max-width: 1000px; margin: 2.5rem auto; padding: 0 1.5rem; width: 100%; flex: 1; }
 
-        nav a {
-            color: var(--navy);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
+ .card {
+ background: var(--card-bg);
+ backdrop-filter: blur(8px);
+ border-radius: 12px;
+ padding: 1.8rem;
+ margin-bottom: 2rem;
+ box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
+ border: 1px solid rgba(226, 232, 240, 0.9);
+ }
 
-        nav a:hover, nav a.active {
-            color: var(--gold);
-            background-color: #F1F5F9;
-        }
+ .section-header {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border-bottom: 2px solid #E2E8F0;
+ padding-bottom: 0.8rem;
+ margin-bottom: 1.5rem;
+ }
 
-        .btn-portal {
-            background-color: var(--navy);
-            color: #FFFFFF !important;
-            border-radius: 6px;
-            padding: 8px 16px !important;
-        }
+ .section-header h2 { color: var(--navy); font-size: 1.4rem; font-weight: 700; }
 
-        .btn-portal:hover {
-            background-color: #133966;
-            color: var(--gold) !important;
-        }
+ .material-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+ gap: 1.2rem;
+ }
 
-        .container {
-            max-width: 1000px;
-            margin: 2.5rem auto;
-            padding: 0 1.5rem;
-            flex: 1;
-        }
+ .file-card {
+ background: #FFFFFF;
+ border: 1px solid #E2E8F0;
+ border-radius: 10px;
+ padding: 1.2rem;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+ transition: transform 0.2s, box-shadow 0.2s;
+ }
 
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
-            padding: 1.8rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-        }
+ .file-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(11, 37, 69, 0.08); }
+ .file-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+ .file-title { font-weight: 700; color: var(--navy); font-size: 1.05rem; margin-bottom: 0.3rem; }
+ .file-meta { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem; }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #E2E8F0;
-            padding-bottom: 0.8rem;
-            margin-bottom: 1.5rem;
-        }
+ .btn-download {
+ background-color: var(--navy);
+ color: #FFFFFF;
+ text-decoration: none;
+ text-align: center;
+ padding: 8px 14px;
+ border-radius: 6px;
+ font-size: 0.88rem;
+ font-weight: 600;
+ transition: background 0.2s;
+ display: inline-block;
+ }
 
-        .section-header h2 {
-            color: var(--navy);
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
+ .btn-download:hover { background-color: #133966; color: var(--gold); }
 
-        .material-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.2rem;
-        }
+ footer {
+ background-color: var(--navy);
+ color: #94A3B8;
+ padding: 2rem 1rem;
+ border-top: 3px solid var(--gold);
+ text-align: center;
+ font-size: 0.85rem;
+ margin-top: auto;
+ }
 
-        .file-card {
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 10px;
-            padding: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .file-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 18px rgba(11, 37, 69, 0.08);
-        }
-
-        .file-icon {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .file-title {
-            font-weight: 700;
-            color: var(--navy);
-            font-size: 1.05rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .file-meta {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .btn-download {
-            background-color: var(--navy);
-            color: #FFFFFF;
-            text-decoration: none;
-            text-align: center;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.88rem;
-            font-weight: 600;
-            transition: background 0.2s;
-            display: inline-block;
-        }
-
-        .btn-download:hover {
-            background-color: #133966;
-            color: var(--gold);
-        }
-
-        footer {
-            background-color: var(--navy);
-            color: #94A3B8;
-            padding: 2rem 1rem;
-            border-top: 3px solid var(--gold);
-            text-align: center;
-            font-size: 0.85rem;
-            margin-top: auto;
-        }
-    </style>
+ @media screen and (max-width: 768px) {
+ header { flex-direction: column !important; padding: 0.8rem 1rem !important; gap: 0.8rem !important; align-items: center !important; }
+ .brand img { height: 42px !important; width: auto !important; }
+ nav { flex-wrap: wrap !important; justify-content: center !important; gap: 0.4rem 0.6rem !important; width: 100% !important; }
+ nav a { font-size: 0.82rem !important; padding: 5px 8px !important; white-space: nowrap !important; }
+ .btn-portal { padding: 6px 12px !important; font-size: 0.85rem !important; }
+ .container { width: 100% !important; max-width: 100% !important; padding: 0 1rem !important; margin: 1.5rem auto !important; }
+ .material-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+ .card { padding: 1.2rem !important; margin-bottom: 1.2rem !important; width: 100% !important; }
+ }
+ </style>
 </head>
 <body>
+ <header>
+ <div class="brand"><a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a></div>
+ <nav>
+ <a href="index.html">Home</a>
+ <a href="schedule.html">Schedule</a>
+ <a href="notes.html" class="active">Class Notes</a>
+ <a href="exam.html">Online Exams</a>
+ <a href="login.html" class="btn-portal">Student Portal</a>
+ </nav>
+ </header>
 
-    <header>
-        <div class="brand">
-            <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
-        </div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="schedule.html">Schedule</a>
-            <a href="notes.html" class="active">Class Notes</a>
-            <a href="exam.html">Online Exams</a>
-            <a href="login.html" class="btn-portal">Student Portal</a>
-        </nav>
-    </header>
+ <div class="container">
+ <div class="card">
+ <div class="section-header">
+ <h2>Class Notes & Practice Sheets</h2>
+ <span style="font-size: 0.85rem; color: var(--text-muted);">PDF Resources</span>
+ </div>
+ <div class="material-grid">
+ <div class="file-card">
+ <div>
+ <div class="file-icon">📄</div>
+ <div class="file-title">Rotational Dynamics - Chapter Notes</div>
+ <div class="file-meta">Pradeep Batch (Class 11) • PDF • 2.4 MB</div>
+ </div>
+ <a href="#" class="btn-download">View / Download PDF</a>
+ </div>
+ <div class="file-card">
+ <div>
+ <div class="file-icon">✏️</div>
+ <div class="file-title">DPP #04: Moment of Inertia Problems</div>
+ <div class="file-meta">Pradeep Batch (Class 11) • PDF • 1.1 MB</div>
+ </div>
+ <a href="#" class="btn-download">View / Download PDF</a>
+ </div>
+ <div class="file-card">
+ <div>
+ <div class="file-icon">📘</div>
+ <div class="file-title">Motion in a Straight Line - Revision Sheet</div>
+ <div class="file-meta">Agni Batch (NEET Repeater) • PDF • 3.2 MB</div>
+ </div>
+ <a href="#" class="btn-download">View / Download PDF</a>
+ </div>
+ </div>
+ </div>
+ </div>
 
-    <div class="container">
-        
-        <div class="card">
-            <div class="section-header">
-                <h2>Class Notes & Practice Sheets</h2>
-                <span style="font-size: 0.85rem; color: var(--text-muted);">PDF Resources</span>
-            </div>
+ <footer>
+ <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
+ <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
+ </footer>
 
-            <div class="material-grid">
-                
-                <div class="file-card">
-                    <div>
-                        <div class="file-icon">📄</div>
-                        <div class="file-title">Rotational Dynamics - Chapter Notes</div>
-                        <div class="file-meta">Pradeep Batch (Class 11) • PDF • 2.4 MB</div>
-                    </div>
-                    <a href="#" class="btn-download">View / Download PDF</a>
-                </div>
+ <script>
+ const SCRIPT_URL = "YOUR_WEB_APP_URL_HERE";
 
-                <div class="file-card">
-                    <div>
-                        <div class="file-icon">📝</div>
-                        <div class="file-title">DPP #04: Moment of Inertia Problems</div>
-                        <div class="file-meta">Pradeep Batch (Class 11) • PDF • 1.1 MB</div>
-                    </div>
-                    <a href="#" class="btn-download">View / Download PDF</a>
-                </div>
-
-                <div class="file-card">
-                    <div>
-                        <div class="file-icon">📘</div>
-                        <div class="file-title">Motion in a Straight Line - Revision Sheet</div>
-                        <div class="file-meta">Agni Batch (NEET Repeater) • PDF • 3.2 MB</div>
-                    </div>
-                    <a href="#" class="btn-download">View / Download PDF</a>
-                </div>
-
-                <div class="file-card">
-                    <div>
-                        <div class="file-icon">📐</div>
-                        <div class="file-title">Science Fundamentals & Problem Sets</div>
-                        <div class="file-meta">Prabha Batch (Class 9) • PDF • 1.8 MB</div>
-                    </div>
-                    <a href="#" class="btn-download">View / Download PDF</a>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    <footer>
-        <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
-        <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
-    </footer>
-
+ document.addEventListener("DOMContentLoaded", function() {
+ if (SCRIPT_URL !== "YOUR_WEB_APP_URL_HERE") {
+ fetch(`${SCRIPT_URL}?action=getNotes`)
+ .then(res => res.json())
+ .then(data => {
+ if (data.success && data.notes.length > 0) {
+ const grid = document.querySelector('.material-grid');
+ grid.innerHTML = "";
+ data.notes.forEach(note => {
+ grid.innerHTML += `
+ <div class="file-card">
+ <div>
+ <div class="file-icon">📄</div>
+ <div class="file-title">${note.title}</div>
+ <div class="file-meta">${note.batch} • ${note.fileType} • ${note.fileSize}</div>
+ </div>
+ <a href="${note.pdfUrl}" target="_blank" class="btn-download">View / Download PDF</a>
+ </div>`;
+ });
+ }
+ })
+ .catch(err => console.log("Using static notes fallback."));
+ }
+ });
+ </script>
 </body>
 </html>
