@@ -1,457 +1,542 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vidyaalok Classes | The Light of Knowledge</title>
-    
-    <!-- Browser Tab Favicon -->
-    <link rel="icon" type="image/jpeg" href="icon.jpg">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <title>Vidyaalok Classes - The Light of Knowledge</title>
+ <link rel="icon" type="image/jpeg" href="icon.jpg">
+ <style>
+ :root {
+ --navy: #0B2545;
+ --gold: #E5A93C;
+ --light-bg: #F1F5F9;
+ --card-bg: rgba(255, 255, 255, 0.92);
+ --text-dark: #1E293B;
+ --text-muted: #64748B;
+ }
 
-    <style>
-        :root {
-            --navy: #0B2545;
-            --gold: #E5A93C;
-            --light-bg: #F8FAFC;
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-        }
+ * {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+ html, body {
+ width: 100%;
+ overflow-x: hidden;
+ }
 
-        /* Page Background with Logo Watermark */
-        body {
-            background-color: #F1F5F9;
-            background-image: url('logo.png');
-            background-repeat: no-repeat;
-            background-position: center 250px;
-            background-attachment: fixed;
-            background-size: 550px;
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+ body {
+ background-color: var(--light-bg);
+ background-image: url('logo.png');
+ background-repeat: no-repeat;
+ background-position: center 250px;
+ background-attachment: fixed;
+ background-size: 550px;
+ color: var(--text-dark);
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ }
 
-        /* Header Navigation */
-        header {
-            background-color: #FFFFFF;
-            padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #E2E8F0;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+ /* Header Navigation */
+ header {
+ background-color: #FFFFFF;
+ padding: 0.8rem 2rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border-bottom: 1px solid #E2E8F0;
+ box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+ position: sticky;
+ top: 0;
+ z-index: 100;
+ }
 
-        .brand img {
-            height: 52px;
-            width: auto;
-            display: block;
-        }
+ .brand img {
+ height: 52px;
+ width: auto;
+ display: block;
+ }
 
-        nav {
-            display: flex;
-            gap: 1.2rem;
-            align-items: center;
-        }
+ nav {
+ display: flex;
+ gap: 1.2rem;
+ align-items: center;
+ }
 
-        nav a {
-            color: var(--navy);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
+ nav a {
+ color: var(--navy);
+ text-decoration: none;
+ font-size: 0.95rem;
+ font-weight: 600;
+ padding: 6px 12px;
+ border-radius: 6px;
+ transition: all 0.2s;
+ }
 
-        nav a:hover, nav a.active {
-            color: var(--gold);
-            background-color: #F1F5F9;
-        }
+ nav a:hover, nav a.active {
+ color: var(--gold);
+ background-color: #F1F5F9;
+ }
 
-        .btn-portal {
-            background-color: var(--navy);
-            color: #FFFFFF !important;
-            border-radius: 6px;
-            padding: 8px 16px !important;
-        }
+ .btn-portal {
+ background-color: var(--navy);
+ color: #FFFFFF !important;
+ border-radius: 6px;
+ padding: 8px 16px !important;
+ }
 
-        .btn-portal:hover {
-            background-color: #133966;
-            color: var(--gold) !important;
-        }
+ .btn-portal:hover {
+ background-color: #133966;
+ color: var(--gold) !important;
+ }
 
-        /* Hero Section */
-        .hero {
-            background: rgba(11, 37, 69, 0.92);
-            color: white;
-            text-align: center;
-            padding: 4rem 1.5rem;
-            backdrop-filter: blur(4px);
-        }
+ /* Hero Section */
+ .hero {
+ background: rgba(11, 37, 69, 0.92);
+ color: white;
+ text-align: center;
+ padding: 3.5rem 1.5rem;
+ backdrop-filter: blur(4px);
+ }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.5px;
-        }
+ .hero h1 {
+ font-size: 2.5rem;
+ font-weight: 800;
+ margin-bottom: 0.5rem;
+ letter-spacing: 0.5px;
+ }
 
-        .hero .tagline {
-            font-size: 1.2rem;
-            color: var(--gold);
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
+ .hero .tagline {
+ font-size: 1.2rem;
+ color: var(--gold);
+ font-weight: 600;
+ letter-spacing: 1.5px;
+ text-transform: uppercase;
+ margin-bottom: 1rem;
+ }
 
-        .hero p {
-            max-width: 650px;
-            margin: 0 auto 2rem auto;
-            color: #CBD5E1;
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
+ .hero p {
+ max-width: 650px;
+ margin: 0 auto 2rem auto;
+ color: #E2E8F0;
+ font-size: 1.05rem;
+ line-height: 1.6;
+ }
 
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+ .hero-buttons {
+ display: flex;
+ gap: 1.2rem;
+ justify-content: center;
+ flex-wrap: wrap;
+ }
 
-        .btn-primary {
-            background-color: var(--gold);
-            color: var(--navy);
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: background 0.2s;
-        }
+ .btn-primary {
+ background-color: var(--gold);
+ color: var(--navy);
+ padding: 12px 25px;
+ border-radius: 6px;
+ text-decoration: none;
+ font-weight: 700;
+ transition: background 0.2s;
+ }
 
-        .btn-primary:hover {
-            background-color: #f3b548;
-        }
+ .btn-primary:hover {
+ background-color: #E6364B;
+ color: #FFFFFF;
+ }
 
-        .btn-secondary {
-            border: 2px solid #FFFFFF;
-            color: #FFFFFF;
-            padding: 10px 22px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
+ .btn-secondary {
+ border: 2px solid #FFFFFF;
+ color: #FFFFFF;
+ padding: 10px 22px;
+ border-radius: 6px;
+ text-decoration: none;
+ font-weight: 600;
+ transition: all 0.2s;
+ }
 
-        .btn-secondary:hover {
-            background-color: #FFFFFF;
-            color: var(--navy);
-        }
+ .btn-secondary:hover {
+ background-color: #FFFFFF;
+ color: var(--navy);
+ }
 
-        /* Container & Cards */
-        .container {
-            max-width: 1100px;
-            margin: 3rem auto;
-            padding: 0 1.5rem;
-            flex: 1;
-        }
+ /* Container & Cards */
+ .container {
+ max-width: 1000px;
+ margin: 2.5rem auto;
+ padding: 0 1.5rem;
+ width: 100%;
+ }
 
-        .section-title {
-            text-align: center;
-            color: var(--navy);
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            position: relative;
-        }
+ .section-title {
+ text-align: center;
+ color: var(--navy);
+ font-size: 1.8rem;
+ font-weight: 700;
+ margin-bottom: 2rem;
+ position: relative;
+ }
 
-        .section-title::after {
-            content: "";
-            display: block;
-            width: 60px;
-            height: 3px;
-            background-color: var(--gold);
-            margin: 8px auto 0 auto;
-            border-radius: 2px;
-        }
+ .section-title::after {
+ content: "";
+ display: block;
+ width: 60px;
+ height: 3px;
+ background-color: var(--gold);
+ margin: 6px auto 0 auto;
+ border-radius: 2px;
+ }
 
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
+ .grid-4 {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+ gap: 1.5rem;
+ margin-bottom: 3rem;
+ }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 3rem;
-        }
+ .grid-3 {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+ gap: 2rem;
+ margin-bottom: 3rem;
+ }
 
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
-            padding: 1.8rem;
-            box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+ .card {
+ background: var(--card-bg);
+ backdrop-filter: blur(8px);
+ border-radius: 12px;
+ padding: 1.8rem;
+ box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
+ border: 1px solid rgba(226, 232, 240, 0.9);
+ transition: transform 0.2s, box-shadow 0.2s;
+ }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(11, 37, 69, 0.12);
-        }
+ .card:hover {
+ transform: translateY(-4px);
+ box-shadow: 0 8px 24px rgba(11, 37, 69, 0.12);
+ }
 
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
+ .feature-icon {
+ font-size: 2rem;
+ margin-bottom: 1rem;
+ }
 
-        .card h3 {
-            color: var(--navy);
-            font-size: 1.25rem;
-            margin-bottom: 0.3rem;
-            font-weight: 700;
-        }
+ .card h3 {
+ color: var(--navy);
+ font-size: 1.2rem;
+ margin-bottom: 0.5rem;
+ font-weight: 700;
+ }
 
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            line-height: 1.5;
-        }
+ .card p {
+ color: var(--text-muted);
+ font-size: 0.92rem;
+ line-height: 1.5;
+ }
 
-        .course-badge {
-            display: inline-block;
-            background-color: #FEF3C7;
-            color: #92400E;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-        }
+ .course-badge {
+ display: inline-block;
+ background-color: #FEF3C7;
+ color: #92400E;
+ padding: 4px 10px;
+ border-radius: 12px;
+ font-size: 0.75rem;
+ font-weight: 700;
+ margin-bottom: 0.8rem;
+ text-transform: uppercase;
+ }
 
-        /* Footer */
-        footer {
-            background-color: var(--navy);
-            color: #94A3B8;
-            padding: 2.5rem 1rem;
-            border-top: 3px solid var(--gold);
-            margin-top: auto;
-        }
+ /* Footer */
+ footer {
+ background-color: var(--navy);
+ color: #94A3B8;
+ padding: 2.5rem 1rem;
+ border-top: 3px solid var(--gold);
+ margin-top: auto;
+ }
 
-        .footer-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-            text-align: left;
-        }
+ .footer-container {
+ max-width: 1000px;
+ margin: 0 auto;
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: space-between;
+ align-items: center;
+ gap: 1.5rem;
+ text-align: left;
+ }
 
-        .footer-copyright {
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 2rem;
-            padding-top: 1rem;
-            font-size: 0.8rem;
-            color: #64748B;
-        }
-    </style>
+ .footer-copyright {
+ text-align: center;
+ border-top: 1px solid rgba(255,255,255,0.1);
+ margin-top: 2rem;
+ padding-top: 1rem;
+ font-size: 0.8rem;
+ color: #64748B;
+ }
+
+ /* ==========================================
+ MOBILE RESPONSIVE FIXES (Max Width 768px)
+ ========================================== */
+ @media screen and (max-width: 768px) {
+ header {
+ flex-direction: column !important;
+ padding: 0.8rem 1rem !important;
+ gap: 0.8rem !important;
+ align-items: center !important;
+ }
+
+ .brand img {
+ height: 42px !important;
+ width: auto !important;
+ }
+
+ nav {
+ flex-wrap: wrap !important;
+ justify-content: center !important;
+ gap: 0.4rem 0.6rem !important;
+ width: 100% !important;
+ }
+
+ nav a {
+ font-size: 0.82rem !important;
+ padding: 5px 8px !important;
+ white-space: nowrap !important;
+ }
+
+ .btn-portal {
+ padding: 6px 12px !important;
+ font-size: 0.85rem !important;
+ }
+
+ .container {
+ width: 100% !important;
+ max-width: 100% !important;
+ padding: 0 1rem !important;
+ margin: 1.5rem auto !important;
+ }
+
+ .grid-3, .grid-4 {
+ grid-template-columns: 1fr !important;
+ gap: 1rem !important;
+ }
+
+ .card {
+ padding: 1.2rem !important;
+ margin-bottom: 1rem !important;
+ width: 100% !important;
+ }
+
+ .hero {
+ padding: 2.5rem 1rem !important;
+ }
+
+ .hero h1 {
+ font-size: 1.8rem !important;
+ }
+
+ .hero .tagline {
+ font-size: 1rem !important;
+ }
+
+ .hero p {
+ font-size: 0.92rem !important;
+ margin-bottom: 1.5rem !important;
+ }
+
+ .hero-buttons {
+ flex-direction: column !important;
+ width: 100% !important;
+ gap: 0.6rem !important;
+ }
+
+ .hero-buttons a {
+ width: 100% !important;
+ text-align: center !important;
+ }
+
+ .footer-container {
+ flex-direction: column !important;
+ text-align: center !important;
+ align-items: center !important;
+ }
+ }
+ </style>
 </head>
 <body>
 
-    <!-- Header Navigation -->
-    <header>
-        <div class="brand">
-            <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
-        </div>
-        <nav>
-            <a href="index.html" class="active">Home</a>
-            <a href="schedule.html">Schedule</a>
-            <a href="notes.html">Class Notes</a>
-            <a href="exam.html">Online Exams</a>
-            <a href="#about">About</a>
-            <a href="#courses">Courses</a>
-            <a href="#contact">Contact</a>
-            <a href="login.html" class="btn-portal">Student Portal</a>
-        </nav>
-    </header>
+ <!-- Header Navigation -->
+ <header>
+ <div class="brand">
+ <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
+ </div>
+ <nav>
+ <a href="index.html" class="active">Home</a>
+ <a href="schedule.html">Schedule</a>
+ <a href="notes.html">Class Notes</a>
+ <a href="exam.html">Online Exams</a>
+ <a href="#about">About</a>
+ <a href="#courses">Courses</a>
+ <a href="#contact">Contact</a>
+ <a href="login.html" class="btn-portal">Student Portal</a>
+ </nav>
+ </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>VIDYAALOK CLASSES</h1>
-        <div class="tagline">The Light of Knowledge</div>
-        <p>Empowering students through strong conceptual clarity, continuous evaluation, and dedicated mentorship for Board Exams, JEE, NEET, and Foundation Courses.</p>
-        <div class="hero-buttons">
-            <a href="#courses" class="btn-primary">Explore Batches</a>
-            <a href="https://wa.me/918240949137?text=Hello%20Vidyaalok%20Classes,%20I%20want%20to%20inquire%20about%20admissions." target="_blank" class="btn-secondary">Admission Inquiry</a>
-        </div>
-    </section>
+ <!-- Hero Section -->
+ <section class="hero">
+ <h1>VIDYAALOK CLASSES</h1>
+ <div class="tagline">The Light of Knowledge</div>
+ <p>Empowering students through strong conceptual clarity, continuous evaluation, and dedicated mentorship for Board Exams, JEE, NEET, and Foundation Courses.</p>
+ <div class="hero-buttons">
+ <a href="#courses" class="btn-primary">Explore Batches</a>
+ <a href="https://wa.me/918240949137?text=Hello%20Vidyaalok%20Classes,%20I%20want%20to%20inquire%20about%20admissions." target="_blank" class="btn-secondary">Admission Inquiry</a>
+ </div>
+ </section>
 
-    <!-- Main Content Container -->
-    <div class="container">
-        
-        <!-- Key Highlights Section -->
-        <h2 class="section-title" id="about">Why Vidyaalok Classes?</h2>
-        <div class="grid-4">
-            <div class="card">
-                <div class="feature-icon">🎯</div>
-                <h3>Concept Mastery</h3>
-                <p>In-depth conceptual learning with targeted focus on analytical problem-solving skills.</p>
-            </div>
-            <div class="card">
-                <div class="feature-icon">👨‍🏫</div>
-                <h3>Expert Faculty</h3>
-                <p>Personalized mentorship ensuring every student's queries and doubts are resolved promptly.</p>
-            </div>
-            <div class="card">
-                <div class="feature-icon">📊</div>
-                <h3>Regular Testing</h3>
-                <p>Weekly chapter tests, rank tracking, and detailed performance insights for parents.</p>
-            </div>
-            <div class="card">
-                <div class="feature-icon">💻</div>
-                <h3>Digital Portal</h3>
-                <p>Interactive exam engine, PDF study materials, schedule tracking, and daily topic logs.</p>
-            </div>
-        </div>
+ <!-- Main Content Container -->
+ <div class="container">
+ 
+ <!-- Key Highlights Section -->
+ <h2 class="section-title" id="about">Why Vidyaalok Classes?</h2>
+ <div class="grid-4">
+ <div class="card">
+ <div class="feature-icon">🎯</div>
+ <h3>Concept Mastery</h3>
+ <p>In-depth conceptual learning with targeted focus on analytical problem-solving skills.</p>
+ </div>
+ <div class="card">
+ <div class="feature-icon">👨‍🏫</div>
+ <h3>Expert Faculty</h3>
+ <p>Personalized mentorship ensuring every student's queries and doubts are resolved promptly.</p>
+ </div>
+ <div class="card">
+ <div class="feature-icon">📊</div>
+ <h3>Regular Testing</h3>
+ <p>Weekly chapter tests, rank tracking, and detailed performance insights for parents.</p>
+ </div>
+ <div class="card">
+ <div class="feature-icon">💻</div>
+ <h3>Digital Portal</h3>
+ <p>Interactive exam engine, PDF study materials, schedule tracking, and daily topic logs.</p>
+ </div>
+ </div>
 
-        <!-- Course Offerings Section -->
-        <h2 class="section-title" id="courses">Offered Batches & Programs</h2>
-        <div class="grid-3">
-            
-            <!-- Class 8: Kiran Batch -->
-            <div class="card">
-                <span class="course-badge">Class 8 Foundation</span>
-                <h3>Kiran Batch</h3>
-                <p style="margin-bottom: 0.8rem;"><em>"The First Ray of Knowledge"</em> — Sparking scientific curiosity and strengthening core fundamentals early.</p>
-                <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
-                    <li>Strong Concept Building & Curiosity Development</li>
-                    <li>Interactive Problem-Solving Exercises</li>
-                    <li>Weekly Assessments & Practice Worksheets</li>
-                </ul>
-            </div>
+ <!-- Course Offerings Section -->
+ <h2 class="section-title" id="courses">Offered Batches & Programs</h2>
+ <div class="grid-3">
+ 
+ <!-- Class 8: Kiran Batch -->
+ <div class="card">
+ <span class="course-badge">Class 8 Foundation</span>
+ <h3>Kiran Batch</h3>
+ <p style="margin-bottom: 0.8rem;"><em>"The First Ray of Knowledge"</em> — Sparking scientific curiosity and strengthening core fundamentals early.</p>
+ <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+ <li>Strong Concept Building & Curiosity Development</li>
+ <li>Interactive Problem-Solving Exercises</li>
+ <li>Weekly Assessments & Practice Worksheets</li>
+ </ul>
+ </div>
 
-            <!-- Class 9: Prabha Batch -->
-            <div class="card">
-                <span class="course-badge">Class 9 Foundation</span>
-                <h3>Prabha Batch</h3>
-                <p style="margin-bottom: 0.8rem;"><em>"Radiance of Understanding"</em> — Expanding analytical skills and preparing early for competitive excellence.</p>
-                <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
-                    <li>In-depth Board & Olympiad Foundation</li>
-                    <li>Analytical Thinking & Application Practice</li>
-                    <li>Regular Daily Practice Problems (DPPs)</li>
-                </ul>
-            </div>
+ <!-- Class 9: Prabha Batch -->
+ <div class="card">
+ <span class="course-badge">Class 9 Foundation</span>
+ <h3>Prabha Batch</h3>
+ <p style="margin-bottom: 0.8rem;"><em>"Radiance of Understanding"</em> — Expanding analytical skills and preparing early for competitive excellence.</p>
+ <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+ <li>In-depth Board & Olympiad Foundation</li>
+ <li>Analytical Thinking & Application Practice</li>
+ <li>Regular Daily Practice Problems (DPPs)</li>
+ </ul>
+ </div>
 
-            <!-- Class 10: Tejas Batch -->
-            <div class="card">
-                <span class="course-badge">Class 10 Foundation</span>
-                <h3>Tejas Batch</h3>
-                <p style="margin-bottom: 0.8rem;"><em>"Brilliance & Mastery"</em> — Target batch for Class 10 Board perfection and seamless transition to Senior Secondary.</p>
-                <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
-                    <li>100% Board Exam Syllabus Mastery</li>
-                    <li>Mock Board Test Series & Paper Presentation</li>
-                    <li>NTSE & Entrance Orientation</li>
-                </ul>
-            </div>
+ <!-- Class 10: Tejas Batch -->
+ <div class="card">
+ <span class="course-badge">Class 10 Foundation</span>
+ <h3>Tejas Batch</h3>
+ <p style="margin-bottom: 0.8rem;"><em>"Brilliance & Mastery"</em> — Target batch for Class 10 Board perfection and seamless transition to Senior Secondary.</p>
+ <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+ <li>100% Board Exam Syllabus Mastery</li>
+ <li>Mock Board Test Series & Paper Presentation</li>
+ <li>NTSE & Entrance Orientation</li>
+ </ul>
+ </div>
 
-            <!-- Class 11: Pradeep Batch -->
-            <div class="card">
-                <span class="course-badge">Class 11 Target</span>
-                <h3>Pradeep Batch</h3>
-                <p style="margin-bottom: 0.8rem;"><em>"The Steady Flame"</em> — Comprehensive 2-year preparation building advanced conceptual depth for JEE & NEET.</p>
-                <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
-                    <li>Advanced Chapter Modules & Problem Sets</li>
-                    <li>Integrated School & Entrance Exam Support</li>
-                    <li>Digital Test Engine Practice & Analysis</li>
-                </ul>
-            </div>
+ <!-- Class 11: Pradeep Batch -->
+ <div class="card">
+ <span class="course-badge">Class 11 Target</span>
+ <h3>Pradeep Batch</h3>
+ <p style="margin-bottom: 0.8rem;"><em>"The Steady Flame"</em> — Comprehensive 2-year preparation building advanced conceptual depth for JEE & NEET.</p>
+ <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+ <li>Advanced Chapter Modules & Problem Sets</li>
+ <li>Integrated School & Entrance Exam Support</li>
+ <li>Digital Test Engine Practice & Analysis</li>
+ </ul>
+ </div>
 
-            <!-- Class 12: Jyoti Batch -->
-            <div class="card">
-                <span class="course-badge">Class 12 Target</span>
-                <h3>Jyoti Batch</h3>
-                <p style="margin-bottom: 0.8rem;"><em>"Illumination & Rank Peak"</em> — Synchronized focus on Senior Secondary Board results and competitive rank boosting.</p>
-                <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
-                    <li>Full Board & Entrance Syllabus Completion</li>
-                    <li>Full-Length Mock Tests & Time Management</li>
-                    <li>Rank Analytics & Personalized Mentorship</li>
-                </ul>
-            </div>
+ <!-- Class 12: Jyoti Batch -->
+ <div class="card">
+ <span class="course-badge">Class 12 Target</span>
+ <h3>Jyoti Batch</h3>
+ <p style="margin-bottom: 0.8rem;"><em>"Illumination & Rank Peak"</em> — Synchronized focus on Senior Secondary Board results and competitive rank boosting.</p>
+ <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+ <li>Full Board & Entrance Syllabus Completion</li>
+ <li>Full-Length Mock Tests & Time Management</li>
+ <li>Rank Analytics & Personalized Mentorship</li>
+ </ul>
+ </div>
 
-            <!-- Repeater: Agni Batch -->
-            <div class="card">
-                <span class="course-badge">Class 12 Pass / Droppers</span>
-                <h3>Agni Batch</h3>
-                <p style="margin-bottom: 0.8rem;"><em>"Fire of Determination"</em> — High-intensity 1-year repeater program tailored for maximum speed and rank explosion.</p>
-                <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
-                    <li>Rapid Syllabus Revision & Advanced Problem Sets</li>
-                    <li>All-India Pattern Mock Test Series</li>
-                    <li>Dedicated One-on-One Doubt Clearing</li>
-                </ul>
-            </div>
+ <!-- Repeater: Agni Batch -->
+ <div class="card">
+ <span class="course-badge">Class 12 Pass / Droppers</span>
+ <h3>Agni Batch</h3>
+ <p style="margin-bottom: 0.8rem;"><em>"Fire of Determination"</em> — High-intensity 1-year repeater program tailored for maximum speed and rank explosion.</p>
+ <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+ <li>Rapid Syllabus Revision & Advanced Problem Sets</li>
+ <li>All-India Pattern Mock Test Series</li>
+ <li>Dedicated One-on-One Doubt Clearing</li>
+ </ul>
+ </div>
+ </div>
+ </div>
 
-        </div>
+ <!-- Contact & Footer Section -->
+ <footer id="contact">
+ <div class="footer-container">
+ <!-- Brand Info -->
+ <div>
+ <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: 4px;">Vidyaalok Classes</h3>
+ <p style="color: var(--gold); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">The Light of Knowledge</p>
+ <p style="color: #64748B; font-size: 0.85rem; margin-top: 6px;">Dedicated Coaching for Foundation, Board & Competitive Exams</p>
+ </div>
 
-    </div>
+ <!-- Direct Contact Details -->
+ <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.95rem;">
+ <div style="color: #E2E8F0;">
+ 📞 <strong>Call / Phone:</strong> <a href="tel:8240949137" style="color: #FFFFFF; text-decoration: none;">+91 8240949137</a>
+ </div>
+ <div style="color: #E2E8F0;">
+ ✉️ <strong>Email ID:</strong> <a href="mailto:vidyaalokclasses@gmail.com" style="color: #FFFFFF; text-decoration: none;">vidyaalokclasses@gmail.com</a>
+ </div>
+ <div style="color: #E2E8F0;">
+ 📍 <strong>Location / Base:</strong> Kharagpur, West Bengal, India, Pin-721301
+ </div>
+ </div>
 
-    <!-- Contact & Footer Section -->
-    <footer id="contact">
-        <div class="footer-container">
-            <!-- Brand Info -->
-            <div>
-                <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: 4px;">Vidyaalok Classes</h3>
-                <p style="color: var(--gold); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">The Light of Knowledge</p>
-                <p style="color: #64748B; font-size: 0.85rem; margin-top: 6px;">Dedicated Coaching for Foundation, Board & Competitive Exams</p>
-            </div>
-
-            <!-- Direct Contact Details -->
-            <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.95rem;">
-                <div style="color: #E2E8F0;">
-                    📞 <strong>Call / Phone:</strong> <a href="tel:8240949137" style="color: #FFFFFF; text-decoration: none;">+91 8240949137</a>
-                </div>
-                <div style="color: #E2E8F0;">
-                    ✉️ <strong>Email ID:</strong> <a href="mailto:vidyaalokclasses@gmail.com" style="color: #FFFFFF; text-decoration: none;">vidyaalokclasses@gmail.com</a>
-                </div>
-                <div style="color: #E2E8F0;">
-                    📍 <strong>Location / Base:</strong> Kharagpur, West Bengal, India, Pin-721301
-                </div>
-            </div>
-
-            <!-- Instant WhatsApp Button -->
-            <div>
-                <a href="https://wa.me/918240949137?text=Hello%20Vidyaalok%20Classes,%20I%20want%20to%20inquire%20about%20admissions." 
-                   target="_blank" 
-                   style="background-color: #25D366; color: #FFFFFF; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);">
-                    💬 Chat on WhatsApp
-                </a>
-            </div>
-        </div>
-
-        <div class="footer-copyright">
-            © 2026 Vidyaalok Classes. All rights reserved.
-        </div>
-    </footer>
-
+ <!-- Instant WhatsApp Button -->
+ <div>
+ <a href="https://wa.me/918240949137?text=Hello%20Vidyaalok%20Classes,%20I%20want%20to%20inquire%20about%20admissions." 
+ target="_blank" 
+ style="background-color: #25D366; color: #FFFFFF; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);">
+ 💬 Chat on WhatsApp
+ </a>
+ </div>
+ </div>
+ <div class="footer-copyright">
+ © 2026 Vidyaalok Classes. All rights reserved.
+ </div>
+ </footer>
 </body>
 </html>
