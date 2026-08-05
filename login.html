@@ -49,15 +49,16 @@
  nav a { color: var(--navy); text-decoration: none; font-size: 0.95rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
  .btn-portal { background-color: var(--navy); color: #FFFFFF !important; border-radius: 6px; padding: 8px 16px !important; }
 
- .container { max-width: 500px; margin: 3rem auto; padding: 0 1.5rem; width: 100%; flex: 1; }
+ .container { max-width: 650px; margin: 2.5rem auto; padding: 0 1.5rem; width: 100%; flex: 1; }
 
  .card {
  background: var(--card-bg);
  backdrop-filter: blur(8px);
  border-radius: 12px;
- padding: 2rem;
+ padding: 1.8rem;
  box-shadow: 0 4px 16px rgba(11, 37, 69, 0.08);
  border: 1px solid rgba(226, 232, 240, 0.9);
+ margin-bottom: 1.5rem;
  }
 
  .form-group { margin-bottom: 1.2rem; }
@@ -85,7 +86,18 @@
  .status-partial { background-color: #FEF3C7; color: #92400E; }
  .status-pending { background-color: #FEE2E2; color: #B91C1C; }
 
+ .status-appeared { background-color: #DCFCE7; color: #15803D; }
+ .status-absent { background-color: #FEE2E2; color: #B91C1C; }
+
  .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #E2E8F0; font-size: 0.95rem; }
+
+ .sub-card {
+ background: #FFFFFF;
+ border: 1px solid #E2E8F0;
+ border-radius: 8px;
+ padding: 1rem;
+ margin-top: 0.8rem;
+ }
 
  footer {
  background-color: var(--navy);
@@ -123,7 +135,7 @@
  <div class="container">
  <!-- Login Card -->
  <div class="card" id="loginCard">
- <h2 style="color: var(--navy); text-align: center; margin-bottom: 1.5rem;">Parent & Student Login</h2>
+ <h2 style="color: var(--navy); text-align: center; margin-bottom: 1.5rem;">Parent & Student Portal</h2>
  <div id="errorMsg" style="font-size: 0.88rem; margin-bottom: 1rem; text-align: center;"></div>
  
  <div class="form-group">
@@ -137,30 +149,39 @@
  <button class="btn-login" onclick="login()">Login to Dashboard</button>
  </div>
 
- <!-- Dashboard Card (Hidden until login) -->
- <div class="card dashboard" id="dashboardCard">
+ <!-- Student Dashboard (Hidden until Login) -->
+ <div class="dashboard" id="dashboardCard">
+ 
+ <!-- Card 1: Student Profile -->
+ <div class="card">
  <h2 style="color: var(--navy); border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; margin-bottom: 1rem;" id="dashName">Student Profile</h2>
- 
- <div class="info-row"><strong>Batch:</strong><span id="dashBatch">--</span></div>
+ <div class="info-row"><strong>Batch Name:</strong><span id="dashBatch">--</span></div>
  <div class="info-row"><strong>Attendance Rate:</strong><span id="dashAttendance" style="font-weight: 700; color: var(--navy);">--</span></div>
- 
- <h3 style="color: var(--navy); margin-top: 1.5rem; margin-bottom: 0.8rem; font-size: 1.1rem;">Academic Performance & Rank</h3>
- <div class="info-row"><strong>Batch Rank:</strong><span id="dashBatchRank" style="font-weight: 700; color: #0284C7;">--</span></div>
- <div class="info-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
- <strong>Subject-wise Marks:</strong>
- <div id="dashSubjectScores" style="font-size: 0.9rem; color: var(--text-dark); margin-top: 4px;">--</div>
+ <div class="info-row" style="border-bottom: none;"><strong>Fee Status:</strong><span id="dashStatus" class="status-badge status-pending">Pending</span></div>
  </div>
 
- <h3 style="color: var(--navy); margin-top: 1.5rem; margin-bottom: 0.8rem; font-size: 1.1rem;">Fee Details</h3>
- <div class="info-row"><strong>Total Fees:</strong><span id="dashTotalFees">₹0</span></div>
- <div class="info-row"><strong>Amount Paid:</strong><span id="dashAmountPaid" style="color: #16A34A; font-weight: 700;">₹0</span></div>
- <div class="info-row"><strong>Balance:</strong><span id="dashBalance" style="color: #DC2626; font-weight: 700;">₹0</span></div>
- <div class="info-row" style="border-bottom: none; margin-top: 8px;">
- <strong>Payment Status:</strong>
- <span id="dashStatus" class="status-badge status-pending">Pending</span>
+ <!-- Card 2: Recent Class & Study Material Download -->
+ <div class="card">
+ <h3 style="color: var(--navy); margin-bottom: 0.8rem; font-size: 1.1rem;">📘 Recent Class & Study Material</h3>
+ <div id="latestNoteBox">Loading class notes...</div>
  </div>
- 
- <button class="btn-login" onclick="logout()" style="margin-top: 1.5rem; background-color: #64748B;">Logout</button>
+
+ <!-- Card 3: Recent Examinations & Performance -->
+ <div class="card">
+ <h3 style="color: var(--navy); margin-bottom: 0.8rem; font-size: 1.1rem;">📝 Examination Performance & History</h3>
+ <div class="info-row"><strong>Batch Rank:</strong><span id="dashBatchRank" style="font-weight: 700; color: #0284C7;">--</span></div>
+ <div id="examHistoryBox" style="margin-top: 1rem;">Loading exam records...</div>
+ </div>
+
+ <!-- Card 4: Fee Account Details -->
+ <div class="card">
+ <h3 style="color: var(--navy); margin-bottom: 0.8rem; font-size: 1.1rem;">💳 Fee Account Summary</h3>
+ <div class="info-row"><strong>Total Annual Fees:</strong><span id="dashTotalFees">₹0</span></div>
+ <div class="info-row"><strong>Amount Paid:</strong><span id="dashAmountPaid" style="color: #16A34A; font-weight: 700;">₹0</span></div>
+ <div class="info-row" style="border-bottom: none;"><strong>Remaining Balance:</strong><span id="dashBalance" style="color: #DC2626; font-weight: 700;">₹0</span></div>
+ </div>
+
+ <button class="btn-login" onclick="logout()" style="margin-bottom: 2rem; background-color: #64748B;">Logout</button>
  </div>
  </div>
 
@@ -170,7 +191,7 @@
  </footer>
 
  <script>
- const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+ const SCRIPT_URL = "YOUR_WEB_APP_URL_HERE"; // Paste your Web App URL here
 
  function login() {
  const studentId = document.getElementById('studentId').value.trim();
@@ -191,6 +212,8 @@
  if (data.success) {
  document.getElementById('loginCard').style.display = 'none';
  document.getElementById('dashboardCard').style.display = 'block';
+ 
+ // Fill Profile Info
  document.getElementById('dashName').textContent = data.studentName;
  document.getElementById('dashBatch').textContent = data.batch;
  document.getElementById('dashAttendance').textContent = data.attendance;
@@ -199,22 +222,54 @@
  document.getElementById('dashBalance').textContent = '₹' + (Number(data.totalFees) - Number(data.amountPaid));
  document.getElementById('dashBatchRank').textContent = data.batchRank || "N/A";
 
- const subjBox = document.getElementById('dashSubjectScores');
- subjBox.innerHTML = "";
- if (data.subjectScores && Object.keys(data.subjectScores).length > 0) {
- for (let subj in data.subjectScores) {
- subjBox.innerHTML += `<div>• <strong>${subj}:</strong> ${data.subjectScores[subj]} Marks</div>`;
- }
- } else {
- subjBox.innerHTML = "<div>No test attempts recorded.</div>";
- }
-
  const statusElem = document.getElementById('dashStatus');
  statusElem.textContent = data.feeStatus;
  const statusLower = String(data.feeStatus).toLowerCase();
  if (statusLower.includes('paid') && !statusLower.includes('partial')) statusElem.className = 'status-badge status-paid';
  else if (statusLower.includes('partial')) statusElem.className = 'status-badge status-partial';
  else statusElem.className = 'status-badge status-pending';
+
+ // Render Recent Class Note & Link
+ const noteBox = document.getElementById('latestNoteBox');
+ if (data.latestNote) {
+ noteBox.innerHTML = `
+ <div class="sub-card">
+ <div style="font-weight: 700; color: var(--navy);">${data.latestNote.title}</div>
+ <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Format: ${data.latestNote.fileType} (${data.latestNote.fileSize})</div>
+ <a href="${data.latestNote.pdfUrl}" target="_blank" style="display: inline-block; margin-top: 8px; background-color: var(--navy); color: #FFFFFF; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.85rem; font-weight: 600;">Download Class Note PDF</a>
+ </div>`;
+ } else {
+ noteBox.innerHTML = "<p style='color: var(--text-muted); font-size: 0.9rem;'>No recent class notes uploaded.</p>";
+ }
+
+ // Render Examination History Cards
+ const examBox = document.getElementById('examHistoryBox');
+ examBox.innerHTML = "";
+ if (data.examHistory && data.examHistory.length > 0) {
+ data.examHistory.forEach(ex => {
+ const isAppeared = ex.status === "Appeared";
+ examBox.innerHTML += `
+ <div class="sub-card">
+ <div style="display: flex; justify-content: space-between; align-items: center;">
+ <strong style="color: var(--navy);">${ex.testTitle} (${ex.subject})</strong>
+ <span class="status-badge ${isAppeared ? 'status-appeared' : 'status-absent'}">${ex.status}</span>
+ </div>
+ <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Date: ${ex.date}</div>
+ ${isAppeared ? `
+ <div style="margin-top: 8px; font-size: 0.9rem; background: #F8FAFC; padding: 8px; border-radius: 6px;">
+ <div><strong>Score:</strong> ${ex.score} / ${ex.totalMarks}</div>
+ <div style="display: flex; gap: 1rem; margin-top: 4px; font-size: 0.85rem;">
+ <span style="color: #16A34A;">✔ Correct: ${ex.correct}</span>
+ <span style="color: #DC2626;">✖ Wrong: ${ex.wrong}</span>
+ <span style="color: #64748B;">➖ Unattempted: ${ex.unattempted}</span>
+ </div>
+ </div>` : ''}
+ </div>`;
+ });
+ } else {
+ examBox.innerHTML = "<p style='color: var(--text-muted); font-size: 0.9rem;'>No exam history recorded.</p>";
+ }
+
  } else {
  errorMsg.style.color = "#DC2626";
  errorMsg.textContent = data.message || "Invalid credentials.";
@@ -222,7 +277,7 @@
  })
  .catch(err => {
  errorMsg.style.color = "#DC2626";
- errorMsg.textContent = "Error connecting to server. Check deployment URL.";
+ errorMsg.textContent = "Error connecting to server. Check Web App URL.";
  });
  }
 
