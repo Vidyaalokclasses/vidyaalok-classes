@@ -22,7 +22,6 @@
     .badge-locked { background: #FEF3C7; color: #92400E; }
     .badge-open { background: #DCFCE7; color: #166534; }
     
-    /* Exam Split Screen View */
     .exam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; height: calc(100vh - 160px); }
     @media (max-width: 850px) { .exam-grid { grid-template-columns: 1fr; height: auto; } }
     .pdf-viewer iframe { width: 100%; height: 100%; min-height: 500px; border: 1px solid #CBD5E1; border-radius: 8px; }
@@ -31,8 +30,6 @@
     .opt-group { display: flex; gap: 15px; margin-top: 8px; flex-wrap: wrap; }
     .num-input { padding: 8px; border: 1px solid #CBD5E1; border-radius: 6px; width: 100%; max-width: 200px; margin-top: 6px; }
     .timer-sticky { position: sticky; top: 0; background: var(--navy); color: white; padding: 10px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; z-index: 10; }
-    
-    /* Metrics Grid */
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; text-align: center; margin: 1.5rem 0; }
     .metric-card { padding: 1rem; border-radius: 8px; }
   </style>
@@ -50,11 +47,11 @@
   <div class="container">
     <!-- Step 1: Verification -->
     <div id="auth-card" class="card">
-      <h2 style="color: var(--navy); margin-bottom: 1rem;">Student Examination Portal</h2>
+      <h2 style="color: var(--navy); margin-bottom: 1rem;">Student Examination Login</h2>
       <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-        <input type="text" id="studentId" placeholder="Enter Student ID (e.g. STU101)" style="padding: 10px; flex: 1; border: 1px solid #CBD5E1; border-radius: 6px;">
-        <input type="text" id="studentBatch" placeholder="Enter Batch (e.g. Jyoti)" style="padding: 10px; flex: 1; border: 1px solid #CBD5E1; border-radius: 6px;">
-        <button onclick="fetchExams()" class="btn">View Live Exams</button>
+        <input type="text" id="studentId" placeholder="Enter Student ID (e.g. VAK26001)" style="padding: 10px; flex: 1; border: 1px solid #CBD5E1; border-radius: 6px;">
+        <input type="password" id="password" placeholder="Enter Password" style="padding: 10px; flex: 1; border: 1px solid #CBD5E1; border-radius: 6px;">
+        <button onclick="authenticateAndLoadExams()" class="btn">View Live Exams</button>
       </div>
     </div>
 
@@ -64,7 +61,7 @@
       <div id="exam-list"></div>
     </div>
 
-    <!-- Step 3: Exam Engine Workspace -->
+    <!-- Step 3: Exam Workspace -->
     <div id="exam-workspace" style="display: none;">
       <div class="timer-sticky">
         <strong id="exam-title-display"></strong>
@@ -72,12 +69,9 @@
       </div>
 
       <div class="exam-grid">
-        <!-- Left: Question Paper PDF -->
         <div class="pdf-viewer">
           <iframe id="pdf-frame" src=""></iframe>
         </div>
-
-        <!-- Right: OMR Digital Response Sheet -->
         <div class="omr-panel card">
           <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px;">Response Sheet</h3>
           <div id="omr-questions"></div>
@@ -91,21 +85,53 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; // Replace with your Google Apps Script URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; // Replace with your Web App URL
 
-    let student = { id: "", batch: "" };
+    let student = { id: "", name: "", batch: "" };
     let currentExam = {};
     let questionsList = [];
     let timerInterval = null;
     let timeRemaining = 0;
 
-    function fetchExams() {
+    window.onload = function() {
+      const savedId = localStorage.getItem("v_stu_id");
+      const savedName = localStorage.getItem("v_stu_name");
+      const savedBatch = localStorage.getItem("v_stu_batch");
+
+      if (savedId && savedName) {
+        student.id = savedId;
+        student.name = savedName;
+        student.batch = savedBatch;
+        fetchExams(savedId, savedBatch);
+      }
+    };
+
+    function authenticateAndLoadExams() {
       const sId = document.getElementById('studentId').value.trim();
-      const sBatch = document.getElementById('studentBatch').value.trim();
-      if (!sId || !sBatch) { alert("Please enter Student ID and Batch!"); return; }
+      const sPass = document.getElementById('password').value.trim();
 
-      student.id = sId; student.batch = sBatch;
+      if (!sId || !sPass) { alert("Please enter Student ID and Password!"); return; }
 
+      fetch(`${SCRIPT_URL}?action=verifyStudent&studentId=${encodeURIComponent(sId)}&password=${encodeURIComponent(sPass)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "SUCCESS") {
+            student.id = data.studentId;
+            student.name = data.studentName;
+            student.batch = data.batch;
+
+            localStorage.setItem("v_stu_id", data.studentId);
+            localStorage.setItem("v_stu_name", data.studentName);
+            localStorage.setItem("v_stu_batch", data.batch);
+
+            fetchExams(data.studentId, data.batch);
+          } else {
+            alert(data.message || "Invalid Student ID or Password!");
+          }
+        });
+    }
+
+    function fetchExams(sId, sBatch) {
       fetch(`${SCRIPT_URL}?action=getExams&studentId=${encodeURIComponent(sId)}&batch=${encodeURIComponent(sBatch)}`)
         .then(res => res.json())
         .then(data => {
@@ -187,9 +213,9 @@
 
         return `
           <div class="q-box">
-            <div style="display:flex; justify-between; font-weight:700; color:var(--navy);">
+            <div style="display:flex; justify-content:space-between; font-weight:700; color:var(--navy);">
               <span>Q${q.qNo} [${q.section}]</span>
-              <span style="font-size:0.8rem; color:var(--muted); margin-left:auto;">(+${q.pMarks}, -${q.nMarks})</span>
+              <span style="font-size:0.8rem; color:var(--muted);">(+${q.pMarks}, -${q.nMarks})</span>
             </div>
             ${inputHtml}
           </div>
@@ -256,7 +282,7 @@
       const payload = {
         action: "submitExam",
         studentId: student.id,
-        studentName: student.id,
+        studentName: student.name,
         batch: student.batch,
         examId: currentExam.examId,
         examTitle: currentExam.title,
