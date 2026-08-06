@@ -2,477 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Portal Dashboard - Vidyaalok Classes</title>
-  
-  <!-- SEO & Favicon -->
-  <meta name="description" content="Vidyaalok Classes Student Portal for accessing class notes, online exam history, schedules, and fee records.">
   <link rel="icon" type="image/jpeg" href="icon.jpg">
-
   <style>
-    :root {
-      --navy: #0B2545;
-      --gold: #E5A93C;
-      --light-bg: #F1F5F9;
-      --card-bg: #FFFFFF;
-      --text-dark: #1E293B;
-      --text-muted: #64748B;
-      --success: #16A34A;
-      --danger: #DC2626;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--light-bg);
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Header Navigation */
-    header {
-      background-color: #FFFFFF;
-      padding: 0.8rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #E2E8F0;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .brand img {
-      height: 48px;
-      width: auto;
-      display: block;
-    }
-
-    nav {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    nav a {
-      color: var(--navy);
-      text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
-
-    nav a:hover, nav a.active {
-      color: var(--gold);
-      background-color: #F1F5F9;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      width: 100%;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 1.8rem;
-      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      margin-bottom: 1.5rem;
-    }
-
-    /* Login Form Styles */
-    .login-box {
-      max-width: 420px;
-      margin: 3rem auto;
-      text-align: center;
-    }
-
-    .login-box h2 {
-      color: var(--navy);
-      margin-bottom: 0.5rem;
-      font-size: 1.6rem;
-    }
-
-    .login-box p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.2rem;
-      text-align: left;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 4px;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #CBD5E1;
-      border-radius: 6px;
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .form-control:focus {
-      border-color: var(--navy);
-      box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
-    }
-
-    .btn {
-      background-color: var(--navy);
-      color: #FFFFFF;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      width: 100%;
-      transition: background 0.2s;
-    }
-
-    .btn:hover {
-      background-color: #133966;
-    }
-
-    .btn-logout {
-      background-color: var(--danger);
-      width: auto;
-      padding: 6px 14px;
-      font-size: 0.85rem;
-    }
-
-    /* Dashboard UI */
-    .user-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      border-bottom: 2px solid #F1F5F9;
-      padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .user-info h2 {
-      color: var(--navy);
-      font-size: 1.4rem;
-    }
-
-    .user-info p {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-    }
-
-    .badge-batch {
-      background-color: #FEF3C7;
-      color: #92400E;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 0.8rem;
-    }
-
-    /* Tabs */
-    .dashboard-tabs {
-      display: flex;
-      gap: 0.5rem;
-      border-bottom: 2px solid #E2E8F0;
-      margin-bottom: 1.5rem;
-      overflow-x: auto;
-    }
-
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 10px 16px;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      white-space: nowrap;
-    }
-
-    .tab-btn.active {
-      color: var(--navy);
-      border-bottom-color: var(--gold);
-    }
-
-    /* Table Styles */
-    .table-responsive {
-      width: 100%;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.9rem;
-    }
-
-    th {
-      background-color: var(--navy);
-      color: #FFFFFF;
-      padding: 10px 12px;
-      font-weight: 600;
-    }
-
-    td {
-      padding: 12px;
-      border-bottom: 1px solid #E2E8F0;
-    }
-
-    tr:nth-child(even) {
-      background-color: #F8FAFC;
-    }
-
-    .status-paid {
-      color: var(--success);
-      font-weight: 700;
-    }
-
-    .status-pending {
-      color: var(--danger);
-      font-weight: 700;
-    }
-
-    /* Mobile View Responsive Rules */
-    @media screen and (max-width: 768px) {
-      header {
-        flex-direction: column;
-        padding: 0.8rem 1rem;
-        gap: 0.8rem;
-      }
-      nav {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.4rem;
-      }
-      .container {
-        padding: 0 0.8rem;
-      }
-      .card {
-        padding: 1.2rem;
-      }
-    }
+    :root { --navy: #0B2545; --gold: #E5A93C; --bg: #F1F5F9; --card: #FFFFFF; --text: #1E293B; --muted: #64748B; --danger: #DC2626; --success: #16A34A; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: #FFFFFF; padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; }
+    .brand img { height: 48px; }
+    nav a { color: var(--navy); text-decoration: none; font-weight: 600; margin-left: 1rem; }
+    .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; width: 100%; }
+    .card { background: var(--card); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .login-box { max-width: 400px; margin: 2rem auto; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-weight: 700; color: var(--navy); margin-bottom: 6px; font-size: 0.9rem; }
+    .form-control { width: 100%; padding: 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 1rem; outline: none; }
+    .form-control:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1); }
+    .btn { background: var(--navy); color: white; border: none; padding: 12px; border-radius: 6px; width: 100%; font-weight: 700; font-size: 1rem; cursor: pointer; }
+    .btn:disabled { background: #94A3B8; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+    th { background: var(--navy); color: white; padding: 10px; text-align: left; }
+    td { padding: 10px; border-bottom: 1px solid #E2E8F0; }
   </style>
 </head>
 <body>
 
-  <!-- Header Navigation -->
   <header>
-    <div class="brand">
-      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
-    </div>
+    <div class="brand"><a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a></div>
     <nav>
       <a href="index.html">Home</a>
       <a href="schedule.html">Schedule</a>
       <a href="notes.html">Class Notes</a>
       <a href="exam.html">Online Exams</a>
-      <a href="login.html" class="active">Student Portal</a>
+      <a href="login.html" style="color: var(--gold);">Student Portal</a>
     </nav>
   </header>
 
   <div class="container">
-    
-    <!-- SECTION 1: LOGIN FORM (Shown when logged out) -->
-    <div id="login-section" class="card login-box">
-      <h2>Student Portal Login</h2>
-      <p>Enter your Student ID and Batch to access your dashboard, past exam records, and study material.</p>
+    <!-- Login Form -->
+    <div id="login-card" class="card login-box">
+      <h2 style="color: var(--navy); text-align: center; margin-bottom: 0.5rem;">Student Portal Login</h2>
+      <p style="color: var(--muted); text-align: center; font-size: 0.88rem; margin-bottom: 1.5rem;">Enter your Student ID and Password to access your portal.</p>
       
       <form onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label for="studentIdInput">Student ID</label>
-          <input type="text" id="studentIdInput" class="form-control" placeholder="e.g. STU101" required>
+          <label>Student ID</label>
+          <input type="text" id="studentId" class="form-control" placeholder="e.g. VAK26001" required>
         </div>
-        
+
         <div class="form-group">
-          <label for="batchInput">Batch / Class</label>
-          <input type="text" id="batchInput" class="form-control" placeholder="e.g. Jyoti" required>
+          <label>Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Enter Password" required>
         </div>
 
         <button type="submit" id="loginBtn" class="btn">Login to Dashboard</button>
       </form>
-      
-      <div id="loginError" style="color: var(--danger); font-size: 0.85rem; margin-top: 1rem; display: none;">
-        Invalid credentials. Please verify your Student ID and Batch.
-      </div>
+      <div id="loginError" style="color: var(--danger); text-align: center; margin-top: 1rem; font-size: 0.88rem; display: none;"></div>
     </div>
 
-    <!-- SECTION 2: STUDENT DASHBOARD (Shown after successful login) -->
-    <div id="dashboard-section" style="display: none;">
-      
-      <!-- Student Profile Header Card -->
-      <div class="card user-header">
-        <div class="user-info">
-          <h2>Welcome, <span id="dashStudentName">Student</span></h2>
-          <p>Student ID: <strong id="dashStudentId" style="color: var(--navy);">---</strong> | Batch: <span id="dashBatch" class="badge-batch">---</span></p>
+    <!-- Student Dashboard -->
+    <div id="dashboard-card" class="card" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="color: var(--navy);">Welcome, <span id="dashName"></span></h2>
+          <p style="color: var(--muted); font-size: 0.9rem;">Student ID: <strong id="dashId"></strong> | Batch: <span id="dashBatch" style="color: var(--navy); font-weight:700;"></span></p>
         </div>
-        <button onclick="handleLogout()" class="btn btn-logout">Logout</button>
+        <button onclick="logout()" class="btn" style="width: auto; background: var(--danger); padding: 8px 16px;">Logout</button>
       </div>
 
-      <!-- Navigation Tabs -->
-      <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchTab('exam-history')">📊 Exam History & Performance</button>
-        <button class="tab-btn" onclick="switchTab('class-notes')">📚 Class Notes & Homework</button>
-        <button class="tab-btn" onclick="switchTab('fee-status')">💳 Fee Record & Account</button>
+      <h3 style="color: var(--navy); margin-bottom: 1rem;">Online Exam Performance History</h3>
+      <div id="history-container">
+        <p style="color: var(--muted);">Loading performance history...</p>
       </div>
-
-      <!-- TAB 1: EXAM HISTORY & PERFORMANCE MATRIX -->
-      <div id="tab-exam-history" class="card tab-content">
-        <h3 style="color: var(--navy); margin-bottom: 1rem;">Online Exam Performance History</h3>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem;">View auto-graded performance breakdowns for all completed examinations.</p>
-        
-        <div class="table-responsive">
-          <div id="past-results-container">
-            <p style="color: var(--text-muted);">Loading your exam history...</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: CLASS NOTES & HOMEWORK -->
-      <div id="tab-class-notes" class="card tab-content" style="display: none;">
-        <h3 style="color: var(--navy); margin-bottom: 1rem;">Class Notes & Homework Downloads</h3>
-        <div id="notes-container">
-          <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--gold); margin-bottom: 0.8rem;">
-            <strong style="color: var(--navy); display: block;">Electrostatics - Lecture 04 DPP Notes</strong>
-            <span style="font-size: 0.82rem; color: var(--text-muted);">Date Uploaded: 05-Aug-2026</span>
-            <div style="margin-top: 8px;">
-              <a href="#" style="color: var(--navy); font-weight: 700; text-decoration: none; font-size: 0.88rem;">📄 Download PDF Notes</a>
-            </div>
-          </div>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Note: Complete daily homework assigned in lecture sheets prior to next test.</p>
-        </div>
-      </div>
-
-      <!-- TAB 3: FEE STATUS -->
-      <div id="tab-fee-status" class="card tab-content" style="display: none;">
-        <h3 style="color: var(--navy); margin-bottom: 1rem;">Fee Receipt & Dues Status</h3>
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Installment / Cycle</th>
-                <th>Due Date</th>
-                <th>Amount</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Quarter 1 Tuition Fee</td>
-                <td>10-Jul-2026</td>
-                <td>₹ 4,500</td>
-                <td><span class="status-paid">✅ PAID</span></td>
-              </tr>
-              <tr>
-                <td>Quarter 2 Tuition Fee</td>
-                <td>10-Oct-2026</td>
-                <td>₹ 4,500</td>
-                <td><span class="status-pending">⏳ UPCOMING</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
   </div>
 
   <script>
-    // Paste your Google Apps Script Web App URL here
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; // Replace with your Web App URL
 
-    // Auto-check if student is already logged in locally
     window.onload = function() {
-      const savedStudentId = localStorage.getItem("vidyaalok_student_id");
-      const savedBatch = localStorage.getItem("vidyaalok_student_batch");
+      const savedId = localStorage.getItem("v_stu_id");
+      const savedName = localStorage.getItem("v_stu_name");
+      const savedBatch = localStorage.getItem("v_stu_batch");
 
-      if (savedStudentId && savedBatch) {
-        showDashboard(savedStudentId, savedBatch);
+      if (savedId && savedName) {
+        showDashboard(savedId, savedName, savedBatch);
       }
     };
 
-    function handleLogin(event) {
-      event.preventDefault();
-      const sId = document.getElementById("studentIdInput").value.trim();
-      const sBatch = document.getElementById("batchInput").value.trim();
+    function handleLogin(e) {
+      e.preventDefault();
+      const sId = document.getElementById("studentId").value.trim();
+      const sPass = document.getElementById("password").value.trim();
+      const btn = document.getElementById("loginBtn");
+      const errDiv = document.getElementById("loginError");
 
-      if (sId && sBatch) {
-        localStorage.setItem("vidyaalok_student_id", sId);
-        localStorage.setItem("vidyaalok_student_batch", sBatch);
-        showDashboard(sId, sBatch);
-      }
-    }
+      errDiv.style.display = "none";
+      btn.disabled = true;
+      btn.innerText = "Verifying...";
 
-    function showDashboard(studentId, batch) {
-      document.getElementById("login-section").style.display = "none";
-      document.getElementById("dashboard-section").style.display = "block";
-
-      document.getElementById("dashStudentId").innerText = studentId;
-      document.getElementById("dashStudentName").innerText = studentId; // Displays Student ID as Name
-      document.getElementById("dashBatch").innerText = batch;
-
-      // Load Exam Performance History from Google Apps Script Backend
-      loadStudentExamHistory(studentId);
-    }
-
-    function handleLogout() {
-      localStorage.removeItem("vidyaalok_student_id");
-      localStorage.removeItem("vidyaalok_student_batch");
-      location.reload();
-    }
-
-    function switchTab(tabName) {
-      // Hide all contents
-      const contents = document.querySelectorAll('.tab-content');
-      contents.forEach(c => c.style.display = 'none');
-
-      // Remove active tab state
-      const tabs = document.querySelectorAll('.tab-btn');
-      tabs.forEach(t => t.classList.remove('active'));
-
-      // Show selected content and activate tab
-      document.getElementById(`tab-${tabName}`).style.display = 'block';
-      event.currentTarget.classList.add('active');
-    }
-
-    // Fetch Student Performance History from Google Apps Script
-    function loadStudentExamHistory(studentId) {
-      const container = document.getElementById('past-results-container');
-      
-      fetch(`${SCRIPT_URL}?action=getStudentResults&studentId=${encodeURIComponent(studentId)}`)
+      fetch(`${SCRIPT_URL}?action=verifyStudent&studentId=${encodeURIComponent(sId)}&password=${encodeURIComponent(sPass)}`)
         .then(res => res.json())
         .then(data => {
-          if (data.status === "SUCCESS") {
-            if (!data.history || data.history.length === 0) {
-              container.innerHTML = "<p style='color: var(--text-muted);'>No past exam submissions recorded yet.</p>";
-              return;
-            }
+          btn.disabled = false;
+          btn.innerText = "Login to Dashboard";
 
-            let tableHtml = `
+          if (data.status === "SUCCESS") {
+            localStorage.setItem("v_stu_id", data.studentId);
+            localStorage.setItem("v_stu_name", data.studentName);
+            localStorage.setItem("v_stu_batch", data.batch);
+            showDashboard(data.studentId, data.studentName, data.batch);
+          } else {
+            errDiv.innerText = data.message || "Invalid Student ID or Password.";
+            errDiv.style.display = "block";
+          }
+        })
+        .catch(() => {
+          btn.disabled = false;
+          btn.innerText = "Login to Dashboard";
+          errDiv.innerText = "Error connecting to server. Please check internet connection.";
+          errDiv.style.display = "block";
+        });
+    }
+
+    function showDashboard(id, name, batch) {
+      document.getElementById("login-card").style.display = "none";
+      document.getElementById("dashboard-card").style.display = "block";
+      document.getElementById("dashId").innerText = id;
+      document.getElementById("dashName").innerText = name;
+      document.getElementById("dashBatch").innerText = batch;
+
+      fetch(`${SCRIPT_URL}?action=getStudentResults&studentId=${encodeURIComponent(id)}`)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById("history-container");
+          if (data.status === "SUCCESS" && data.history && data.history.length > 0) {
+            container.innerHTML = `
               <table>
                 <thead>
                   <tr>
@@ -496,14 +162,15 @@
                 </tbody>
               </table>
             `;
-            container.innerHTML = tableHtml;
           } else {
-            container.innerHTML = "<p style='color: var(--danger);'>Failed to retrieve exam history.</p>";
+            container.innerHTML = "<p style='color:var(--muted);'>No past exam history found.</p>";
           }
-        })
-        .catch(err => {
-          container.innerHTML = "<p style='color: var(--text-muted);'>Unable to load exam history. Check internet connection or backend URL.</p>";
         });
+    }
+
+    function logout() {
+      localStorage.clear();
+      location.reload();
     }
   </script>
 </body>
