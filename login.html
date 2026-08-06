@@ -3,34 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Parent & Student Portal | Vidyaalok Classes</title>
+  <title>Student Portal Dashboard - Vidyaalok Classes</title>
+  
+  <!-- SEO & Favicon -->
+  <meta name="description" content="Vidyaalok Classes Student Portal for accessing class notes, online exam history, schedules, and fee records.">
   <link rel="icon" type="image/jpeg" href="icon.jpg">
+
   <style>
     :root {
       --navy: #0B2545;
       --gold: #E5A93C;
       --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-bg: #FFFFFF;
       --text-dark: #1E293B;
       --text-muted: #64748B;
+      --success: #16A34A;
+      --danger: #DC2626;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    html, body { width: 100%; overflow-x: hidden; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
     body {
       background-color: var(--light-bg);
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center 250px;
-      background-attachment: fixed;
-      background-size: 550px;
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
+    /* Header Navigation */
     header {
       background-color: #FFFFFF;
       padding: 0.8rem 2rem;
@@ -44,296 +50,460 @@
       z-index: 100;
     }
 
-    .brand img { height: 52px; width: auto; display: block; }
-    nav { display: flex; gap: 1.2rem; align-items: center; }
-    nav a { color: var(--navy); text-decoration: none; font-size: 0.95rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
-    .btn-portal { background-color: var(--navy); color: #FFFFFF !important; border-radius: 6px; padding: 8px 16px !important; }
+    .brand img {
+      height: 48px;
+      width: auto;
+      display: block;
+    }
 
-    .container { max-width: 650px; margin: 2.5rem auto; padding: 0 1.5rem; width: 100%; flex: 1; }
+    nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--gold);
+      background-color: #F1F5F9;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      width: 100%;
+    }
 
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(8px);
       border-radius: 12px;
       padding: 1.8rem;
-      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.08);
+      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
       border: 1px solid rgba(226, 232, 240, 0.9);
       margin-bottom: 1.5rem;
     }
 
-    .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; font-weight: 700; margin-bottom: 0.4rem; color: var(--navy); font-size: 0.9rem; }
-    .form-group input { width: 100%; padding: 10px 14px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
+    /* Login Form Styles */
+    .login-box {
+      max-width: 420px;
+      margin: 3rem auto;
+      text-align: center;
+    }
 
-    .btn-login {
+    .login-box h2 {
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+      font-size: 1.6rem;
+    }
+
+    .login-box p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+
+    .form-control {
       width: 100%;
+      padding: 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
+    }
+
+    .btn {
       background-color: var(--navy);
       color: #FFFFFF;
       border: none;
-      padding: 12px;
+      padding: 12px 20px;
       border-radius: 6px;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
+      width: 100%;
       transition: background 0.2s;
     }
 
-    .btn-login:hover { background-color: #133966; color: var(--gold); }
-    .dashboard { display: none; }
-
-    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
-    .status-paid { background-color: #DCFCE7; color: #15803D; }
-    .status-partial { background-color: #FEF3C7; color: #92400E; }
-    .status-pending { background-color: #FEE2E2; color: #B91C1C; }
-
-    .status-appeared { background-color: #DCFCE7; color: #15803D; }
-    .status-absent { background-color: #FEE2E2; color: #B91C1C; }
-
-    .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #E2E8F0; font-size: 0.95rem; }
-
-    .sub-card {
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-top: 0.8rem;
+    .btn:hover {
+      background-color: #133966;
     }
 
-    .btn-download {
-      display: inline-block;
-      margin-top: 8px;
+    .btn-logout {
+      background-color: var(--danger);
+      width: auto;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+    }
+
+    /* Dashboard UI */
+    .user-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 2px solid #F1F5F9;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .user-info h2 {
+      color: var(--navy);
+      font-size: 1.4rem;
+    }
+
+    .user-info p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .badge-batch {
+      background-color: #FEF3C7;
+      color: #92400E;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    /* Tabs */
+    .dashboard-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid #E2E8F0;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 16px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--navy);
+      border-bottom-color: var(--gold);
+    }
+
+    /* Table Styles */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
       background-color: var(--navy);
       color: #FFFFFF;
-      padding: 6px 12px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 0.85rem;
+      padding: 10px 12px;
       font-weight: 600;
     }
 
-    .btn-download:hover {
-      background-color: #133966;
-      color: var(--gold);
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #E2E8F0;
     }
 
-    footer {
-      background-color: var(--navy);
-      color: #94A3B8;
-      padding: 2rem 1rem;
-      border-top: 3px solid var(--gold);
-      text-align: center;
-      font-size: 0.85rem;
-      margin-top: auto;
+    tr:nth-child(even) {
+      background-color: #F8FAFC;
     }
 
+    .status-paid {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    .status-pending {
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    /* Mobile View Responsive Rules */
     @media screen and (max-width: 768px) {
-      header { flex-direction: column !important; padding: 0.8rem 1rem !important; gap: 0.8rem !important; align-items: center !important; }
-      .brand img { height: 42px !important; width: auto !important; }
-      nav { flex-wrap: wrap !important; justify-content: center !important; gap: 0.4rem 0.6rem !important; width: 100% !important; }
-      nav a { font-size: 0.82rem !important; padding: 5px 8px !important; white-space: nowrap !important; }
-      .btn-portal { padding: 6px 12px !important; font-size: 0.85rem !important; }
-      .container { width: 100% !important; max-width: 100% !important; padding: 0 1rem !important; margin: 1.5rem auto !important; }
-      .card { padding: 1.2rem !important; width: 100% !important; }
+      header {
+        flex-direction: column;
+        padding: 0.8rem 1rem;
+        gap: 0.8rem;
+      }
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+      }
+      .container {
+        padding: 0 0.8rem;
+      }
+      .card {
+        padding: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Header Navigation -->
   <header>
-    <div class="brand"><a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a></div>
+    <div class="brand">
+      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+    </div>
     <nav>
       <a href="index.html">Home</a>
       <a href="schedule.html">Schedule</a>
       <a href="notes.html">Class Notes</a>
       <a href="exam.html">Online Exams</a>
-      <a href="login.html" class="btn-portal">Student Portal</a>
+      <a href="login.html" class="active">Student Portal</a>
     </nav>
   </header>
 
   <div class="container">
-    <!-- Login Card -->
-    <div class="card" id="loginCard">
-      <h2 style="color: var(--navy); text-align: center; margin-bottom: 1.5rem;">Parent & Student Portal</h2>
-      <div id="errorMsg" style="font-size: 0.88rem; margin-bottom: 1rem; text-align: center;"></div>
+    
+    <!-- SECTION 1: LOGIN FORM (Shown when logged out) -->
+    <div id="login-section" class="card login-box">
+      <h2>Student Portal Login</h2>
+      <p>Enter your Student ID and Batch to access your dashboard, past exam records, and study material.</p>
       
-      <div class="form-group">
-        <label>Student ID</label>
-        <input type="text" id="studentId" placeholder="Enter Student ID (e.g., VAK26001)">
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="studentIdInput">Student ID</label>
+          <input type="text" id="studentIdInput" class="form-control" placeholder="e.g. STU101" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="batchInput">Batch / Class</label>
+          <input type="text" id="batchInput" class="form-control" placeholder="e.g. Jyoti" required>
+        </div>
+
+        <button type="submit" id="loginBtn" class="btn">Login to Dashboard</button>
+      </form>
+      
+      <div id="loginError" style="color: var(--danger); font-size: 0.85rem; margin-top: 1rem; display: none;">
+        Invalid credentials. Please verify your Student ID and Batch.
       </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="password" placeholder="Enter Password">
-      </div>
-      <button class="btn-login" onclick="login()">Login to Dashboard</button>
     </div>
 
-    <!-- Student Dashboard (Hidden until Login) -->
-    <div class="dashboard" id="dashboardCard">
+    <!-- SECTION 2: STUDENT DASHBOARD (Shown after successful login) -->
+    <div id="dashboard-section" style="display: none;">
       
-      <!-- Card 1: Student Profile -->
-      <div class="card">
-        <h2 style="color: var(--navy); border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; margin-bottom: 1rem;" id="dashName">Student Profile</h2>
-        <div class="info-row"><strong>Batch Name:</strong><span id="dashBatch">--</span></div>
-        <div class="info-row"><strong>Attendance Rate:</strong><span id="dashAttendance" style="font-weight: 700; color: var(--navy);">--</span></div>
-        <div class="info-row" style="border-bottom: none;"><strong>Fee Status:</strong><span id="dashStatus" class="status-badge status-pending">Pending</span></div>
+      <!-- Student Profile Header Card -->
+      <div class="card user-header">
+        <div class="user-info">
+          <h2>Welcome, <span id="dashStudentName">Student</span></h2>
+          <p>Student ID: <strong id="dashStudentId" style="color: var(--navy);">---</strong> | Batch: <span id="dashBatch" class="badge-batch">---</span></p>
+        </div>
+        <button onclick="handleLogout()" class="btn btn-logout">Logout</button>
       </div>
 
-      <!-- Card 2: Daily Class Notes Section (Date-Wise) -->
-      <div class="card">
-        <h3 style="color: var(--navy); margin-bottom: 0.8rem; font-size: 1.1rem;">📂 Daily Class Notes</h3>
-        <div id="classNotesBox">Loading class notes...</div>
+      <!-- Navigation Tabs -->
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchTab('exam-history')">📊 Exam History & Performance</button>
+        <button class="tab-btn" onclick="switchTab('class-notes')">📚 Class Notes & Homework</button>
+        <button class="tab-btn" onclick="switchTab('fee-status')">💳 Fee Record & Account</button>
       </div>
 
-      <!-- Card 3: Homework Assignments Section -->
-      <div class="card">
-        <h3 style="color: var(--navy); margin-bottom: 0.8rem; font-size: 1.1rem;">📝 Homework & Practice PDFs</h3>
-        <div id="homeworkBox">Loading homework files...</div>
+      <!-- TAB 1: EXAM HISTORY & PERFORMANCE MATRIX -->
+      <div id="tab-exam-history" class="card tab-content">
+        <h3 style="color: var(--navy); margin-bottom: 1rem;">Online Exam Performance History</h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem;">View auto-graded performance breakdowns for all completed examinations.</p>
+        
+        <div class="table-responsive">
+          <div id="past-results-container">
+            <p style="color: var(--text-muted);">Loading your exam history...</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Card 4: Recent Examinations & Performance -->
-      <div class="card">
-        <h3 style="color: var(--navy); margin-bottom: 0.8rem; font-size: 1.1rem;">📊 Examination Performance & Rank</h3>
-        <div class="info-row"><strong>Batch Rank:</strong><span id="dashBatchRank" style="font-weight: 700; color: #0284C7;">--</span></div>
-        <div id="examHistoryBox" style="margin-top: 1rem;">Loading exam records...</div>
+      <!-- TAB 2: CLASS NOTES & HOMEWORK -->
+      <div id="tab-class-notes" class="card tab-content" style="display: none;">
+        <h3 style="color: var(--navy); margin-bottom: 1rem;">Class Notes & Homework Downloads</h3>
+        <div id="notes-container">
+          <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--gold); margin-bottom: 0.8rem;">
+            <strong style="color: var(--navy); display: block;">Electrostatics - Lecture 04 DPP Notes</strong>
+            <span style="font-size: 0.82rem; color: var(--text-muted);">Date Uploaded: 05-Aug-2026</span>
+            <div style="margin-top: 8px;">
+              <a href="#" style="color: var(--navy); font-weight: 700; text-decoration: none; font-size: 0.88rem;">📄 Download PDF Notes</a>
+            </div>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Note: Complete daily homework assigned in lecture sheets prior to next test.</p>
+        </div>
       </div>
 
-      <!-- Card 5: Fee Account Details -->
-      <div class="card">
-        <h3 style="color: var(--navy); margin-bottom: 0.8rem; font-size: 1.1rem;">💳 Fee Account Summary</h3>
-        <div class="info-row"><strong>Total Annual Fees:</strong><span id="dashTotalFees">₹0</span></div>
-        <div class="info-row"><strong>Amount Paid:</strong><span id="dashAmountPaid" style="color: #16A34A; font-weight: 700;">₹0</span></div>
-        <div class="info-row" style="border-bottom: none;"><strong>Remaining Balance:</strong><span id="dashBalance" style="color: #DC2626; font-weight: 700;">₹0</span></div>
+      <!-- TAB 3: FEE STATUS -->
+      <div id="tab-fee-status" class="card tab-content" style="display: none;">
+        <h3 style="color: var(--navy); margin-bottom: 1rem;">Fee Receipt & Dues Status</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Installment / Cycle</th>
+                <th>Due Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Quarter 1 Tuition Fee</td>
+                <td>10-Jul-2026</td>
+                <td>₹ 4,500</td>
+                <td><span class="status-paid">✅ PAID</span></td>
+              </tr>
+              <tr>
+                <td>Quarter 2 Tuition Fee</td>
+                <td>10-Oct-2026</td>
+                <td>₹ 4,500</td>
+                <td><span class="status-pending">⏳ UPCOMING</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <button class="btn-login" onclick="logout()" style="margin-bottom: 2rem; background-color: #64748B;">Logout</button>
     </div>
   </div>
 
-  <footer>
-    <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
-    <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
-  </footer>
-
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; // Replace with your Web App URL
+    // Paste your Google Apps Script Web App URL here
+    const SCRIPT_URL = "YOUR_WEB_APP_URL_HERE"; 
 
-    function login() {
-      const studentId = document.getElementById('studentId').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const errorMsg = document.getElementById('errorMsg');
+    // Auto-check if student is already logged in locally
+    window.onload = function() {
+      const savedStudentId = localStorage.getItem("vidyaalok_student_id");
+      const savedBatch = localStorage.getItem("vidyaalok_student_batch");
 
-      if (!studentId || !password) {
-        errorMsg.style.color = "#DC2626";
-        errorMsg.textContent = "Please enter both Student ID and Password.";
-        return;
+      if (savedStudentId && savedBatch) {
+        showDashboard(savedStudentId, savedBatch);
       }
-      errorMsg.style.color = "#0284C7";
-      errorMsg.textContent = "Verifying credentials...";
+    };
 
-      fetch(`${SCRIPT_URL}?action=login&studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}`)
+    function handleLogin(event) {
+      event.preventDefault();
+      const sId = document.getElementById("studentIdInput").value.trim();
+      const sBatch = document.getElementById("batchInput").value.trim();
+
+      if (sId && sBatch) {
+        localStorage.setItem("vidyaalok_student_id", sId);
+        localStorage.setItem("vidyaalok_student_batch", sBatch);
+        showDashboard(sId, sBatch);
+      }
+    }
+
+    function showDashboard(studentId, batch) {
+      document.getElementById("login-section").style.display = "none";
+      document.getElementById("dashboard-section").style.display = "block";
+
+      document.getElementById("dashStudentId").innerText = studentId;
+      document.getElementById("dashStudentName").innerText = studentId; // Displays Student ID as Name
+      document.getElementById("dashBatch").innerText = batch;
+
+      // Load Exam Performance History from Google Apps Script Backend
+      loadStudentExamHistory(studentId);
+    }
+
+    function handleLogout() {
+      localStorage.removeItem("vidyaalok_student_id");
+      localStorage.removeItem("vidyaalok_student_batch");
+      location.reload();
+    }
+
+    function switchTab(tabName) {
+      // Hide all contents
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(c => c.style.display = 'none');
+
+      // Remove active tab state
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach(t => t.classList.remove('active'));
+
+      // Show selected content and activate tab
+      document.getElementById(`tab-${tabName}`).style.display = 'block';
+      event.currentTarget.classList.add('active');
+    }
+
+    // Fetch Student Performance History from Google Apps Script
+    function loadStudentExamHistory(studentId) {
+      const container = document.getElementById('past-results-container');
+      
+      fetch(`${SCRIPT_URL}?action=getStudentResults&studentId=${encodeURIComponent(studentId)}`)
         .then(res => res.json())
         .then(data => {
-          if (data.success) {
-            document.getElementById('loginCard').style.display = 'none';
-            document.getElementById('dashboardCard').style.display = 'block';
-            
-            document.getElementById('dashName').textContent = data.studentName;
-            document.getElementById('dashBatch').textContent = data.batch;
-            document.getElementById('dashAttendance').textContent = data.attendance;
-            document.getElementById('dashTotalFees').textContent = '₹' + data.totalFees;
-            document.getElementById('dashAmountPaid').textContent = '₹' + data.amountPaid;
-            document.getElementById('dashBalance').textContent = '₹' + (Number(data.totalFees) - Number(data.amountPaid));
-            document.getElementById('dashBatchRank').textContent = data.batchRank || "N/A";
-
-            const statusElem = document.getElementById('dashStatus');
-            statusElem.textContent = data.feeStatus;
-            const statusLower = String(data.feeStatus).toLowerCase();
-            if (statusLower.includes('paid') && !statusLower.includes('partial')) statusElem.className = 'status-badge status-paid';
-            else if (statusLower.includes('partial')) statusElem.className = 'status-badge status-partial';
-            else statusElem.className = 'status-badge status-pending';
-
-            // Render Class Notes Date-Wise
-            const notesBox = document.getElementById('classNotesBox');
-            notesBox.innerHTML = "";
-            if (data.classNotes && data.classNotes.length > 0) {
-              data.classNotes.forEach(note => {
-                notesBox.innerHTML += `
-                  <div class="sub-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                      <div style="font-weight: 700; color: var(--navy);">${note.title}</div>
-                      <span style="font-size: 0.78rem; background-color: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-weight: 700;">
-                        📅 ${note.classDate}
-                      </span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
-                      Format: ${note.fileType} (${note.fileSize})
-                    </div>
-                    <a href="${note.pdfUrl}" target="_blank" class="btn-download">Download Class Note PDF</a>
-                  </div>`;
-              });
-            } else {
-              notesBox.innerHTML = "<p style='color: var(--text-muted); font-size: 0.9rem;'>No class notes uploaded for your batch yet.</p>";
+          if (data.status === "SUCCESS") {
+            if (!data.history || data.history.length === 0) {
+              container.innerHTML = "<p style='color: var(--text-muted);'>No past exam submissions recorded yet.</p>";
+              return;
             }
 
-            // Render Homework Assignments
-            const hwBox = document.getElementById('homeworkBox');
-            hwBox.innerHTML = "";
-            if (data.homeworkList && data.homeworkList.length > 0) {
-              data.homeworkList.forEach(hw => {
-                hwBox.innerHTML += `
-                  <div class="sub-card">
-                    <div style="font-weight: 700; color: var(--navy);">${hw.title}</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Assigned: ${hw.classDate} | Due: ${hw.dueDate}</div>
-                    <a href="${hw.pdfUrl}" target="_blank" class="btn-download" style="background-color: #0284C7;">Download Homework PDF</a>
-                  </div>`;
-              });
-            } else {
-              hwBox.innerHTML = "<p style='color: var(--text-muted); font-size: 0.9rem;'>No pending homework sheets for your batch.</p>";
-            }
-
-            // Render Exam History
-            const examBox = document.getElementById('examHistoryBox');
-            examBox.innerHTML = "";
-            if (data.examHistory && data.examHistory.length > 0) {
-              data.examHistory.forEach(ex => {
-                const isAppeared = ex.status === "Appeared";
-                examBox.innerHTML += `
-                  <div class="sub-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                      <strong style="color: var(--navy);">${ex.testTitle} (${ex.subject})</strong>
-                      <span class="status-badge ${isAppeared ? 'status-appeared' : 'status-absent'}">${ex.status}</span>
-                    </div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Date: ${ex.date}</div>
-                    ${isAppeared ? `
-                      <div style="margin-top: 8px; font-size: 0.9rem; background: #F8FAFC; padding: 8px; border-radius: 6px;">
-                        <div><strong>Score:</strong> ${ex.score} / ${ex.totalMarks}</div>
-                        <div style="display: flex; gap: 1rem; margin-top: 4px; font-size: 0.85rem;">
-                          <span style="color: #16A34A;">✔ Correct: ${ex.correct}</span>
-                          <span style="color: #DC2626;">✖ Wrong: ${ex.wrong}</span>
-                          <span style="color: #64748B;">➖ Unattempted: ${ex.unattempted}</span>
-                        </div>
-                      </div>` : ''}
-                  </div>`;
-              });
-            } else {
-              examBox.innerHTML = "<p style='color: var(--text-muted); font-size: 0.9rem;'>No exam records found.</p>";
-            }
-
+            let tableHtml = `
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Exam Title</th>
+                    <th>Correct / Total</th>
+                    <th>Score</th>
+                    <th>Percentage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${data.history.map(row => `
+                    <tr>
+                      <td>${row.date}</td>
+                      <td><strong>${row.examTitle}</strong></td>
+                      <td>${row.correct} / ${row.totalQuestions}</td>
+                      <td>${row.marksObtained} / ${row.totalMarks}</td>
+                      <td style="font-weight:700; color:var(--success);">${row.percentage}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            `;
+            container.innerHTML = tableHtml;
           } else {
-            errorMsg.style.color = "#DC2626";
-            errorMsg.textContent = data.message || "Invalid credentials.";
+            container.innerHTML = "<p style='color: var(--danger);'>Failed to retrieve exam history.</p>";
           }
         })
         .catch(err => {
-          errorMsg.style.color = "#DC2626";
-          errorMsg.textContent = "Error connecting to server. Check Web App URL.";
+          container.innerHTML = "<p style='color: var(--text-muted);'>Unable to load exam history. Check internet connection or backend URL.</p>";
         });
-    }
-
-    function logout() {
-      document.getElementById('studentId').value = '';
-      document.getElementById('password').value = '';
-      document.getElementById('dashboardCard').style.display = 'none';
-      document.getElementById('loginCard').style.display = 'block';
     }
   </script>
 </body>
