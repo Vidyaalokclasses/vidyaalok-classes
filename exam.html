@@ -1,318 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
- <title>Online Examination Portal | Vidyaalok Classes</title>
- <link rel="icon" type="image/jpeg" href="icon.jpg">
- <style>
- :root {
- --navy: #0B2545;
- --gold: #E5A93C;
- --light-bg: #F1F5F9;
- --card-bg: rgba(255, 255, 255, 0.95);
- --text-dark: #1E293B;
- --text-muted: #64748B;
- }
-
- * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
- html, body { width: 100%; overflow-x: hidden; }
-
- body {
- background-color: var(--light-bg);
- background-image: url('logo.png');
- background-repeat: no-repeat;
- background-position: center 250px;
- background-attachment: fixed;
- background-size: 550px;
- color: var(--text-dark);
- min-height: 100vh;
- display: flex;
- flex-direction: column;
- }
-
- header {
- background-color: #FFFFFF;
- padding: 0.8rem 2rem;
- display: flex;
- justify-content: space-between;
- align-items: center;
- border-bottom: 1px solid #E2E8F0;
- box-shadow: 0 2px 6px rgba(0,0,0,0.05);
- position: sticky;
- top: 0;
- z-index: 100;
- }
-
- .brand img { height: 52px; width: auto; display: block; }
- nav { display: flex; gap: 1.2rem; align-items: center; }
- nav a { color: var(--navy); text-decoration: none; font-size: 0.95rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
- .btn-portal { background-color: var(--navy); color: #FFFFFF !important; border-radius: 6px; padding: 8px 16px !important; }
-
- .portal-container { max-width: 650px; margin: 3rem auto; padding: 0 1.5rem; flex: 1; width: 100%; }
- .card { background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 16px rgba(11, 37, 69, 0.08); border: 1px solid rgba(226, 232, 240, 0.9); margin-bottom: 2rem; }
- .form-group { margin-bottom: 1.2rem; }
- .form-group label { display: block; font-weight: 700; margin-bottom: 0.4rem; color: var(--navy); font-size: 0.9rem; }
- .form-group input { width: 100%; padding: 10px 14px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
- .btn-action { width: 100%; background-color: var(--navy); color: #FFFFFF; border: none; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; text-align: center; }
-
- .test-card { background: #FFFFFF; border: 1px solid #E2E8F0; border-left: 4px solid var(--gold); border-radius: 8px; padding: 1.2rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
- .test-info h3 { color: var(--navy); font-size: 1.1rem; margin-bottom: 4px; }
- .test-meta { font-size: 0.85rem; color: var(--text-muted); }
- .btn-proceed { background-color: #16A34A; color: #FFFFFF; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap; }
-
- /* Exam Engine Overlay */
- #examInterface { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #FFFFFF; z-index: 1000; flex-direction: column; }
- .exam-header { background-color: var(--navy); color: #FFFFFF; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); }
- .timer-box { background: rgba(255, 255, 255, 0.1); padding: 6px 16px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.2); font-size: 1.1rem; font-weight: 700; }
- .split-container { display: flex; flex: 1; height: calc(100vh - 65px); overflow: hidden; }
- .pdf-viewer { width: 60%; height: 100%; background-color: #525659; border-right: 2px solid #CBD5E1; }
- .pdf-viewer iframe { width: 100%; height: 100%; border: none; }
- .answer-palette { width: 40%; height: 100%; background-color: #FFFFFF; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto; }
- .q-row { display: flex; align-items: center; justify-content: space-between; padding: 8px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; margin-bottom: 0.6rem; }
- .q-num { font-weight: 700; color: var(--navy); width: 35px; }
- .options-group { display: flex; gap: 0.8rem; }
- .btn-submit-exam { background-color: #DC2626; color: #FFFFFF; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; width: 100%; margin-top: 1rem; }
-
- footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); text-align: center; font-size: 0.85rem; margin-top: auto; }
-
- @media screen and (max-width: 768px) {
- header { flex-direction: column !important; padding: 0.8rem 1rem !important; gap: 0.8rem !important; align-items: center !important; }
- .brand img { height: 42px !important; width: auto !important; }
- nav { flex-wrap: wrap !important; justify-content: center !important; gap: 0.4rem 0.6rem !important; width: 100% !important; }
- nav a { font-size: 0.82rem !important; padding: 5px 8px !important; white-space: nowrap !important; }
- .btn-portal { padding: 6px 12px !important; font-size: 0.85rem !important; }
- .portal-container { width: 100% !important; max-width: 100% !important; padding: 0 1rem !important; margin: 1.5rem auto !important; }
- .card { padding: 1.2rem !important; width: 100% !important; }
- .test-card { flex-direction: column !important; align-items: flex-start !important; }
- .btn-proceed { width: 100% !important; text-align: center !important; }
- 
- /* Split-screen stacked on mobile */
- .split-container { flex-direction: column !important; overflow-y: auto !important; }
- .pdf-viewer { width: 100% !important; height: 50vh !important; }
- .answer-palette { width: 100% !important; height: auto !important; }
- }
- </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Examination Portal - Vidyaalok Classes</title>
+  <link rel="icon" type="image/jpeg" href="icon.jpg">
+  <style>
+    :root { --navy: #0B2545; --gold: #E5A93C; --bg: #F1F5F9; --card: #FFFFFF; --text: #1E293B; --muted: #64748B; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: #FFFFFF; padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; }
+    .brand img { height: 48px; }
+    nav a { color: var(--navy); text-decoration: none; font-weight: 600; margin-left: 1rem; }
+    .container { max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem; width: 100%; }
+    .card { background: var(--card); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+    .btn { background: var(--navy); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn:disabled { background: #94A3B8; cursor: not-allowed; }
+    .exam-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #E2E8F0; border-radius: 8px; margin-bottom: 0.8rem; background: #FAFCFF; }
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+    .badge-expired { background: #FEE2E2; color: #991B1B; }
+    .badge-locked { background: #FEF3C7; color: #92400E; }
+    .badge-open { background: #DCFCE7; color: #166534; }
+    
+    /* Exam Split Screen View */
+    .exam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; height: calc(100vh - 160px); }
+    @media (max-width: 850px) { .exam-grid { grid-template-columns: 1fr; height: auto; } }
+    .pdf-viewer iframe { width: 100%; height: 100%; min-height: 500px; border: 1px solid #CBD5E1; border-radius: 8px; }
+    .omr-panel { overflow-y: auto; padding-right: 8px; max-height: 100%; }
+    .q-box { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .opt-group { display: flex; gap: 15px; margin-top: 8px; flex-wrap: wrap; }
+    .num-input { padding: 8px; border: 1px solid #CBD5E1; border-radius: 6px; width: 100%; max-width: 200px; margin-top: 6px; }
+    .timer-sticky { position: sticky; top: 0; background: var(--navy); color: white; padding: 10px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; z-index: 10; }
+    
+    /* Metrics Grid */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; text-align: center; margin: 1.5rem 0; }
+    .metric-card { padding: 1rem; border-radius: 8px; }
+  </style>
 </head>
 <body>
- <header id="mainHeader">
- <div class="brand"><a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a></div>
- <nav>
- <a href="index.html">Home</a>
- <a href="schedule.html">Schedule</a>
- <a href="notes.html">Class Notes</a>
- <a href="exam.html" class="active">Online Exams</a>
- <a href="login.html" class="btn-portal">Student Portal</a>
- </nav>
- </header>
 
- <div class="portal-container" id="portalContainer">
- <!-- STEP 1: EXAM LOGIN -->
- <div class="card" id="examLoginCard">
- <h2 style="color: var(--navy); text-align: center; margin-bottom: 1.5rem;">Online Exam Portal Login</h2>
- <div id="errorMsg" style="font-size: 0.88rem; margin-bottom: 1rem; text-align: center;"></div>
- <div class="form-group"><label>Student ID</label><input type="text" id="studentId" placeholder="e.g., VAK26001"></div>
- <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Enter Password"></div>
- <button class="btn-action" onclick="loginExam()">Login to View Tests</button>
- </div>
+  <header>
+    <div class="brand"><a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="login.html">Dashboard</a>
+    </nav>
+  </header>
 
- <!-- STEP 2: SELECT TEST -->
- <div class="card" id="testSelectionCard" style="display: none;">
- <h2 style="color: var(--navy); border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; margin-bottom: 0.5rem;" id="welcomeStudent">Available Examinations</h2>
- <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;" id="studentBatchMeta">Loading tests...</p>
- <div id="testsList"></div>
- <button class="btn-action" onclick="logoutExam()" style="margin-top: 1.5rem; background-color: #64748B;">Logout</button>
- </div>
- </div>
+  <div class="container">
+    <!-- Step 1: Verification -->
+    <div id="auth-card" class="card">
+      <h2 style="color: var(--navy); margin-bottom: 1rem;">Student Examination Portal</h2>
+      <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+        <input type="text" id="studentId" placeholder="Enter Student ID (e.g. STU101)" style="padding: 10px; flex: 1; border: 1px solid #CBD5E1; border-radius: 6px;">
+        <input type="text" id="studentBatch" placeholder="Enter Batch (e.g. Jyoti)" style="padding: 10px; flex: 1; border: 1px solid #CBD5E1; border-radius: 6px;">
+        <button onclick="fetchExams()" class="btn">View Live Exams</button>
+      </div>
+    </div>
 
- <!-- STEP 3: EXAM INTERFACE -->
- <div id="examInterface">
- <div class="exam-header">
- <div class="exam-title"><h2 id="activeTestTitle">Examination</h2><p id="activeStudentMeta">Student: Loading...</p></div>
- <div class="timer-box">Time: <span id="timer">00:00</span></div>
- </div>
- <div class="split-container">
- <div class="pdf-viewer"><iframe id="pdfFrame" src=""></iframe></div>
- <div class="answer-palette">
- <div id="questionsContainer"></div>
- <button class="btn-submit-exam" onclick="submitExam()">Submit Examination</button>
- </div>
- </div>
- </div>
+    <!-- Step 2: Exam List -->
+    <div id="exam-list-card" class="card" style="display: none;">
+      <h2 style="color: var(--navy); margin-bottom: 1rem;">Active Examinations</h2>
+      <div id="exam-list"></div>
+    </div>
 
- <footer id="mainFooter">
- <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
- <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
- </footer>
+    <!-- Step 3: Exam Engine Workspace -->
+    <div id="exam-workspace" style="display: none;">
+      <div class="timer-sticky">
+        <strong id="exam-title-display"></strong>
+        <span style="font-size: 1.1rem; color: var(--gold);" id="timer-display">⏱ Time Remaining: --:--</span>
+      </div>
 
- <script>
- const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+      <div class="exam-grid">
+        <!-- Left: Question Paper PDF -->
+        <div class="pdf-viewer">
+          <iframe id="pdf-frame" src=""></iframe>
+        </div>
 
- let currentStudentId = "";
- let loggedStudentName = "";
- let loggedStudentBatch = "";
- let activeTestObj = null;
- let timerInterval;
+        <!-- Right: OMR Digital Response Sheet -->
+        <div class="omr-panel card">
+          <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px;">Response Sheet</h3>
+          <div id="omr-questions"></div>
+          <button onclick="submitExam(false)" class="btn" style="background: #16A34A; width: 100%; padding: 14px; font-size: 1.1rem; margin-top: 1rem;">Submit Examination</button>
+        </div>
+      </div>
+    </div>
 
- function loginExam() {
- const studentId = document.getElementById('studentId').value.trim();
- const password = document.getElementById('password').value.trim();
- const errorMsg = document.getElementById('errorMsg');
+    <!-- Step 4: Result Matrix -->
+    <div id="result-card" class="card" style="display: none;"></div>
+  </div>
 
- if (!studentId || !password) {
- errorMsg.style.color = "#DC2626";
- errorMsg.textContent = "Please enter both Student ID and Password.";
- return;
- }
- errorMsg.style.color = "#0284C7";
- errorMsg.textContent = "Verifying credentials...";
+  <script>
+    const SCRIPT_URL = "YOUR_WEB_APP_URL_HERE"; // Replace with your Google Apps Script URL
 
- fetch(`${SCRIPT_URL}?action=login&studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}`)
- .then(res => res.json())
- .then(data => {
- if (data.success) {
- currentStudentId = studentId;
- loggedStudentName = data.studentName;
- loggedStudentBatch = data.batch;
- 
- document.getElementById('examLoginCard').style.display = 'none';
- document.getElementById('testSelectionCard').style.display = 'block';
- document.getElementById('welcomeStudent').textContent = `Welcome, ${data.studentName}`;
- document.getElementById('studentBatchMeta').textContent = `Assigned Batch: ${data.batch}`;
- 
- fetchTestsForBatch(data.batch);
- } else {
- errorMsg.style.color = "#DC2626";
- errorMsg.textContent = data.message;
- }
- });
- }
+    let student = { id: "", batch: "" };
+    let currentExam = {};
+    let questionsList = [];
+    let timerInterval = null;
+    let timeRemaining = 0;
 
- function fetchTestsForBatch(batch) {
- const testsList = document.getElementById('testsList');
- testsList.innerHTML = "<p>Loading batch tests...</p>";
+    function fetchExams() {
+      const sId = document.getElementById('studentId').value.trim();
+      const sBatch = document.getElementById('studentBatch').value.trim();
+      if (!sId || !sBatch) { alert("Please enter Student ID and Batch!"); return; }
 
- fetch(`${SCRIPT_URL}?action=getTests&batch=${encodeURIComponent(batch)}`)
- .then(res => res.json())
- .then(data => {
- if (data.success && data.tests.length > 0) {
- testsList.innerHTML = "";
- data.tests.forEach(test => {
- const tCard = document.createElement('div');
- tCard.className = 'test-card';
- tCard.innerHTML = `
- <div class="test-info">
- <h3>${test.title} (${test.subject})</h3>
- <div class="test-meta">Duration: ${test.timeMins} Mins • Total Questions: ${test.totalQuestions}</div>
- </div>
- <button class="btn-proceed" onclick='startTest(${JSON.stringify(test)})'>Proceed & Start</button>
- `;
- testsList.appendChild(tCard);
- });
- } else {
- testsList.innerHTML = "<p style='color: var(--text-muted);'>No active test papers published for your batch yet.</p>";
- }
- });
- }
+      student.id = sId; student.batch = sBatch;
 
- function startTest(test) {
- activeTestObj = test;
- document.getElementById('portalContainer').style.display = 'none';
- document.getElementById('mainHeader').style.display = 'none';
- document.getElementById('mainFooter').style.display = 'none';
- document.getElementById('examInterface').style.display = 'flex';
+      fetch(`${SCRIPT_URL}?action=getExams&studentId=${encodeURIComponent(sId)}&batch=${encodeURIComponent(sBatch)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "SUCCESS") {
+            document.getElementById('auth-card').style.display = 'none';
+            document.getElementById('exam-list-card').style.display = 'block';
+            renderExamList(data.exams);
+          }
+        });
+    }
 
- document.getElementById('activeTestTitle').textContent = test.title;
- document.getElementById('activeStudentMeta').textContent = `Student: ${loggedStudentName} (${loggedStudentBatch})`;
- document.getElementById('pdfFrame').src = test.pdfUrl + "#toolbar=0";
+    function renderExamList(exams) {
+      const container = document.getElementById('exam-list');
+      if (exams.length === 0) {
+        container.innerHTML = "<p style='color: var(--muted);'>No live exams available for your batch right now.</p>";
+        return;
+      }
 
- const qContainer = document.getElementById('questionsContainer');
- qContainer.innerHTML = `<h3 style="color: var(--navy); margin-bottom: 1rem;">Response Sheet (${test.totalQuestions} Questions)</h3>`;
+      container.innerHTML = exams.map(e => {
+        let badge = '<span class="badge badge-open">Active</span>';
+        let disabled = '';
 
- const qTypes = test.qTypes || [];
+        if (e.isExpired) {
+          badge = '<span class="badge badge-expired">Expired</span>'; disabled = 'disabled';
+        } else if (e.isLocked) {
+          badge = '<span class="badge badge-locked">Max Attempts Reached</span>'; disabled = 'disabled';
+        }
 
- for (let q = 1; q <= test.totalQuestions; q++) {
- const type = qTypes[q - 1] || "MCQ";
- const qRow = document.createElement('div');
- qRow.className = 'q-row';
+        return `
+          <div class="exam-item">
+            <div>
+              <strong style="color: var(--navy); font-size: 1.1rem;">${e.title}</strong> ${badge}<br>
+              <small style="color: var(--muted);">Duration: ${e.duration} Mins | Expiry: ${e.expiryDate} | Attempts Used: ${e.userAttempts}/${e.maxAttempts === 0 ? '∞' : e.maxAttempts}</small>
+            </div>
+            <button class="btn" ${disabled} onclick='startExam(${JSON.stringify(e)})'>Start Test</button>
+          </div>
+        `;
+      }).join('');
+    }
 
- let inputHtml = "";
- if (type === "MCQ") {
- inputHtml = `<div class="options-group">
- <label><input type="radio" name="q${q}" value="A"> A</label>
- <label><input type="radio" name="q${q}" value="B"> B</label>
- <label><input type="radio" name="q${q}" value="C"> C</label>
- <label><input type="radio" name="q${q}" value="D"> D</label>
- </div>`;
- } else if (type === "MULTI") {
- inputHtml = `<div class="options-group">
- <label><input type="checkbox" name="q${q}" value="A"> A</label>
- <label><input type="checkbox" name="q${q}" value="B"> B</label>
- <label><input type="checkbox" name="q${q}" value="C"> C</label>
- <label><input type="checkbox" name="q${q}" value="D"> D</label>
- </div>`;
- } else if (type === "NUM") {
- inputHtml = `<input type="number" step="any" id="q${q}_num" placeholder="Answer" style="width: 100px; padding: 4px; border: 1px solid #CBD5E1; border-radius: 4px;">`;
- }
+    function startExam(examObj) {
+      currentExam = examObj;
+      fetch(`${SCRIPT_URL}?action=getQuestions&examId=${encodeURIComponent(examObj.examId)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "SUCCESS" && data.questions.length > 0) {
+            questionsList = data.questions;
+            document.getElementById('exam-list-card').style.display = 'none';
+            document.getElementById('exam-workspace').style.display = 'block';
+            document.getElementById('exam-title-display').innerText = examObj.title;
+            document.getElementById('pdf-frame').src = examObj.pdfUrl;
 
- qRow.innerHTML = `<span class="q-num">Q${q}</span>${inputHtml}`;
- qContainer.appendChild(qRow);
- }
+            renderOMR();
+            startTimer(examObj.duration * 60);
+          } else {
+            alert("Answer key not found for this exam.");
+          }
+        });
+    }
 
- let timeRemaining = parseInt(test.timeMins) * 60;
- clearInterval(timerInterval);
- timerInterval = setInterval(() => {
- let mins = Math.floor(timeRemaining / 60);
- let secs = timeRemaining % 60;
- document.getElementById('timer').textContent = `${mins < 10 ? "0"+mins : mins}:${secs < 10 ? "0"+secs : secs}`;
- if (--timeRemaining < 0) {
- clearInterval(timerInterval);
- alert("Time Up! Submitting test.");
- submitExam();
- }
- }, 1000);
- }
+    function renderOMR() {
+      const container = document.getElementById('omr-questions');
+      container.innerHTML = questionsList.map((q, idx) => {
+        let inputHtml = "";
 
- function submitExam() {
- if (!confirm("Are you sure you want to submit your test?")) return;
- clearInterval(timerInterval);
+        if (q.type === "MCQ") {
+          inputHtml = `
+            <div class="opt-group">
+              ${['A','B','C','D'].map(opt => `<label><input type="radio" name="q_${idx}" value="${opt}"> ${opt}</label>`).join('')}
+            </div>`;
+        } else if (q.type === "MULTI") {
+          inputHtml = `
+            <div class="opt-group">
+              ${['A','B','C','D'].map(opt => `<label><input type="checkbox" name="q_${idx}" value="${opt}"> ${opt}</label>`).join('')}
+            </div>`;
+        } else if (q.type === "NUMERICAL") {
+          inputHtml = `<input type="number" step="any" class="num-input" id="q_${idx}" placeholder="Type Numerical Value">`;
+        }
 
- const answers = [];
- const qTypes = activeTestObj.qTypes || [];
+        return `
+          <div class="q-box">
+            <div style="display:flex; justify-between; font-weight:700; color:var(--navy);">
+              <span>Q${q.qNo} [${q.section}]</span>
+              <span style="font-size:0.8rem; color:var(--muted); margin-left:auto;">(+${q.pMarks}, -${q.nMarks})</span>
+            </div>
+            ${inputHtml}
+          </div>
+        `;
+      }).join('');
+    }
 
- for (let q = 1; q <= activeTestObj.totalQuestions; q++) {
- const type = qTypes[q - 1] || "MCQ";
- if (type === "MCQ") {
- const sel = document.querySelector(`input[name="q${q}"]:checked`);
- answers.push(sel ? sel.value : "UNANSWERED");
- } else if (type === "MULTI") {
- const checked = Array.from(document.querySelectorAll(`input[name="q${q}"]:checked`)).map(cb => cb.value);
- answers.push(checked.length > 0 ? checked : "UNANSWERED");
- } else if (type === "NUM") {
- const val = document.getElementById(`q${q}_num`).value.trim();
- answers.push(val !== "" ? val : "UNANSWERED");
- }
- }
+    function startTimer(seconds) {
+      timeRemaining = seconds;
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        let m = Math.floor(timeRemaining / 60);
+        let s = timeRemaining % 60;
+        document.getElementById('timer-display').innerText = `⏱ Time Remaining: ${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
 
- fetch(SCRIPT_URL, {
- method: "POST",
- body: JSON.stringify({
- action: "submitTest",
- studentId: currentStudentId,
- testId: activeTestObj.testId,
- answers: answers
- })
- })
- .then(res => res.json())
- .then(data => {
- if (data.success) {
- alert(`Test Submitted!\nScore: ${data.score} / ${data.totalMarks}\nPercentage: ${data.percentage}%`);
- location.reload();
- }
- });
- }
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          alert("Time is up! Your exam is being submitted automatically.");
+          submitExam(true);
+        }
+      }, 1000);
+    }
 
- function logoutExam() { location.reload(); }
- </script>
+    function submitExam(autoSubmit) {
+      if (!autoSubmit && !confirm("Are you sure you want to submit your exam now?")) return;
+      clearInterval(timerInterval);
+
+      let totalQuestions = questionsList.length;
+      let attempted = 0, correct = 0, wrong = 0, unattempted = 0;
+      let totalMarks = 0, marksObtained = 0;
+
+      questionsList.forEach((q, idx) => {
+        totalMarks += q.pMarks;
+        let studentAns = "";
+
+        if (q.type === "MCQ") {
+          let selected = document.querySelector(`input[name="q_${idx}"]:checked`);
+          if (selected) studentAns = selected.value;
+        } else if (q.type === "MULTI") {
+          let checked = Array.from(document.querySelectorAll(`input[name="q_${idx}"]:checked`)).map(c => c.value);
+          if (checked.length > 0) studentAns = checked.sort().join(',');
+        } else if (q.type === "NUMERICAL") {
+          let input = document.getElementById(`q_${idx}`);
+          if (input && input.value.trim() !== "") studentAns = input.value.trim();
+        }
+
+        if (studentAns !== "") {
+          attempted++;
+          if (studentAns.toUpperCase() === q.correct.toUpperCase()) {
+            correct++;
+            marksObtained += q.pMarks;
+          } else {
+            wrong++;
+            marksObtained -= q.nMarks;
+          }
+        } else {
+          unattempted++;
+        }
+      });
+
+      let percentage = ((marksObtained / totalMarks) * 100).toFixed(2);
+      if (marksObtained < 0) percentage = 0;
+
+      const payload = {
+        action: "submitExam",
+        studentId: student.id,
+        studentName: student.id,
+        batch: student.batch,
+        examId: currentExam.examId,
+        examTitle: currentExam.title,
+        totalQuestions: totalQuestions,
+        attempted: attempted,
+        correct: correct,
+        wrong: wrong,
+        unattempted: unattempted,
+        totalMarks: totalMarks,
+        marksObtained: marksObtained,
+        percentage: percentage
+      };
+
+      fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+        .then(() => renderResultMatrix(payload));
+    }
+
+    function renderResultMatrix(data) {
+      document.getElementById('exam-workspace').style.display = 'none';
+      const resCard = document.getElementById('result-card');
+      resCard.style.display = 'block';
+
+      resCard.innerHTML = `
+        <h2 style="color: var(--navy); text-align: center; margin-bottom: 0.5rem;">🎉 Examination Submitted!</h2>
+        <p style="text-align: center; color: var(--muted); margin-bottom: 1.5rem;">Performance Matrix for <strong>${data.examTitle}</strong></p>
+        
+        <div class="metrics-grid">
+          <div class="metric-card" style="background: #F1F5F9; color: #0B2545;">
+            <small>Total Questions</small><div style="font-size: 1.5rem; font-weight:700;">${data.totalQuestions}</div>
+          </div>
+          <div class="metric-card" style="background: #EFF6FF; color: #1E40AF;">
+            <small>Attempted</small><div style="font-size: 1.5rem; font-weight:700;">${data.attempted}</div>
+          </div>
+          <div class="metric-card" style="background: #DCFCE7; color: #166534;">
+            <small>Correct</small><div style="font-size: 1.5rem; font-weight:700;">${data.correct}</div>
+          </div>
+          <div class="metric-card" style="background: #FEE2E2; color: #991B1B;">
+            <small>Wrong</small><div style="font-size: 1.5rem; font-weight:700;">${data.wrong}</div>
+          </div>
+          <div class="metric-card" style="background: #FEF3C7; color: #92400E;">
+            <small>Not Attempted</small><div style="font-size: 1.5rem; font-weight:700;">${data.unattempted}</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+          <div style="background: var(--navy); color: white; padding: 1rem; border-radius: 8px; text-align: center;">
+            <small>Marks Obtained</small>
+            <div style="font-size: 1.4rem; font-weight: 700;">${data.marksObtained} / ${data.totalMarks}</div>
+          </div>
+          <div style="background: var(--gold); color: var(--navy); padding: 1rem; border-radius: 8px; text-align: center;">
+            <small>Percentage</small>
+            <div style="font-size: 1.4rem; font-weight: 700;">${data.percentage}%</div>
+          </div>
+        </div>
+
+        <button onclick="window.location.href='login.html'" class="btn" style="width: 100%; margin-top: 1.5rem;">Go to Student Dashboard History</button>
+      `;
+    }
+  </script>
 </body>
 </html>
