@@ -50,9 +50,11 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      /* Padding top ensures top section content isn't hidden under the fixed header */
+      padding-top: 75px;
     }
 
-    /* Header Navigation */
+    /* Fixed Top Navigation Bar */
     header {
       background-color: #FFFFFF;
       padding: 0.8rem 2rem;
@@ -61,9 +63,11 @@
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 100;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
     }
 
     .brand img {
@@ -292,6 +296,10 @@
 
     /* Mobile Responsive Rules */
     @media screen and (max-width: 768px) {
+      body {
+        padding-top: 110px; /* Expands top offset for wrapped mobile header */
+      }
+
       header {
         flex-direction: column !important;
         padding: 0.8rem 1rem !important;
@@ -378,7 +386,7 @@
 </head>
 <body>
 
-  <!-- Header Navigation -->
+  <!-- Fixed Header Navigation -->
   <header>
     <div class="brand">
       <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
