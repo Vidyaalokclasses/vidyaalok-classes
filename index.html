@@ -22,7 +22,7 @@
       --navy: #0B2545;
       --gold: #E5A93C;
       --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.94);
+      --card-bg: rgba(255, 255, 255, 0.92);
       --text-dark: #1E293B;
       --text-muted: #64748B;
     }
@@ -39,19 +39,38 @@
       overflow-x: hidden;
     }
 
-    /* Fixed Screen Center Watermark Setup */
     body {
       background-color: var(--light-bg);
-      background-image: linear-gradient(rgba(241, 245, 249, 0.88), rgba(241, 245, 249, 0.88)), url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center center; /* Locks logo to center of screen viewport */
-      background-attachment: fixed;       /* Keeps logo fixed while page scrolls */
-      background-size: 750px;             /* Larger logo dimension */
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       padding-top: 75px;
+      position: relative;
+    }
+
+    /* Fixed Center Background Watermark Layer */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      opacity: 0.15; /* Sharp, visible watermark opacity */
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Ensure content stays above the watermark */
+    header, section, .container, footer {
+      position: relative;
+      z-index: 1;
     }
 
     /* Fixed Top Navigation Bar */
@@ -111,7 +130,7 @@
 
     /* Hero Section */
     .hero {
-      background: rgba(11, 37, 69, 0.95);
+      background: rgba(11, 37, 69, 0.96);
       color: white;
       text-align: center;
       padding: 3.5rem 1.5rem;
@@ -221,7 +240,7 @@
 
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(8px);
       border-radius: 12px;
       padding: 1.8rem;
       box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
@@ -297,8 +316,13 @@
     @media screen and (max-width: 768px) {
       body {
         padding-top: 125px;
-        background-size: 450px !important; /* Scaled larger logo for mobile screens */
-        background-position: center center !important;
+      }
+
+      /* Prominent Mobile Watermark */
+      body::before {
+        width: 360px !important;
+        height: 360px !important;
+        opacity: 0.22 !important; /* Increased opacity for clear mobile visibility */
       }
 
       header {
