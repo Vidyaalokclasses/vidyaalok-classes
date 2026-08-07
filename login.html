@@ -29,22 +29,40 @@
       overflow-x: hidden;
     }
 
-    /* Body Background with Fixed Logo Watermark */
     body {
       background-color: var(--light-bg);
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center 250px;
-      background-attachment: fixed;
-      background-size: 500px;
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-top: 75px; /* Ensures content isn't hidden under header */
+      padding-top: 75px;
+      position: relative;
     }
 
-    /* Fixed Header Navigation */
+    /* Fixed Watermark Background Layer */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      opacity: 0.15;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header, main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Fixed Top Navigation Header */
     header {
       background-color: #FFFFFF;
       padding: 0.8rem 2rem;
@@ -94,12 +112,7 @@
       padding: 8px 16px !important;
     }
 
-    .btn-portal:hover {
-      background-color: #133966;
-      color: var(--gold) !important;
-    }
-
-    /* Main Login Container */
+    /* Main Container */
     .container {
       max-width: 440px;
       margin: 3rem auto;
@@ -131,7 +144,6 @@
       margin-bottom: 1.8rem;
     }
 
-    /* Form Fields */
     .form-group {
       text-align: left;
       margin-bottom: 1.2rem;
@@ -230,11 +242,15 @@
       color: #64748B;
     }
 
-    /* Mobile Responsive Rules */
     @media screen and (max-width: 768px) {
       body {
-        padding-top: 110px;
-        background-size: 350px; /* Scaled down watermark on mobile */
+        padding-top: 120px;
+      }
+
+      body::before {
+        width: 360px !important;
+        height: 360px !important;
+        opacity: 0.22 !important;
       }
 
       header {
@@ -264,10 +280,10 @@
 </head>
 <body>
 
-  <!-- Fixed Header Navigation -->
+  <!-- Navigation Bar -->
   <header>
     <div class="brand">
-      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
+      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
     </div>
     <nav>
       <a href="index.html">Home</a>
@@ -281,16 +297,16 @@
     </nav>
   </header>
 
-  <!-- Portal Login Box -->
+  <!-- Login Card Portal -->
   <main class="container">
     <div class="login-card">
       <h1>Student Portal Login</h1>
-      <p>Enter your credentials to access your dashboard.</p>
+      <p>Enter your Roll Number and Password to access your personal dashboard.</p>
 
       <form id="student-login-form">
         <div class="form-group">
-          <label for="student-id">Student ID / Roll No.</label>
-          <input type="text" id="student-id" placeholder="e.g. VAK26001" required autocomplete="off">
+          <label for="student-id">Student Roll No. / ID</label>
+          <input type="text" id="student-id" placeholder="e.g. AGNI26001" required autocomplete="off">
         </div>
 
         <div class="form-group">
@@ -321,35 +337,36 @@
     </div>
   </footer>
 
-  <!-- JavaScript Form Submission Logic -->
+  <!-- Login Handling Script -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const loginForm = document.getElementById('student-login-form');
       const statusMsg = document.getElementById('status-message');
 
+      // OPTIONAL: If using Google Sheets Apps Script API, paste your URL below:
+      // const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+
       loginForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Prevents page reload
 
-        const studentId = document.getElementById('student-id').value.trim();
+        const studentId = document.getElementById('student-id').value.trim().toUpperCase();
         const password = document.getElementById('password').value.trim();
 
         if (!studentId || !password) {
-          showStatus("Please fill in both Student ID and Password.", "error");
+          showStatus("Please enter both Student ID and Password.", "error");
           return;
         }
 
-        // Process authentication on explicit submit click
-        authenticateStudent(studentId, password);
-      });
+        // Save active student ID to local session storage
+        localStorage.setItem("studentId", studentId);
 
-      function authenticateStudent(id, pass) {
-        // Add your authentication check or backend redirect logic here
-        if (id && pass) {
-          showStatus("Login successful! Redirecting to dashboard...", "success");
-        } else {
-          showStatus("Invalid Student ID or Password.", "error");
-        }
-      }
+        showStatus("Login successful! Redirecting to dashboard...", "success");
+
+        // Smooth redirect to dashboard.html after 1 second
+        setTimeout(function() {
+          window.location.href = "dashboard.html";
+        }, 1000);
+      });
 
       function showStatus(text, type) {
         statusMsg.textContent = text;
