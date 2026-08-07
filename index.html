@@ -39,14 +39,14 @@
       overflow-x: hidden;
     }
 
-    /* Fixed Watermark Background Setup */
+    /* Fixed Screen Center Watermark Setup */
     body {
       background-color: var(--light-bg);
       background-image: linear-gradient(rgba(241, 245, 249, 0.88), rgba(241, 245, 249, 0.88)), url('logo.png');
       background-repeat: no-repeat;
-      background-position: center 300px;
-      background-attachment: fixed;
-      background-size: 500px;
+      background-position: center center; /* Locks logo to center of screen viewport */
+      background-attachment: fixed;       /* Keeps logo fixed while page scrolls */
+      background-size: 750px;             /* Larger logo dimension */
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
@@ -297,8 +297,8 @@
     @media screen and (max-width: 768px) {
       body {
         padding-top: 125px;
-        background-size: 320px !important; /* Scaled down logo on mobile */
-        background-position: center 260px !important;
+        background-size: 450px !important; /* Scaled larger logo for mobile screens */
+        background-position: center center !important;
       }
 
       header {
