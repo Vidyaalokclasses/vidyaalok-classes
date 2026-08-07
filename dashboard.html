@@ -10,7 +10,7 @@
       --navy: #0B2545;
       --gold: #E5A93C;
       --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-bg: rgba(255, 255, 255, 0.96);
       --text-dark: #1E293B;
       --text-muted: #64748B;
       --success-green: #10B981;
@@ -35,7 +35,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-top: 75px;
+      padding-top: 80px;
       position: relative;
     }
 
@@ -46,13 +46,13 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 700px;
-      height: 700px;
+      width: 600px;
+      height: 600px;
       background-image: url('logo.png');
       background-repeat: no-repeat;
       background-position: center center;
       background-size: contain;
-      opacity: 0.12;
+      opacity: 0.10;
       z-index: 0;
       pointer-events: none;
     }
@@ -62,15 +62,15 @@
       z-index: 1;
     }
 
-    /* Navigation Header */
+    /* Header Navigation */
     header {
       background-color: #FFFFFF;
-      padding: 0.8rem 2rem;
+      padding: 0.6rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       position: fixed;
       top: 0;
       left: 0;
@@ -79,24 +79,25 @@
     }
 
     .brand img {
-      height: 52px;
+      height: 48px;
       width: auto;
       display: block;
     }
 
     nav {
       display: flex;
-      gap: 1.2rem;
+      gap: 0.8rem;
       align-items: center;
     }
 
     nav a {
       color: var(--navy);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      padding: 6px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
+      white-space: nowrap;
       transition: all 0.2s;
     }
 
@@ -111,8 +112,8 @@
     /* Main Container */
     .container {
       max-width: 1100px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
       width: 100%;
       flex: 1;
     }
@@ -122,39 +123,40 @@
       background: var(--navy);
       color: #FFFFFF;
       border-radius: 12px;
-      padding: 1.8rem 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 6px 20px rgba(11, 37, 69, 0.15);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(11, 37, 69, 0.12);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1.5rem;
+      gap: 1.2rem;
     }
 
     .profile-info h1 {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       color: #FFFFFF;
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.2rem;
+      line-height: 1.2;
     }
 
     .profile-info p {
       color: #94A3B8;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .profile-badges {
       display: flex;
-      gap: 1rem;
+      gap: 0.6rem;
       flex-wrap: wrap;
     }
 
     .badge {
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 8px 14px;
+      padding: 6px 12px;
       border-radius: 8px;
-      font-size: 0.88rem;
+      font-size: 0.82rem;
     }
 
     .badge strong {
@@ -171,47 +173,49 @@
       background: var(--card-bg);
       backdrop-filter: blur(8px);
       border-radius: 12px;
-      padding: 1.8rem;
-      margin-bottom: 2rem;
+      padding: 1.4rem;
+      margin-bottom: 1.5rem;
       border: 1px solid rgba(226, 232, 240, 0.9);
-      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.05);
+      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
     }
 
     .section-heading {
       color: var(--navy);
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 800;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       border-bottom: 2px solid #E2E8F0;
       padding-bottom: 0.5rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      line-height: 1.3;
     }
 
-    /* Responsive Data Tables */
+    /* Desktop Table Styles */
     .table-responsive {
       width: 100%;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
 
     th {
       background-color: var(--navy);
       color: #FFFFFF;
-      padding: 12px 14px;
+      padding: 10px 12px;
       font-weight: 600;
       white-space: nowrap;
     }
 
     td {
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-bottom: 1px solid #E2E8F0;
       color: var(--text-dark);
       white-space: nowrap;
@@ -241,7 +245,7 @@
     footer {
       background-color: var(--navy);
       color: #94A3B8;
-      padding: 2.5rem 1rem;
+      padding: 2rem 1rem;
       border-top: 3px solid var(--gold);
       margin-top: auto;
     }
@@ -253,14 +257,128 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1.5rem;
+      gap: 1.2rem;
     }
 
+    /* =========================================
+       MOBILE-SPECIFIC OPTIMIZATIONS (Max 768px)
+       ========================================= */
     @media screen and (max-width: 768px) {
-      body { padding-top: 120px; }
-      body::before { width: 350px !important; height: 350px !important; }
-      header { flex-direction: column !important; padding: 0.8rem 1rem !important; gap: 0.8rem !important; }
-      .profile-card { flex-direction: column !important; align-items: flex-start !important; }
+      body {
+        padding-top: 110px;
+      }
+
+      body::before {
+        width: 300px !important;
+        height: 300px !important;
+        opacity: 0.15 !important;
+      }
+
+      header {
+        flex-direction: column !important;
+        padding: 0.5rem 0.8rem !important;
+        gap: 0.5rem !important;
+      }
+
+      .brand img {
+        height: 38px !important;
+      }
+
+      nav {
+        width: 100% !important;
+        overflow-x: auto !important;
+        padding-bottom: 4px !important;
+        justify-content: flex-start !important;
+        gap: 0.4rem !important;
+      }
+
+      nav a {
+        font-size: 0.8rem !important;
+        padding: 4px 8px !important;
+        background-color: #F1F5F9;
+      }
+
+      .profile-card {
+        padding: 1.2rem !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.8rem !important;
+      }
+
+      .profile-info h1 {
+        font-size: 1.3rem !important;
+      }
+
+      .profile-badges {
+        width: 100% !important;
+      }
+
+      .badge {
+        flex: 1 1 calc(50% - 0.5rem);
+        text-align: center;
+        padding: 6px 8px !important;
+        font-size: 0.78rem !important;
+      }
+
+      .dashboard-section {
+        padding: 1rem !important;
+      }
+
+      .section-heading {
+        font-size: 1.05rem !important;
+      }
+
+      /* Responsive Mobile Data Cards for Tables */
+      .table-responsive table,
+      .table-responsive thead,
+      .table-responsive tbody,
+      .table-responsive th,
+      .table-responsive td,
+      .table-responsive tr {
+        display: block;
+      }
+
+      .table-responsive thead {
+        display: none; /* Hide standard headers on mobile */
+      }
+
+      .table-responsive tr {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        margin-bottom: 0.8rem;
+        padding: 0.6rem 0.8rem;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      }
+
+      .table-responsive td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0 !important;
+        border-bottom: 1px dashed #F1F5F9 !important;
+        font-size: 0.85rem !important;
+        white-space: normal !important;
+        text-align: right;
+      }
+
+      .table-responsive td:last-child {
+        border-bottom: none !important;
+      }
+
+      .table-responsive td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--navy);
+        text-align: left;
+        padding-right: 10px;
+        font-size: 0.82rem;
+      }
+
+      .footer-container {
+        flex-direction: column !important;
+        text-align: center !important;
+      }
     }
   </style>
 </head>
@@ -274,8 +392,8 @@
     <nav>
       <a href="index.html">Home</a>
       <a href="schedule.html">Schedule</a>
-      <a href="notes.html">Class Notes</a>
-      <a href="exam.html">Online Exams</a>
+      <a href="notes.html">Notes</a>
+      <a href="exam.html">Exams</a>
       <a class="btn-logout" onclick="logoutStudent()">Logout</a>
     </nav>
   </header>
@@ -370,7 +488,7 @@
         <h3 style="color: #FFFFFF;">Vidyaalok Classes</h3>
         <p style="color: var(--gold); font-size: 0.85rem;">The Light of Knowledge</p>
       </div>
-      <div style="font-size: 0.9rem; color: #E2E8F0;">
+      <div style="font-size: 0.88rem; color: #E2E8F0;">
         📍 Kharagpur, West Bengal | 📞 +91 8240949137
       </div>
     </div>
@@ -378,10 +496,9 @@
 
   <!-- Script Logic -->
   <script>
-    // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
+    // Configured with active Google Apps Script Web App URL:
     const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
 
-    // Helper: Converts empty/null/undefined cells cleanly to "-"
     function safeVal(val) {
       if (val === null || val === undefined) return "-";
       const str = String(val).trim();
@@ -396,7 +513,7 @@
         return;
       }
 
-      // Check cached student payload
+      // Render cached payload immediately
       const cachedData = localStorage.getItem("studentData");
       if (cachedData) {
         try {
@@ -404,7 +521,7 @@
         } catch (e) { console.error("Cache error", e); }
       }
 
-      // Fetch fresh data from Google Sheet backend
+      // Refresh with live data from Google Sheet
       try {
         const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
         const data = await response.json();
@@ -421,23 +538,22 @@
     function renderDashboard(student) {
       if (!student) return;
 
-      // Header Profile Elements
       document.getElementById("student-name").textContent = "Welcome, " + safeVal(student.name);
       document.getElementById("student-roll").textContent = safeVal(student.roll || student.rollNo);
       document.getElementById("student-batch").textContent = safeVal(student.batch);
       document.getElementById("student-fee").textContent = safeVal(student.feeStatus);
 
-      // 1. Render Schedule Table
+      // 1. Render Schedule
       const scheduleBody = document.getElementById("schedule-table-body");
       if (student.schedule && student.schedule.length > 0) {
         scheduleBody.innerHTML = "";
         student.schedule.forEach(item => {
           scheduleBody.innerHTML += `
             <tr>
-              <td><strong>${safeVal(item.day)}</strong></td>
-              <td>${safeVal(item.time)}</td>
-              <td>${safeVal(item.topic)}</td>
-              <td>${safeVal(item.mode)}</td>
+              <td data-label="Day"><strong>${safeVal(item.day)}</strong></td>
+              <td data-label="Time Slot">${safeVal(item.time)}</td>
+              <td data-label="Topic">${safeVal(item.topic)}</td>
+              <td data-label="Mode">${safeVal(item.mode)}</td>
             </tr>
           `;
         });
@@ -445,7 +561,7 @@
         scheduleBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
       }
 
-      // 2. Render Detailed Results Matrix
+      // 2. Render Results
       const resultsBody = document.getElementById("results-table-body");
       if (student.results && student.results.length > 0) {
         resultsBody.innerHTML = "";
@@ -457,15 +573,15 @@
 
           resultsBody.innerHTML += `
             <tr>
-              <td>${safeVal(item.date)}</td>
-              <td><strong>${safeVal(item.examTitle || item.name)}</strong></td>
-              <td>${safeVal(item.totalQuestions)}</td>
-              <td style="color: #10B981; font-weight: 700;">${safeVal(item.correct)}</td>
-              <td style="color: #EF4444; font-weight: 700;">${safeVal(item.wrong)}</td>
-              <td style="color: #64748B;">${safeVal(item.unattempted)}</td>
-              <td><strong class="score-high">${safeVal(item.marksObtained)}</strong> / ${safeVal(item.totalMarks)}</td>
-              <td><strong>${formattedPct}</strong></td>
-              <td><strong>${safeVal(item.rank)}</strong></td>
+              <td data-label="Date">${safeVal(item.date)}</td>
+              <td data-label="Exam Title"><strong>${safeVal(item.examTitle || item.name)}</strong></td>
+              <td data-label="Total Qs">${safeVal(item.totalQuestions)}</td>
+              <td data-label="Correct" style="color: #10B981; font-weight: 700;">${safeVal(item.correct)}</td>
+              <td data-label="Wrong" style="color: #EF4444; font-weight: 700;">${safeVal(item.wrong)}</td>
+              <td data-label="Unattempted" style="color: #64748B;">${safeVal(item.unattempted)}</td>
+              <td data-label="Score"><strong class="score-high">${safeVal(item.marksObtained)}</strong> / ${safeVal(item.totalMarks)}</td>
+              <td data-label="Percentage"><strong>${formattedPct}</strong></td>
+              <td data-label="Rank"><strong>${safeVal(item.rank)}</strong></td>
             </tr>
           `;
         });
@@ -473,7 +589,7 @@
         resultsBody.innerHTML = `<tr><td colspan="9" style="text-align:center;">No test submission records found.</td></tr>`;
       }
 
-      // 3. Render Notes Table
+      // 3. Render Notes
       const notesBody = document.getElementById("notes-table-body");
       if (student.notes && student.notes.length > 0) {
         notesBody.innerHTML = "";
@@ -486,10 +602,10 @@
 
           notesBody.innerHTML += `
             <tr>
-              <td>${safeVal(item.date)}</td>
-              <td><strong>${safeVal(item.topic)}</strong></td>
-              <td>${safeVal(item.type)}</td>
-              <td>${actionBtn}</td>
+              <td data-label="Date">${safeVal(item.date)}</td>
+              <td data-label="Topic"><strong>${safeVal(item.topic)}</strong></td>
+              <td data-label="Type">${safeVal(item.type)}</td>
+              <td data-label="Action">${actionBtn}</td>
             </tr>
           `;
         });
