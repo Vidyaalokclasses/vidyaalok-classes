@@ -14,6 +14,7 @@
       --text-dark: #1E293B;
       --text-muted: #64748B;
       --success-green: #10B981;
+      --error-red: #EF4444;
     }
 
     * {
@@ -38,7 +39,7 @@
       position: relative;
     }
 
-    /* Fixed Center Watermark Logo */
+    /* Fixed Watermark Background */
     body::before {
       content: "";
       position: fixed;
@@ -61,7 +62,7 @@
       z-index: 1;
     }
 
-    /* Fixed Navigation Header */
+    /* Navigation Header */
     header {
       background-color: #FFFFFF;
       padding: 0.8rem 2rem;
@@ -109,7 +110,7 @@
 
     /* Main Container */
     .container {
-      max-width: 1050px;
+      max-width: 1100px;
       margin: 2rem auto;
       padding: 0 1.5rem;
       width: 100%;
@@ -165,7 +166,7 @@
       font-weight: 700;
     }
 
-    /* Dashboard Section Cards */
+    /* Dashboard Sections */
     .dashboard-section {
       background: var(--card-bg);
       backdrop-filter: blur(8px);
@@ -213,6 +214,7 @@
       padding: 12px 14px;
       border-bottom: 1px solid #E2E8F0;
       color: var(--text-dark);
+      white-space: nowrap;
     }
 
     tr:hover {
@@ -314,7 +316,7 @@
       </div>
     </div>
 
-    <!-- 2. Exam Results Matrix Table -->
+    <!-- 2. Detailed Examination Results Matrix -->
     <div class="dashboard-section">
       <div class="section-heading">📊 Examination Results Matrix</div>
       <div class="table-responsive">
@@ -322,15 +324,18 @@
           <thead>
             <tr>
               <th>Date</th>
-              <th>Exam Name</th>
-              <th>Max Marks</th>
-              <th>Marks Obtained</th>
-              <th>Accuracy</th>
-              <th>Batch Rank</th>
+              <th>Exam Title</th>
+              <th>Total Qs</th>
+              <th>Correct</th>
+              <th>Wrong</th>
+              <th>Unattempted</th>
+              <th>Score Obtained</th>
+              <th>Percentage</th>
+              <th>Rank</th>
             </tr>
           </thead>
           <tbody id="results-table-body">
-            <tr><td colspan="6" style="text-align:center;">Fetching exam results matrix...</td></tr>
+            <tr><td colspan="9" style="text-align:center;">Fetching detailed test results...</td></tr>
           </tbody>
         </table>
       </div>
@@ -373,8 +378,8 @@
 
   <!-- Script Logic -->
   <script>
-    // Paste your deployed Google Apps Script Web App URL here:
-    const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+    // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE:
+    const GOOGLE_WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
 
     // Helper: Converts empty/null/undefined cells cleanly to "-"
     function safeVal(val) {
@@ -409,7 +414,7 @@
           localStorage.setItem("studentData", JSON.stringify(data.student));
         }
       } catch (err) {
-        console.warn("Could not fetch live sheet data, falling back to cache.", err);
+        console.warn("Could not fetch live sheet data, displaying cached data.", err);
       }
     });
 
@@ -422,7 +427,7 @@
       document.getElementById("student-batch").textContent = safeVal(student.batch);
       document.getElementById("student-fee").textContent = safeVal(student.feeStatus);
 
-      // 1. Schedule Table
+      // 1. Render Schedule Table
       const scheduleBody = document.getElementById("schedule-table-body");
       if (student.schedule && student.schedule.length > 0) {
         scheduleBody.innerHTML = "";
@@ -440,27 +445,35 @@
         scheduleBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
       }
 
-      // 2. Results Table
+      // 2. Render Detailed Results Matrix
       const resultsBody = document.getElementById("results-table-body");
       if (student.results && student.results.length > 0) {
         resultsBody.innerHTML = "";
         student.results.forEach(item => {
+          var rawPct = safeVal(item.percentage);
+          var formattedPct = (rawPct !== "-" && !rawPct.includes("%")) 
+            ? (parseFloat(rawPct).toFixed(1) + "%") 
+            : rawPct;
+
           resultsBody.innerHTML += `
             <tr>
               <td>${safeVal(item.date)}</td>
-              <td><strong>${safeVal(item.name || item.examName)}</strong></td>
-              <td>${safeVal(item.max || item.maxMarks)}</td>
-              <td class="score-high">${safeVal(item.score || item.marksObtained)}</td>
-              <td>${safeVal(item.accuracy)}</td>
+              <td><strong>${safeVal(item.examTitle || item.name)}</strong></td>
+              <td>${safeVal(item.totalQuestions)}</td>
+              <td style="color: #10B981; font-weight: 700;">${safeVal(item.correct)}</td>
+              <td style="color: #EF4444; font-weight: 700;">${safeVal(item.wrong)}</td>
+              <td style="color: #64748B;">${safeVal(item.unattempted)}</td>
+              <td><strong class="score-high">${safeVal(item.marksObtained)}</strong> / ${safeVal(item.totalMarks)}</td>
+              <td><strong>${formattedPct}</strong></td>
               <td><strong>${safeVal(item.rank)}</strong></td>
             </tr>
           `;
         });
       } else {
-        resultsBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No test results recorded yet.</td></tr>`;
+        resultsBody.innerHTML = `<tr><td colspan="9" style="text-align:center;">No test submission records found.</td></tr>`;
       }
 
-      // 3. Notes Table
+      // 3. Render Notes Table
       const notesBody = document.getElementById("notes-table-body");
       if (student.notes && student.notes.length > 0) {
         notesBody.innerHTML = "";
