@@ -21,8 +21,8 @@
     :root {
       --navy: #0B2545;
       --gold: #E5A93C;
-      --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.92);
+      --light-bg: #F8FAFC;
+      --card-bg: #FFFFFF;
       --text-dark: #1E293B;
       --text-muted: #64748B;
     }
@@ -41,16 +41,10 @@
 
     body {
       background-color: var(--light-bg);
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center 250px;
-      background-attachment: fixed;
-      background-size: 550px;
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      /* Padding top ensures top section content isn't hidden under the fixed header */
       padding-top: 75px;
     }
 
@@ -111,11 +105,10 @@
 
     /* Hero Section */
     .hero {
-      background: rgba(11, 37, 69, 0.92);
+      background: var(--navy);
       color: white;
       text-align: center;
       padding: 3.5rem 1.5rem;
-      backdrop-filter: blur(4px);
     }
 
     .hero h1 {
@@ -191,9 +184,12 @@
       text-align: center;
       color: var(--navy);
       font-size: 1.8rem;
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 2rem;
       position: relative;
+      background: var(--light-bg);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
     }
 
     .section-title::after {
@@ -222,11 +218,10 @@
 
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(8px);
       border-radius: 12px;
       padding: 1.8rem;
       box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
-      border: 1px solid rgba(226, 232, 240, 0.9);
+      border: 1px solid #E2E8F0;
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -297,7 +292,8 @@
     /* Mobile Responsive Rules */
     @media screen and (max-width: 768px) {
       body {
-        padding-top: 110px; /* Expands top offset for wrapped mobile header */
+        padding-top: 125px; /* Ensures header won't overlap content */
+        background-image: none !important; /* Removes disruptive background image on mobile */
       }
 
       header {
@@ -308,7 +304,7 @@
       }
 
       .brand img {
-        height: 42px !important;
+        height: 40px !important;
         width: auto !important;
       }
 
@@ -337,6 +333,11 @@
         margin: 1.5rem auto !important;
       }
 
+      .section-title {
+        font-size: 1.4rem !important;
+        margin-bottom: 1.2rem !important;
+      }
+
       .grid-3, .grid-4 {
         grid-template-columns: 1fr !important;
         gap: 1rem !important;
@@ -349,20 +350,20 @@
       }
 
       .hero {
-        padding: 2.5rem 1rem !important;
+        padding: 2rem 1rem !important;
       }
 
       .hero h1 {
-        font-size: 1.8rem !important;
+        font-size: 1.7rem !important;
       }
 
       .hero .tagline {
-        font-size: 1rem !important;
+        font-size: 0.95rem !important;
       }
 
       .hero p {
-        font-size: 0.92rem !important;
-        margin-bottom: 1.5rem !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 1.2rem !important;
       }
 
       .hero-buttons {
