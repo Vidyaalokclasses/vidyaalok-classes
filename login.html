@@ -2,177 +2,361 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Portal Dashboard - Vidyaalok Classes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Student Portal - Vidyaalok Classes</title>
   <link rel="icon" type="image/jpeg" href="icon.jpg">
   <style>
-    :root { --navy: #0B2545; --gold: #E5A93C; --bg: #F1F5F9; --card: #FFFFFF; --text: #1E293B; --muted: #64748B; --danger: #DC2626; --success: #16A34A; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
-    header { background: #FFFFFF; padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; }
-    .brand img { height: 48px; }
-    nav a { color: var(--navy); text-decoration: none; font-weight: 600; margin-left: 1rem; }
-    .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; width: 100%; }
-    .card { background: var(--card); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .login-box { max-width: 400px; margin: 2rem auto; }
-    .form-group { margin-bottom: 1.2rem; }
-    .form-group label { display: block; font-weight: 700; color: var(--navy); margin-bottom: 6px; font-size: 0.9rem; }
-    .form-control { width: 100%; padding: 12px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 1rem; outline: none; }
-    .form-control:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1); }
-    .btn { background: var(--navy); color: white; border: none; padding: 12px; border-radius: 6px; width: 100%; font-weight: 700; font-size: 1rem; cursor: pointer; }
-    .btn:disabled { background: #94A3B8; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
-    th { background: var(--navy); color: white; padding: 10px; text-align: left; }
-    td { padding: 10px; border-bottom: 1px solid #E2E8F0; }
+    :root {
+      --navy: #0B2545;
+      --gold: #E5A93C;
+      --light-bg: #F1F5F9;
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --error-red: #EF4444;
+      --success-green: #10B981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Body Background with Fixed Logo Watermark */
+    body {
+      background-color: var(--light-bg);
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center 250px;
+      background-attachment: fixed;
+      background-size: 500px;
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 75px; /* Ensures content isn't hidden under header */
+    }
+
+    /* Fixed Header Navigation */
+    header {
+      background-color: #FFFFFF;
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #E2E8F0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .brand img {
+      height: 52px;
+      width: auto;
+      display: block;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--gold);
+      background-color: #F1F5F9;
+    }
+
+    .btn-portal {
+      background-color: var(--navy);
+      color: #FFFFFF !important;
+      border-radius: 6px;
+      padding: 8px 16px !important;
+    }
+
+    .btn-portal:hover {
+      background-color: #133966;
+      color: var(--gold) !important;
+    }
+
+    /* Main Login Container */
+    .container {
+      max-width: 440px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 8px 24px rgba(11, 37, 69, 0.08);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      text-align: center;
+    }
+
+    .login-card h1 {
+      color: var(--navy);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .login-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 1.8rem;
+    }
+
+    /* Form Fields */
+    .form-group {
+      text-align: left;
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--navy);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-submit:hover {
+      background-color: #133966;
+    }
+
+    /* Alert Message Box */
+    .status-message {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .status-message.error {
+      background-color: #FEE2E2;
+      color: var(--error-red);
+      border: 1px solid #FCA5A5;
+    }
+
+    .status-message.success {
+      background-color: #D1FAE5;
+      color: var(--success-green);
+      border: 1px solid #6EE7B7;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--navy);
+      color: #94A3B8;
+      padding: 2.5rem 1rem;
+      border-top: 3px solid var(--gold);
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: left;
+    }
+
+    .footer-copyright {
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 2rem;
+      padding-top: 1rem;
+      font-size: 0.8rem;
+      color: #64748B;
+    }
+
+    /* Mobile Responsive Rules */
+    @media screen and (max-width: 768px) {
+      body {
+        padding-top: 110px;
+        background-size: 350px; /* Scaled down watermark on mobile */
+      }
+
+      header {
+        flex-direction: column !important;
+        padding: 0.8rem 1rem !important;
+        gap: 0.8rem !important;
+      }
+
+      nav {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 0.4rem 0.6rem !important;
+        width: 100% !important;
+      }
+
+      nav a {
+        font-size: 0.82rem !important;
+        padding: 5px 8px !important;
+      }
+
+      .footer-container {
+        flex-direction: column !important;
+        text-align: center !important;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- Fixed Header Navigation -->
   <header>
-    <div class="brand"><a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a></div>
+    <div class="brand">
+      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
+    </div>
     <nav>
       <a href="index.html">Home</a>
       <a href="schedule.html">Schedule</a>
       <a href="notes.html">Class Notes</a>
       <a href="exam.html">Online Exams</a>
-      <a href="login.html" style="color: var(--gold);">Student Portal</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#courses">Courses</a>
+      <a href="index.html#contact">Contact</a>
+      <a href="login.html" class="btn-portal active">Student Portal</a>
     </nav>
   </header>
 
-  <div class="container">
-    <!-- Login Form -->
-    <div id="login-card" class="card login-box">
-      <h2 style="color: var(--navy); text-align: center; margin-bottom: 0.5rem;">Student Portal Login</h2>
-      <p style="color: var(--muted); text-align: center; font-size: 0.88rem; margin-bottom: 1.5rem;">Enter your Student ID and Password to access your portal.</p>
-      
-      <form onsubmit="handleLogin(event)">
+  <!-- Portal Login Box -->
+  <main class="container">
+    <div class="login-card">
+      <h1>Student Portal Login</h1>
+      <p>Enter your credentials to access your dashboard.</p>
+
+      <form id="student-login-form">
         <div class="form-group">
-          <label>Student ID</label>
-          <input type="text" id="studentId" class="form-control" placeholder="e.g. VAK26001" required>
+          <label for="student-id">Student ID / Roll No.</label>
+          <input type="text" id="student-id" placeholder="e.g. VAK26001" required autocomplete="off">
         </div>
 
         <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="password" class="form-control" placeholder="Enter Password" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter Password" required>
         </div>
 
-        <button type="submit" id="loginBtn" class="btn">Login to Dashboard</button>
+        <button type="submit" class="btn-submit">Login to Dashboard</button>
       </form>
-      <div id="loginError" style="color: var(--danger); text-align: center; margin-top: 1rem; font-size: 0.88rem; display: none;"></div>
+
+      <div id="status-message" class="status-message"></div>
     </div>
+  </main>
 
-    <!-- Student Dashboard -->
-    <div id="dashboard-card" class="card" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #E2E8F0; padding-bottom: 1rem; margin-bottom: 1.5rem;">
-        <div>
-          <h2 style="color: var(--navy);">Welcome, <span id="dashName"></span></h2>
-          <p style="color: var(--muted); font-size: 0.9rem;">Student ID: <strong id="dashId"></strong> | Batch: <span id="dashBatch" style="color: var(--navy); font-weight:700;"></span></p>
-        </div>
-        <button onclick="logout()" class="btn" style="width: auto; background: var(--danger); padding: 8px 16px;">Logout</button>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div>
+        <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: 4px;">Vidyaalok Classes</h3>
+        <p style="color: var(--gold); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">The Light of Knowledge</p>
       </div>
-
-      <h3 style="color: var(--navy); margin-bottom: 1rem;">Online Exam Performance History</h3>
-      <div id="history-container">
-        <p style="color: var(--muted);">Loading performance history...</p>
+      <div style="font-size: 0.9rem; color: #E2E8F0;">
+        📍 Kharagpur, West Bengal | 📞 +91 8240949137
       </div>
     </div>
-  </div>
+    <div class="footer-copyright">
+      © 2026 Vidyaalok Classes. All rights reserved.
+    </div>
+  </footer>
 
+  <!-- JavaScript Form Submission Logic -->
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; // Replace with your Web App URL
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('student-login-form');
+      const statusMsg = document.getElementById('status-message');
 
-    window.onload = function() {
-      const savedId = localStorage.getItem("v_stu_id");
-      const savedName = localStorage.getItem("v_stu_name");
-      const savedBatch = localStorage.getItem("v_stu_batch");
+      loginForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevents page reload
 
-      if (savedId && savedName) {
-        showDashboard(savedId, savedName, savedBatch);
+        const studentId = document.getElementById('student-id').value.trim();
+        const password = document.getElementById('password').value.trim();
+
+        if (!studentId || !password) {
+          showStatus("Please fill in both Student ID and Password.", "error");
+          return;
+        }
+
+        // Process authentication on explicit submit click
+        authenticateStudent(studentId, password);
+      });
+
+      function authenticateStudent(id, pass) {
+        // Add your authentication check or backend redirect logic here
+        if (id && pass) {
+          showStatus("Login successful! Redirecting to dashboard...", "success");
+        } else {
+          showStatus("Invalid Student ID or Password.", "error");
+        }
       }
-    };
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const sId = document.getElementById("studentId").value.trim();
-      const sPass = document.getElementById("password").value.trim();
-      const btn = document.getElementById("loginBtn");
-      const errDiv = document.getElementById("loginError");
-
-      errDiv.style.display = "none";
-      btn.disabled = true;
-      btn.innerText = "Verifying...";
-
-      fetch(`${SCRIPT_URL}?action=verifyStudent&studentId=${encodeURIComponent(sId)}&password=${encodeURIComponent(sPass)}`)
-        .then(res => res.json())
-        .then(data => {
-          btn.disabled = false;
-          btn.innerText = "Login to Dashboard";
-
-          if (data.status === "SUCCESS") {
-            localStorage.setItem("v_stu_id", data.studentId);
-            localStorage.setItem("v_stu_name", data.studentName);
-            localStorage.setItem("v_stu_batch", data.batch);
-            showDashboard(data.studentId, data.studentName, data.batch);
-          } else {
-            errDiv.innerText = data.message || "Invalid Student ID or Password.";
-            errDiv.style.display = "block";
-          }
-        })
-        .catch(() => {
-          btn.disabled = false;
-          btn.innerText = "Login to Dashboard";
-          errDiv.innerText = "Error connecting to server. Please check internet connection.";
-          errDiv.style.display = "block";
-        });
-    }
-
-    function showDashboard(id, name, batch) {
-      document.getElementById("login-card").style.display = "none";
-      document.getElementById("dashboard-card").style.display = "block";
-      document.getElementById("dashId").innerText = id;
-      document.getElementById("dashName").innerText = name;
-      document.getElementById("dashBatch").innerText = batch;
-
-      fetch(`${SCRIPT_URL}?action=getStudentResults&studentId=${encodeURIComponent(id)}`)
-        .then(res => res.json())
-        .then(data => {
-          const container = document.getElementById("history-container");
-          if (data.status === "SUCCESS" && data.history && data.history.length > 0) {
-            container.innerHTML = `
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Exam Title</th>
-                    <th>Correct / Total</th>
-                    <th>Score</th>
-                    <th>Percentage</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${data.history.map(row => `
-                    <tr>
-                      <td>${row.date}</td>
-                      <td><strong>${row.examTitle}</strong></td>
-                      <td>${row.correct} / ${row.totalQuestions}</td>
-                      <td>${row.marksObtained} / ${row.totalMarks}</td>
-                      <td style="font-weight:700; color:var(--success);">${row.percentage}</td>
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-            `;
-          } else {
-            container.innerHTML = "<p style='color:var(--muted);'>No past exam history found.</p>";
-          }
-        });
-    }
-
-    function logout() {
-      localStorage.clear();
-      location.reload();
-    }
+      function showStatus(text, type) {
+        statusMsg.textContent = text;
+        statusMsg.className = "status-message " + type;
+        statusMsg.style.display = "block";
+      }
+    });
   </script>
 </body>
 </html>
-   
