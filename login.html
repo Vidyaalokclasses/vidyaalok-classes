@@ -15,6 +15,7 @@
       --text-muted: #64748B;
       --error-red: #EF4444;
       --success-green: #10B981;
+      --info-blue: #2563EB;
     }
 
     * {
@@ -39,7 +40,6 @@
       position: relative;
     }
 
-    /* Fixed Watermark Background Layer */
     body::before {
       content: "";
       position: fixed;
@@ -62,7 +62,6 @@
       z-index: 1;
     }
 
-    /* Fixed Top Navigation Header */
     header {
       background-color: #FFFFFF;
       padding: 0.8rem 2rem;
@@ -112,7 +111,6 @@
       padding: 8px 16px !important;
     }
 
-    /* Main Container */
     .container {
       max-width: 440px;
       margin: 3rem auto;
@@ -190,7 +188,6 @@
       background-color: #133966;
     }
 
-    /* Alert Message Box */
     .status-message {
       display: none;
       margin-top: 1.5rem;
@@ -213,7 +210,12 @@
       border: 1px solid #6EE7B7;
     }
 
-    /* Footer */
+    .status-message.info {
+      background-color: #DBEAFE;
+      color: var(--info-blue);
+      border: 1px solid #93C5FD;
+    }
+
     footer {
       background-color: var(--navy);
       color: #94A3B8;
@@ -243,44 +245,17 @@
     }
 
     @media screen and (max-width: 768px) {
-      body {
-        padding-top: 120px;
-      }
-
-      body::before {
-        width: 360px !important;
-        height: 360px !important;
-        opacity: 0.22 !important;
-      }
-
-      header {
-        flex-direction: column !important;
-        padding: 0.8rem 1rem !important;
-        gap: 0.8rem !important;
-      }
-
-      nav {
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 0.4rem 0.6rem !important;
-        width: 100% !important;
-      }
-
-      nav a {
-        font-size: 0.82rem !important;
-        padding: 5px 8px !important;
-      }
-
-      .footer-container {
-        flex-direction: column !important;
-        text-align: center !important;
-      }
+      body { padding-top: 120px; }
+      body::before { width: 360px !important; height: 360px !important; opacity: 0.22 !important; }
+      header { flex-direction: column !important; padding: 0.8rem 1rem !important; gap: 0.8rem !important; }
+      nav { flex-wrap: wrap !important; justify-content: center !important; gap: 0.4rem 0.6rem !important; width: 100% !important; }
+      nav a { font-size: 0.82rem !important; padding: 5px 8px !important; }
+      .footer-container { flex-direction: column !important; text-align: center !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation Bar -->
   <header>
     <div class="brand">
       <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
@@ -297,7 +272,6 @@
     </nav>
   </header>
 
-  <!-- Login Card Portal -->
   <main class="container">
     <div class="login-card">
       <h1>Student Portal Login</h1>
@@ -321,7 +295,6 @@
     </div>
   </main>
 
-  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div>
@@ -337,17 +310,15 @@
     </div>
   </footer>
 
-  <!-- Login Handling Script -->
   <script>
+    // Paste your Web App URL from Google Sheets Apps Script here:
+    const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+
     document.addEventListener('DOMContentLoaded', function() {
       const loginForm = document.getElementById('student-login-form');
-      const statusMsg = document.getElementById('status-message');
 
-      // OPTIONAL: If using Google Sheets Apps Script API, paste your URL below:
-      // const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
-
-      loginForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevents page reload
+      loginForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
 
         const studentId = document.getElementById('student-id').value.trim().toUpperCase();
         const password = document.getElementById('password').value.trim();
@@ -357,18 +328,33 @@
           return;
         }
 
-        // Save active student ID to local session storage
-        localStorage.setItem("studentId", studentId);
+        showStatus("Verifying credentials with Google database...", "info");
 
-        showStatus("Login successful! Redirecting to dashboard...", "success");
+        try {
+          // Send login request to Google Apps Script
+          const requestUrl = `${GOOGLE_WEB_APP_URL}?action=login&roll=${encodeURIComponent(studentId)}&pass=${encodeURIComponent(password)}`;
+          const response = await fetch(requestUrl);
+          const data = await response.json();
 
-        // Smooth redirect to dashboard.html after 1 second
-        setTimeout(function() {
-          window.location.href = "dashboard.html";
-        }, 1000);
+          if (data.status === "success" || data.result === "success") {
+            // Save payload into local storage
+            localStorage.setItem("studentId", studentId);
+            if (data.student) {
+              localStorage.setItem("studentData", JSON.stringify(data.student));
+            }
+            showStatus("Login successful! Redirecting to dashboard...", "success");
+            setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
+          } else {
+            showStatus(data.message || "Invalid Student Roll No. or Password.", "error");
+          }
+        } catch (error) {
+          console.error("Login fetch error:", error);
+          showStatus("Error connecting to database. Please verify your connection.", "error");
+        }
       });
 
       function showStatus(text, type) {
+        const statusMsg = document.getElementById('status-message');
         statusMsg.textContent = text;
         statusMsg.className = "status-message " + type;
         statusMsg.style.display = "block";
