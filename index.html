@@ -21,8 +21,8 @@
     :root {
       --navy: #0B2545;
       --gold: #E5A93C;
-      --light-bg: #F8FAFC;
-      --card-bg: #FFFFFF;
+      --light-bg: #F1F5F9;
+      --card-bg: rgba(255, 255, 255, 0.94);
       --text-dark: #1E293B;
       --text-muted: #64748B;
     }
@@ -39,8 +39,14 @@
       overflow-x: hidden;
     }
 
+    /* Fixed Watermark Background Setup */
     body {
       background-color: var(--light-bg);
+      background-image: linear-gradient(rgba(241, 245, 249, 0.88), rgba(241, 245, 249, 0.88)), url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center 300px;
+      background-attachment: fixed;
+      background-size: 500px;
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
@@ -105,7 +111,7 @@
 
     /* Hero Section */
     .hero {
-      background: var(--navy);
+      background: rgba(11, 37, 69, 0.95);
       color: white;
       text-align: center;
       padding: 3.5rem 1.5rem;
@@ -187,9 +193,6 @@
       font-weight: 800;
       margin-bottom: 2rem;
       position: relative;
-      background: var(--light-bg);
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
     }
 
     .section-title::after {
@@ -218,10 +221,11 @@
 
     .card {
       background: var(--card-bg);
+      backdrop-filter: blur(6px);
       border-radius: 12px;
       padding: 1.8rem;
       box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
-      border: 1px solid #E2E8F0;
+      border: 1px solid rgba(226, 232, 240, 0.9);
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
@@ -292,8 +296,9 @@
     /* Mobile Responsive Rules */
     @media screen and (max-width: 768px) {
       body {
-        padding-top: 125px; /* Ensures header won't overlap content */
-        background-image: none !important; /* Removes disruptive background image on mobile */
+        padding-top: 125px;
+        background-size: 320px !important; /* Scaled down logo on mobile */
+        background-position: center 260px !important;
       }
 
       header {
@@ -334,7 +339,7 @@
       }
 
       .section-title {
-        font-size: 1.4rem !important;
+        font-size: 1.5rem !important;
         margin-bottom: 1.2rem !important;
       }
 
