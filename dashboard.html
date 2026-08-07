@@ -38,6 +38,7 @@
       position: relative;
     }
 
+    /* Fixed Center Watermark Logo */
     body::before {
       content: "";
       position: fixed;
@@ -60,6 +61,7 @@
       z-index: 1;
     }
 
+    /* Fixed Navigation Header */
     header {
       background-color: #FFFFFF;
       padding: 0.8rem 2rem;
@@ -105,6 +107,7 @@
       cursor: pointer;
     }
 
+    /* Main Container */
     .container {
       max-width: 1050px;
       margin: 2rem auto;
@@ -113,6 +116,7 @@
       flex: 1;
     }
 
+    /* Profile Header Card */
     .profile-card {
       background: var(--navy);
       color: #FFFFFF;
@@ -161,6 +165,7 @@
       font-weight: 700;
     }
 
+    /* Dashboard Section Cards */
     .dashboard-section {
       background: var(--card-bg);
       backdrop-filter: blur(8px);
@@ -183,6 +188,7 @@
       gap: 0.5rem;
     }
 
+    /* Responsive Data Tables */
     .table-responsive {
       width: 100%;
       overflow-x: auto;
@@ -200,6 +206,7 @@
       color: #FFFFFF;
       padding: 12px 14px;
       font-weight: 600;
+      white-space: nowrap;
     }
 
     td {
@@ -228,6 +235,7 @@
       display: inline-block;
     }
 
+    /* Footer */
     footer {
       background-color: var(--navy);
       color: #94A3B8;
@@ -256,6 +264,7 @@
 </head>
 <body>
 
+  <!-- Header Navigation -->
   <header>
     <div class="brand">
       <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
@@ -269,22 +278,23 @@
     </nav>
   </header>
 
+  <!-- Main Container -->
   <main class="container">
     
-    <!-- Profile & Fee Overview -->
+    <!-- Profile Card -->
     <div class="profile-card">
       <div class="profile-info">
         <h1 id="student-name">Loading Profile...</h1>
-        <p id="student-target">Physics JEE / NEET & Boards Program</p>
+        <p id="student-target">Physics JEE / NEET & Board Coaching</p>
       </div>
       <div class="profile-badges">
-        <div class="badge">Roll No: <strong id="student-roll">--</strong></div>
-        <div class="badge">Batch: <strong id="student-batch">--</strong></div>
-        <div class="badge">Fee Status: <span id="student-fee" class="status-paid">--</span></div>
+        <div class="badge">Roll No: <strong id="student-roll">-</strong></div>
+        <div class="badge">Batch: <strong id="student-batch">-</strong></div>
+        <div class="badge">Fee Status: <span id="student-fee" class="status-paid">-</span></div>
       </div>
     </div>
 
-    <!-- 1. Weekly Class Schedule -->
+    <!-- 1. Weekly Schedule Table -->
     <div class="dashboard-section">
       <div class="section-heading">📅 Batch Schedule & Timings</div>
       <div class="table-responsive">
@@ -298,13 +308,13 @@
             </tr>
           </thead>
           <tbody id="schedule-table-body">
-            <tr><td colspan="4" style="text-align:center;">Fetching live schedule from Google Sheet...</td></tr>
+            <tr><td colspan="4" style="text-align:center;">Fetching live schedule...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- 2. Exam Results & Performance Matrix -->
+    <!-- 2. Exam Results Matrix Table -->
     <div class="dashboard-section">
       <div class="section-heading">📊 Examination Results Matrix</div>
       <div class="table-responsive">
@@ -320,13 +330,13 @@
             </tr>
           </thead>
           <tbody id="results-table-body">
-            <tr><td colspan="6" style="text-align:center;">Fetching live exam matrix from Google Sheet...</td></tr>
+            <tr><td colspan="6" style="text-align:center;">Fetching exam results matrix...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- 3. Date-Wise Class Notes & DPPs -->
+    <!-- 3. Class Notes & Study Resources Table -->
     <div class="dashboard-section">
       <div class="section-heading">📚 Class Notes & Study Resources</div>
       <div class="table-responsive">
@@ -340,7 +350,7 @@
             </tr>
           </thead>
           <tbody id="notes-table-body">
-            <tr><td colspan="4" style="text-align:center;">Fetching class notes from Google Sheet...</td></tr>
+            <tr><td colspan="4" style="text-align:center;">Fetching class notes...</td></tr>
           </tbody>
         </table>
       </div>
@@ -348,6 +358,7 @@
 
   </main>
 
+  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div>
@@ -360,9 +371,17 @@
     </div>
   </footer>
 
+  <!-- Script Logic -->
   <script>
-    // Paste your Web App URL from Google Sheets Apps Script here:
-    const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+    // Paste your deployed Google Apps Script Web App URL here:
+    const GOOGLE_WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+    // Helper: Converts empty/null/undefined cells cleanly to "-"
+    function safeVal(val) {
+      if (val === null || val === undefined) return "-";
+      const str = String(val).trim();
+      return str === "" ? "-" : str;
+    }
 
     document.addEventListener("DOMContentLoaded", async function() {
       const studentId = localStorage.getItem("studentId");
@@ -372,15 +391,15 @@
         return;
       }
 
-      // Check for locally cached student payload first
+      // Check cached student payload
       const cachedData = localStorage.getItem("studentData");
       if (cachedData) {
         try {
           renderDashboard(JSON.parse(cachedData));
-        } catch (e) { console.error("Cache parse error", e); }
+        } catch (e) { console.error("Cache error", e); }
       }
 
-      // Fetch live updated row data from Google Sheet
+      // Fetch fresh data from Google Sheet backend
       try {
         const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
         const data = await response.json();
@@ -390,7 +409,7 @@
           localStorage.setItem("studentData", JSON.stringify(data.student));
         }
       } catch (err) {
-        console.warn("Could not refresh from Google Sheet live, displaying cached data.", err);
+        console.warn("Could not fetch live sheet data, falling back to cache.", err);
       }
     });
 
@@ -398,59 +417,71 @@
       if (!student) return;
 
       // Header Profile Elements
-      document.getElementById("student-name").textContent = "Welcome, " + (student.name || "Student");
-      document.getElementById("student-roll").textContent = student.roll || student.rollNo || "--";
-      document.getElementById("student-batch").textContent = student.batch || "--";
-      document.getElementById("student-fee").textContent = student.feeStatus || "Paid";
+      document.getElementById("student-name").textContent = "Welcome, " + safeVal(student.name);
+      document.getElementById("student-roll").textContent = safeVal(student.roll || student.rollNo);
+      document.getElementById("student-batch").textContent = safeVal(student.batch);
+      document.getElementById("student-fee").textContent = safeVal(student.feeStatus);
 
-      // Schedule Table
+      // 1. Schedule Table
+      const scheduleBody = document.getElementById("schedule-table-body");
       if (student.schedule && student.schedule.length > 0) {
-        const scheduleBody = document.getElementById("schedule-table-body");
         scheduleBody.innerHTML = "";
         student.schedule.forEach(item => {
           scheduleBody.innerHTML += `
             <tr>
-              <td><strong>${item.day}</strong></td>
-              <td>${item.time}</td>
-              <td>${item.topic}</td>
-              <td>${item.mode || 'Offline'}</td>
+              <td><strong>${safeVal(item.day)}</strong></td>
+              <td>${safeVal(item.time)}</td>
+              <td>${safeVal(item.topic)}</td>
+              <td>${safeVal(item.mode)}</td>
             </tr>
           `;
         });
+      } else {
+        scheduleBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
       }
 
-      // Results Table
+      // 2. Results Table
+      const resultsBody = document.getElementById("results-table-body");
       if (student.results && student.results.length > 0) {
-        const resultsBody = document.getElementById("results-table-body");
         resultsBody.innerHTML = "";
         student.results.forEach(item => {
           resultsBody.innerHTML += `
             <tr>
-              <td>${item.date}</td>
-              <td><strong>${item.name || item.examName}</strong></td>
-              <td>${item.max || item.maxMarks}</td>
-              <td class="score-high">${item.score || item.marksObtained}</td>
-              <td>${item.accuracy || '--'}</td>
-              <td><strong>${item.rank || '--'}</strong></td>
+              <td>${safeVal(item.date)}</td>
+              <td><strong>${safeVal(item.name || item.examName)}</strong></td>
+              <td>${safeVal(item.max || item.maxMarks)}</td>
+              <td class="score-high">${safeVal(item.score || item.marksObtained)}</td>
+              <td>${safeVal(item.accuracy)}</td>
+              <td><strong>${safeVal(item.rank)}</strong></td>
             </tr>
           `;
         });
+      } else {
+        resultsBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No test results recorded yet.</td></tr>`;
       }
 
-      // Notes Table
+      // 3. Notes Table
+      const notesBody = document.getElementById("notes-table-body");
       if (student.notes && student.notes.length > 0) {
-        const notesBody = document.getElementById("notes-table-body");
         notesBody.innerHTML = "";
         student.notes.forEach(item => {
+          const rawLink = safeVal(item.link);
+          const hasValidLink = rawLink !== "-" && rawLink !== "#";
+          const actionBtn = hasValidLink 
+            ? `<a href="${rawLink}" target="_blank" class="btn-download">View PDF</a>` 
+            : `-`;
+
           notesBody.innerHTML += `
             <tr>
-              <td>${item.date}</td>
-              <td><strong>${item.topic}</strong></td>
-              <td>${item.type || 'PDF Document'}</td>
-              <td><a href="${item.link || '#'}" target="_blank" class="btn-download">View PDF</a></td>
+              <td>${safeVal(item.date)}</td>
+              <td><strong>${safeVal(item.topic)}</strong></td>
+              <td>${safeVal(item.type)}</td>
+              <td>${actionBtn}</td>
             </tr>
           `;
         });
+      } else {
+        notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available yet.</td></tr>`;
       }
     }
 
