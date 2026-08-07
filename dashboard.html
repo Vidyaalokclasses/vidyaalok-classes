@@ -1,0 +1,30 @@
+document.addEventListener('DOMContentLoaded', function() {
+  const loginForm = document.getElementById('student-login-form');
+  const statusMsg = document.getElementById('status-message');
+
+  loginForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const studentId = document.getElementById('student-id').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!studentId || !password) {
+      showStatus("Please enter both Student ID and Password.", "error");
+      return;
+    }
+
+    // Save ID and redirect directly to dashboard.html
+    localStorage.setItem("studentId", studentId);
+    showStatus("Login successful! Redirecting to your dashboard...", "success");
+
+    setTimeout(function() {
+      window.location.href = "dashboard.html";
+    }, 1200);
+  });
+
+  function showStatus(text, type) {
+    statusMsg.textContent = text;
+    statusMsg.className = "status-message " + type;
+    statusMsg.style.display = "block";
+  }
+});
