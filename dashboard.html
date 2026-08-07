@@ -1,30 +1,464 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const loginForm = document.getElementById('student-login-form');
-  const statusMsg = document.getElementById('status-message');
-
-  loginForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const studentId = document.getElementById('student-id').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if (!studentId || !password) {
-      showStatus("Please enter both Student ID and Password.", "error");
-      return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Student Dashboard - Vidyaalok Classes</title>
+  <link rel="icon" type="image/jpeg" href="icon.jpg">
+  <style>
+    :root {
+      --navy: #0B2545;
+      --gold: #E5A93C;
+      --light-bg: #F1F5F9;
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --success-green: #10B981;
     }
 
-    // Save ID and redirect directly to dashboard.html
-    localStorage.setItem("studentId", studentId);
-    showStatus("Login successful! Redirecting to your dashboard...", "success");
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-    setTimeout(function() {
-      window.location.href = "dashboard.html";
-    }, 1200);
-  });
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
 
-  function showStatus(text, type) {
-    statusMsg.textContent = text;
-    statusMsg.className = "status-message " + type;
-    statusMsg.style.display = "block";
-  }
-});
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 75px;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      opacity: 0.12;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header, main, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      background-color: #FFFFFF;
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #E2E8F0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .brand img {
+      height: 52px;
+      width: auto;
+      display: block;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-logout {
+      background-color: #EF4444;
+      color: #FFFFFF !important;
+      border-radius: 6px;
+      padding: 6px 14px !important;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    .profile-card {
+      background: var(--navy);
+      color: #FFFFFF;
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 20px rgba(11, 37, 69, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .profile-info h1 {
+      font-size: 1.8rem;
+      color: #FFFFFF;
+      margin-bottom: 0.3rem;
+    }
+
+    .profile-info p {
+      color: #94A3B8;
+      font-size: 0.95rem;
+    }
+
+    .profile-badges {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+
+    .badge strong {
+      color: var(--gold);
+    }
+
+    .status-paid {
+      color: #34D399;
+      font-weight: 700;
+    }
+
+    .dashboard-section {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.05);
+    }
+
+    .section-heading {
+      color: var(--navy);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    th {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      padding: 12px 14px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #E2E8F0;
+      color: var(--text-dark);
+    }
+
+    tr:hover {
+      background-color: #F8FAFC;
+    }
+
+    .score-high {
+      color: var(--success-green);
+      font-weight: 700;
+    }
+
+    .btn-download {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      padding: 6px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    footer {
+      background-color: var(--navy);
+      color: #94A3B8;
+      padding: 2.5rem 1rem;
+      border-top: 3px solid var(--gold);
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      body { padding-top: 120px; }
+      body::before { width: 350px !important; height: 350px !important; }
+      header { flex-direction: column !important; padding: 0.8rem 1rem !important; gap: 0.8rem !important; }
+      .profile-card { flex-direction: column !important; align-items: flex-start !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="notes.html">Class Notes</a>
+      <a href="exam.html">Online Exams</a>
+      <a class="btn-logout" onclick="logoutStudent()">Logout</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    
+    <!-- Profile & Fee Overview -->
+    <div class="profile-card">
+      <div class="profile-info">
+        <h1 id="student-name">Loading Profile...</h1>
+        <p id="student-target">Physics JEE / NEET & Boards Program</p>
+      </div>
+      <div class="profile-badges">
+        <div class="badge">Roll No: <strong id="student-roll">--</strong></div>
+        <div class="badge">Batch: <strong id="student-batch">--</strong></div>
+        <div class="badge">Fee Status: <span id="student-fee" class="status-paid">--</span></div>
+      </div>
+    </div>
+
+    <!-- 1. Weekly Class Schedule -->
+    <div class="dashboard-section">
+      <div class="section-heading">📅 Batch Schedule & Timings</div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Time Slot</th>
+              <th>Subject / Topic</th>
+              <th>Mode</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-table-body">
+            <tr><td colspan="4" style="text-align:center;">Fetching live schedule from Google Sheet...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2. Exam Results & Performance Matrix -->
+    <div class="dashboard-section">
+      <div class="section-heading">📊 Examination Results Matrix</div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Exam Name</th>
+              <th>Max Marks</th>
+              <th>Marks Obtained</th>
+              <th>Accuracy</th>
+              <th>Batch Rank</th>
+            </tr>
+          </thead>
+          <tbody id="results-table-body">
+            <tr><td colspan="6" style="text-align:center;">Fetching live exam matrix from Google Sheet...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. Date-Wise Class Notes & DPPs -->
+    <div class="dashboard-section">
+      <div class="section-heading">📚 Class Notes & Study Resources</div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Topic / Chapter</th>
+              <th>Resource Type</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="notes-table-body">
+            <tr><td colspan="4" style="text-align:center;">Fetching class notes from Google Sheet...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div>
+        <h3 style="color: #FFFFFF;">Vidyaalok Classes</h3>
+        <p style="color: var(--gold); font-size: 0.85rem;">The Light of Knowledge</p>
+      </div>
+      <div style="font-size: 0.9rem; color: #E2E8F0;">
+        📍 Kharagpur, West Bengal | 📞 +91 8240949137
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Paste your Web App URL from Google Sheets Apps Script here:
+    const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      const studentId = localStorage.getItem("studentId");
+
+      if (!studentId) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      // Check for locally cached student payload first
+      const cachedData = localStorage.getItem("studentData");
+      if (cachedData) {
+        try {
+          renderDashboard(JSON.parse(cachedData));
+        } catch (e) { console.error("Cache parse error", e); }
+      }
+
+      // Fetch live updated row data from Google Sheet
+      try {
+        const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
+        const data = await response.json();
+
+        if (data.status === "success" || data.result === "success") {
+          renderDashboard(data.student);
+          localStorage.setItem("studentData", JSON.stringify(data.student));
+        }
+      } catch (err) {
+        console.warn("Could not refresh from Google Sheet live, displaying cached data.", err);
+      }
+    });
+
+    function renderDashboard(student) {
+      if (!student) return;
+
+      // Header Profile Elements
+      document.getElementById("student-name").textContent = "Welcome, " + (student.name || "Student");
+      document.getElementById("student-roll").textContent = student.roll || student.rollNo || "--";
+      document.getElementById("student-batch").textContent = student.batch || "--";
+      document.getElementById("student-fee").textContent = student.feeStatus || "Paid";
+
+      // Schedule Table
+      if (student.schedule && student.schedule.length > 0) {
+        const scheduleBody = document.getElementById("schedule-table-body");
+        scheduleBody.innerHTML = "";
+        student.schedule.forEach(item => {
+          scheduleBody.innerHTML += `
+            <tr>
+              <td><strong>${item.day}</strong></td>
+              <td>${item.time}</td>
+              <td>${item.topic}</td>
+              <td>${item.mode || 'Offline'}</td>
+            </tr>
+          `;
+        });
+      }
+
+      // Results Table
+      if (student.results && student.results.length > 0) {
+        const resultsBody = document.getElementById("results-table-body");
+        resultsBody.innerHTML = "";
+        student.results.forEach(item => {
+          resultsBody.innerHTML += `
+            <tr>
+              <td>${item.date}</td>
+              <td><strong>${item.name || item.examName}</strong></td>
+              <td>${item.max || item.maxMarks}</td>
+              <td class="score-high">${item.score || item.marksObtained}</td>
+              <td>${item.accuracy || '--'}</td>
+              <td><strong>${item.rank || '--'}</strong></td>
+            </tr>
+          `;
+        });
+      }
+
+      // Notes Table
+      if (student.notes && student.notes.length > 0) {
+        const notesBody = document.getElementById("notes-table-body");
+        notesBody.innerHTML = "";
+        student.notes.forEach(item => {
+          notesBody.innerHTML += `
+            <tr>
+              <td>${item.date}</td>
+              <td><strong>${item.topic}</strong></td>
+              <td>${item.type || 'PDF Document'}</td>
+              <td><a href="${item.link || '#'}" target="_blank" class="btn-download">View PDF</a></td>
+            </tr>
+          `;
+        });
+      }
+    }
+
+    function logoutStudent() {
+      localStorage.removeItem("studentId");
+      localStorage.removeItem("studentData");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
