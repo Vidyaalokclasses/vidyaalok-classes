@@ -80,12 +80,67 @@
     .btn-submit { background-color: var(--success-green); width: 100%; font-size: 1.05rem; padding: 12px; }
     .btn-wa { background-color: #25D366 !important; margin-top: 15px; font-size: 1rem; padding: 10px 20px; }
 
-    .split-layout {
-      display: flex;
-      gap: 1.2rem;
-      align-items: flex-start;
+    /* Modal Instructions Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(11, 37, 69, 0.85);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: 1rem;
     }
 
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: 12px;
+      max-width: 650px;
+      width: 100%;
+      padding: 1.8rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-box h2 { color: var(--navy); margin-bottom: 0.8rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.4rem; }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 1rem 0;
+      background: #F8FAFC;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #E2E8F0;
+      font-size: 0.9rem;
+    }
+
+    .rules-list { margin: 1rem 0; padding-left: 1.2rem; font-size: 0.92rem; color: #334155; }
+    .rules-list li { margin-bottom: 0.5rem; }
+
+    /* Warning Toast Bar */
+    .warning-banner {
+      position: fixed;
+      top: 70px; left: 50%;
+      transform: translateX(-50%);
+      background: #EF4444;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      z-index: 3000;
+      display: none;
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    /* Split Layout */
+    .split-layout { display: flex; gap: 1.2rem; align-items: flex-start; }
     .pdf-pane { flex: 1.3; min-width: 0; }
     .omr-pane { flex: 0.9; min-width: 0; background: #FFF; padding: 1.2rem; border-radius: 10px; border: 1px solid #CBD5E1; }
 
@@ -117,10 +172,16 @@
       .split-layout { flex-direction: column !important; }
       .pdf-pane, .omr-pane { width: 100% !important; flex: none !important; }
       .pdf-pane iframe { height: 450px !important; }
+      .info-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
+  <!-- Proctored Tab Switch Warning Banner -->
+  <div id="warning-banner" class="warning-banner">
+    ⚠️ WARNING! Tab switching detected (<span id="switch-count">0</span>). Repeatedly leaving the exam window is monitored!
+  </div>
 
   <header>
     <div class="brand">
@@ -150,12 +211,10 @@
       </div>
 
       <div class="split-layout" id="exam-split-layout">
-        <!-- PDF Pane -->
         <div class="pdf-pane" id="pdf-pane">
           <iframe id="pdf-viewer" src="" width="100%" height="650px" style="border:1px solid #CBD5E1; border-radius:8px;"></iframe>
         </div>
 
-        <!-- OMR Pane (Hidden during Subjective exams) -->
         <div class="omr-pane" id="omr-pane" style="display:none;">
           <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.4rem;">🎯 Answer Sheet (OMR)</h3>
           <form id="omr-form">
@@ -166,11 +225,11 @@
       </div>
     </div>
 
-    <!-- Subjective Time Over / Completion Screen -->
+    <!-- Subjective Completion Screen -->
     <div id="subj-complete-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
       <h2 id="subj-status-title" style="color: var(--navy); margin-bottom: 0.6rem;"></h2>
       <p style="color: var(--text-dark); margin-bottom: 1rem; max-width: 600px; margin-left:auto; margin-right:auto;">
-        The question paper is now closed. Take clear photos of your written answer sheets and click the WhatsApp button below to submit them for evaluation.
+        The question paper is now locked. Take clear photos of your written answer pages and send them via WhatsApp immediately for evaluation.
       </p>
       <a id="wa-submit-btn" href="#" target="_blank" class="btn btn-wa">📱 Send Answer Sheets on WhatsApp</a>
       <br><br>
@@ -186,12 +245,42 @@
 
   </main>
 
+  <!-- Pre-Exam Instructions Modal -->
+  <div id="instructions-modal" class="modal-overlay">
+    <div class="modal-box">
+      <h2 id="modal-exam-title">Exam Details & Instructions</h2>
+      
+      <div class="info-grid">
+        <div><strong>Batch Assigned:</strong> <span id="modal-batch">-</span></div>
+        <div><strong>Exam Type:</strong> <span id="modal-type">-</span></div>
+        <div><strong>Duration:</strong> <span id="modal-duration">-</span></div>
+        <div><strong>Expiry Date:</strong> <span id="modal-expiry">-</span></div>
+      </div>
+
+      <h3 style="color: var(--navy); font-size: 1rem; margin-top: 0.8rem;">📌 Important Guidelines:</h3>
+      <ul class="rules-list">
+        <li><strong>Automatic Timer:</strong> When the duration expires (00:00:00), the question paper will automatically lock and close.</li>
+        <li id="rule-type-desc"><strong>Subjective Test:</strong> Write your answers clearly on physical paper. Once completed or when time expires, submit the answer sheet photos on WhatsApp.</li>
+        <li><strong>Proctored Environment:</strong> Do not switch tabs or open other applications during the test. Tab switching is logged and flagged.</li>
+        <li><strong>Single Attempt Rule:</strong> Ensure a stable internet connection before starting.</li>
+      </ul>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:1.2rem;">
+        <button class="btn" style="background:#94A3B8;" onclick="closeModal()">Cancel</button>
+        <button class="btn" style="background:var(--success-green);" onclick="confirmStartExam()">I Agree & Start Test</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
     
     let activeExamObj = null;
+    let selectedExamForModal = null;
     let timerInterval = null;
     let studentResponses = {};
+    let tabSwitchCount = 0;
+    let isExamActive = false;
 
     document.addEventListener("DOMContentLoaded", async function() {
       const studentId = localStorage.getItem("studentId");
@@ -206,7 +295,7 @@
         if (data.status === "success" && data.student.exams) {
           renderExamList(data.student.exams);
 
-          // Resume timer if page was refreshed or network reconnected
+          // Resume active timer if reloaded
           if (savedTimerState) {
             const state = JSON.parse(savedTimerState);
             const matchExam = data.student.exams.find(e => e.examId === state.examId);
@@ -224,6 +313,18 @@
       }
     });
 
+    // Tab Switching Detection Logic
+    document.addEventListener("visibilitychange", function() {
+      if (isExamActive && document.hidden) {
+        tabSwitchCount++;
+        document.getElementById("switch-count").textContent = tabSwitchCount;
+        const banner = document.getElementById("warning-banner");
+        banner.style.display = "block";
+
+        setTimeout(() => { banner.style.display = "none"; }, 5000);
+      }
+    });
+
     function renderExamList(exams) {
       const listDiv = document.getElementById("exam-list");
       if (!exams || exams.length === 0) {
@@ -235,7 +336,7 @@
       exams.forEach(exam => {
         const attemptsText = exam.maxAttempts === -1 ? "Unlimited Attempts" : `Attempts: ${exam.userAttempts} / ${exam.maxAttempts}`;
         const btnState = exam.canAttempt 
-          ? `<button class="btn" onclick='startExam(${JSON.stringify(exam)})'>Start Test</button>` 
+          ? `<button class="btn" onclick='openInstructionsModal(${JSON.stringify(exam)})'>View Details & Start</button>` 
           : `<button class="btn" disabled>Attempted</button>`;
 
         listDiv.innerHTML += `
@@ -243,7 +344,7 @@
             <div>
               <strong style="font-size: 1.05rem; color: var(--navy);">${exam.title}</strong>
               <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
-                Type: <strong>${exam.type}</strong> | Duration: ${exam.duration} Mins | ${attemptsText} | Expires: ${exam.expiry}
+                Batch: <strong>${exam.batch}</strong> | Type: <strong>${exam.type}</strong> | Duration: ${exam.duration} Mins | ${attemptsText}
               </div>
             </div>
             <div>${btnState}</div>
@@ -252,15 +353,47 @@
       });
     }
 
+    function openInstructionsModal(exam) {
+      selectedExamForModal = exam;
+      document.getElementById("modal-exam-title").textContent = exam.title;
+      document.getElementById("modal-batch").textContent = exam.batch;
+      document.getElementById("modal-type").textContent = exam.type;
+      document.getElementById("modal-duration").textContent = exam.duration + " Minutes";
+      document.getElementById("modal-expiry").textContent = exam.expiry;
+
+      const ruleDesc = document.getElementById("rule-type-desc");
+      if (exam.type === "SUBJECTIVE") {
+        ruleDesc.innerHTML = "<strong>Subjective Test:</strong> Read the paper on screen, write answers on paper, and send photos on WhatsApp upon completion.";
+      } else {
+        ruleDesc.innerHTML = "<strong>MCQ / Objective Test:</strong> Mark your choices on the right-hand OMR panel. It auto-grades upon submission.";
+      }
+
+      document.getElementById("instructions-modal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("instructions-modal").style.display = "none";
+      selectedExamForModal = null;
+    }
+
+    function confirmStartExam() {
+      if (selectedExamForModal) {
+        const exam = selectedExamForModal;
+        closeModal();
+        startExam(exam);
+      }
+    }
+
     function startExam(exam, existingEndTime = null) {
       activeExamObj = exam;
       studentResponses = {};
+      isExamActive = true;
       const studentId = localStorage.getItem("studentId");
 
       document.getElementById("exam-portal").style.display = "none";
       document.getElementById("active-test-container").style.display = "block";
       document.getElementById("active-test-title").textContent = exam.title;
-      document.getElementById("active-test-info").textContent = `Duration: ${exam.duration} Mins | Type: ${exam.type}`;
+      document.getElementById("active-test-info").textContent = `Batch: ${exam.batch} | Duration: ${exam.duration} Mins | Type: ${exam.type}`;
 
       document.getElementById("pdf-viewer").src = exam.content;
 
@@ -268,19 +401,17 @@
       const omrPane = document.getElementById("omr-pane");
       const btnFinishSubj = document.getElementById("btn-finish-subj");
 
-      // SUBJECTIVE VS MCQ DISPLAY BRANCH
       if (exam.type === "SUBJECTIVE") {
         pdfPane.style.flex = "1";
-        omrPane.style.display = "none"; // Completely hide OMR and input options
+        omrPane.style.display = "none";
         btnFinishSubj.style.display = "inline-block";
       } else {
         pdfPane.style.flex = "1.3";
-        omrPane.style.display = "block"; // Show OMR options for MCQ
+        omrPane.style.display = "block";
         btnFinishSubj.style.display = "none";
         renderOMRGrid(exam.answerKey);
       }
 
-      // Calculate Real-Time Wall Clock Timer (Resists network drops/refreshes)
       let endTimestamp = existingEndTime;
       if (!endTimestamp) {
         endTimestamp = Date.now() + (parseInt(exam.duration) * 60 * 1000);
@@ -362,9 +493,9 @@
       studentResponses[qNo] = val.trim();
     }
 
-    // Finish Subjective Exam (Paper locks & vanishes)
     function finishSubjectiveExam(isTimeout) {
       clearInterval(timerInterval);
+      isExamActive = false;
       const studentId = localStorage.getItem("studentId");
       localStorage.removeItem(`active_exam_timer_${studentId}`);
 
@@ -381,7 +512,6 @@
       document.getElementById("subj-complete-screen").style.display = "block";
     }
 
-    // Finish MCQ Exam (Auto-evaluate & Sync to Google Sheet)
     document.getElementById("omr-form").addEventListener("submit", function(e) {
       e.preventDefault();
       submitMCQExam();
@@ -389,6 +519,7 @@
 
     async function submitMCQExam() {
       clearInterval(timerInterval);
+      isExamActive = false;
       const studentId = localStorage.getItem("studentId");
       localStorage.removeItem(`active_exam_timer_${studentId}`);
 
