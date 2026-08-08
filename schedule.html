@@ -1,115 +1,373 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Batch Schedule - Vidyaalok Classes</title>
-  <link rel="icon" type="image/jpeg" href="icon.jpg">
-  <style>
-    :root {
-      --navy: #0B2545;
-      --gold: #E5A93C;
-      --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.96);
-      --text-dark: #1E293B;
-    }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <title>Class Schedule & Topic Log | Vidyaalok Classes</title>
+ <link rel="icon" type="image/jpeg" href="icon.jpg">
+ <style>
+ :root {
+ --navy: #0B2545;
+ --gold: #E5A93C;
+ --light-bg: #F1F5F9;
+ --card-bg: rgba(255, 255, 255, 0.92);
+ --text-dark: #1E293B;
+ --text-muted: #64748B;
+ }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 80px; }
+ * {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
 
-    header {
-      background-color: #FFFFFF;
-      padding: 0.6rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #E2E8F0;
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-    }
+ html, body {
+ width: 100%;
+ overflow-x: hidden;
+ }
 
-    .brand img { height: 48px; width: auto; display: block; }
-    nav { display: flex; gap: 0.8rem; align-items: center; }
-    nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
-    .btn-portal { background-color: var(--navy); color: #FFFFFF !important; font-weight: 700; }
+ body {
+ background-color: var(--light-bg);
+ background-image: url('logo.png');
+ background-repeat: no-repeat;
+ background-position: center 250px;
+ background-attachment: fixed;
+ background-size: 550px;
+ color: var(--text-dark);
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ }
 
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; width: 100%; flex: 1; }
+ header {
+ background-color: #FFFFFF;
+ padding: 0.8rem 2rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border-bottom: 1px solid #E2E8F0;
+ box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+ position: sticky;
+ top: 0;
+ z-index: 100;
+ }
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 1.5rem;
-      border: 1px solid #E2E8F0;
-      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
-    }
+ .brand img {
+ height: 52px;
+ width: auto;
+ display: block;
+ }
 
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; margin-top: 1rem; }
-    th { background-color: var(--navy); color: #FFFFFF; padding: 10px 12px; font-weight: 600; }
-    td { padding: 10px 12px; border-bottom: 1px solid #E2E8F0; }
+ nav {
+ display: flex;
+ gap: 1.2rem;
+ align-items: center;
+ }
 
-    footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
-    .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; }
+ nav a {
+ color: var(--navy);
+ text-decoration: none;
+ font-size: 0.95rem;
+ font-weight: 600;
+ padding: 6px 12px;
+ border-radius: 6px;
+ transition: all 0.2s;
+ }
 
-    @media screen and (max-width: 768px) {
-      body { padding-top: 110px; }
-      header { flex-direction: column; padding: 0.5rem; gap: 0.5rem; }
-      .footer-container { flex-direction: column; text-align: center; }
-    }
-  </style>
+ nav a:hover, nav a.active {
+ color: var(--gold);
+ background-color: #F1F5F9;
+ }
+
+ .btn-portal {
+ background-color: var(--navy);
+ color: #FFFFFF !important;
+ border-radius: 6px;
+ padding: 8px 16px !important;
+ }
+
+ .container {
+ max-width: 1000px;
+ margin: 2.5rem auto;
+ padding: 0 1.5rem;
+ width: 100%;
+ flex: 1;
+ }
+
+ .card {
+ background: var(--card-bg);
+ backdrop-filter: blur(8px);
+ border-radius: 12px;
+ padding: 1.8rem;
+ margin-bottom: 2rem;
+ box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
+ border: 1px solid rgba(226, 232, 240, 0.9);
+ }
+
+ .section-header {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border-bottom: 2px solid #E2E8F0;
+ padding-bottom: 0.8rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .section-header h2 {
+ color: var(--navy);
+ font-size: 1.4rem;
+ font-weight: 700;
+ }
+
+ .batch-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+ gap: 1.2rem;
+ }
+
+ .batch-card {
+ background: #FFFFFF;
+ border-radius: 10px;
+ padding: 1.2rem;
+ border: 1px solid #E2E8F0;
+ border-top: 4px solid var(--navy);
+ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+ transition: transform 0.2s;
+ }
+
+ .batch-card.kiran { border-top-color: #0284C7; }
+ .batch-card.prabha { border-top-color: #EA580C; }
+ .batch-card.pradeep { border-top-color: #16A34A; }
+ .batch-card.agni { border-top-color: #DC2626; }
+
+ .batch-title {
+ font-size: 1.15rem;
+ font-weight: 700;
+ color: var(--navy);
+ margin-bottom: 2px;
+ }
+
+ .batch-subtitle {
+ font-size: 0.82rem;
+ color: var(--text-muted);
+ font-weight: 600;
+ margin-bottom: 1rem;
+ }
+
+ .timing-row {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 8px 0;
+ border-bottom: 1px dashed #E2E8F0;
+ font-size: 0.9rem;
+ }
+
+ .timing-row:last-child {
+ border-bottom: none;
+ }
+
+ .day-label {
+ font-weight: 700;
+ color: var(--navy);
+ }
+
+ .time-label {
+ font-weight: 600;
+ color: #334155;
+ background-color: #F8FAFC;
+ padding: 3px 8px;
+ border-radius: 6px;
+ border: 1px solid #E2E8F0;
+ }
+
+ .log-item {
+ position: relative;
+ padding-left: 2rem;
+ padding-bottom: 1.5rem;
+ border-left: 2px solid #CBD5E1;
+ }
+
+ .log-item:last-child {
+ padding-bottom: 0;
+ border-left-color: transparent;
+ }
+
+ .log-item::before {
+ content: "";
+ position: absolute;
+ left: -7px;
+ top: 0;
+ width: 12px;
+ height: 12px;
+ border-radius: 50%;
+ background-color: var(--navy);
+ }
+
+ .log-item.latest::before {
+ background-color: var(--gold);
+ }
+
+ .log-date {
+ font-size: 0.85rem;
+ font-weight: 700;
+ color: var(--gold);
+ text-transform: uppercase;
+ }
+
+ .log-topic {
+ font-size: 1.1rem;
+ font-weight: 700;
+ color: var(--navy);
+ margin-top: 2px;
+ }
+
+ .log-homework {
+ background: #F8FAFC;
+ border: 1px dashed #CBD5E1;
+ padding: 10px 14px;
+ border-radius: 8px;
+ margin-top: 8px;
+ font-size: 0.9rem;
+ color: var(--text-dark);
+ }
+
+ footer {
+ background-color: var(--navy);
+ color: #94A3B8;
+ padding: 2rem 1rem;
+ border-top: 3px solid var(--gold);
+ text-align: center;
+ font-size: 0.85rem;
+ margin-top: auto;
+ }
+
+ /* Mobile Responsive Layout */
+ @media screen and (max-width: 768px) {
+ header {
+ flex-direction: column !important;
+ padding: 0.8rem 1rem !important;
+ gap: 0.8rem !important;
+ align-items: center !important;
+ }
+ .brand img { height: 42px !important; width: auto !important; }
+ nav { flex-wrap: wrap !important; justify-content: center !important; gap: 0.4rem 0.6rem !important; width: 100% !important; }
+ nav a { font-size: 0.82rem !important; padding: 5px 8px !important; white-space: nowrap !important; }
+ .btn-portal { padding: 6px 12px !important; font-size: 0.85rem !important; }
+ .container { width: 100% !important; max-width: 100% !important; padding: 0 1rem !important; margin: 1.5rem auto !important; }
+ .batch-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+ .card { padding: 1.2rem !important; margin-bottom: 1.2rem !important; width: 100% !important; }
+ }
+ </style>
 </head>
 <body>
+ <header>
+ <div class="brand">
+ <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+ </div>
+ <nav>
+ <a href="index.html">Home</a>
+ <a href="schedule.html" class="active">Schedule</a>
+ <a href="notes.html">Class Notes</a>
+ <a href="exam.html">Online Exams</a>
+ <a href="login.html" class="btn-portal">Student Portal</a>
+ </nav>
+ </header>
 
-  <!-- Header Navigation -->
-  <header>
-    <div class="brand">
-      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="schedule.html" style="background:#E2E8F0;">Schedule</a>
-      <a href="login.html" class="btn-portal">Student Portal</a>
-    </nav>
-  </header>
+ <div class="container">
+ <div class="card">
+ <div class="section-header">
+ <h2>Batch-wise Class Timetable</h2>
+ <span style="font-size: 0.85rem; color: var(--text-muted);">Weekly Schedule</span>
+ </div>
+ <div class="batch-grid">
+ <!-- Populated dynamically from Google Sheets or fallback below -->
+ <div class="batch-card kiran">
+ <div class="batch-title">Kiran Batch</div>
+ <div class="batch-subtitle">Class 8 Foundation</div>
+ <div class="timing-row"><span class="day-label">Tuesday</span><span class="time-label">10:00 PM – 11:30 PM</span></div>
+ <div class="timing-row"><span class="day-label">Saturday</span><span class="time-label">09:30 PM – 11:00 PM</span></div>
+ </div>
+ <div class="batch-card prabha">
+ <div class="batch-title">Prabha Batch</div>
+ <div class="batch-subtitle">Class 9 Foundation</div>
+ <div class="timing-row"><span class="day-label">Tuesday</span><span class="time-label">06:00 PM – 07:30 PM</span></div>
+ <div class="timing-row"><span class="day-label">Friday</span><span class="time-label">08:30 PM – 10:00 PM</span></div>
+ </div>
+ <div class="batch-card pradeep">
+ <div class="batch-title">Pradeep Batch</div>
+ <div class="batch-subtitle">Class 11 Target</div>
+ <div class="timing-row"><span class="day-label">Monday</span><span class="time-label">09:00 PM – 11:00 PM</span></div>
+ <div class="timing-row"><span class="day-label">Thursday</span><span class="time-label">09:00 PM – 11:00 PM</span></div>
+ </div>
+ <div class="batch-card agni">
+ <div class="batch-title">Agni Batch</div>
+ <div class="batch-subtitle">NEET Repeater</div>
+ <div class="timing-row"><span class="day-label">Wednesday</span><span class="time-label">06:00 PM – 08:00 PM</span></div>
+ <div class="timing-row"><span class="day-label">Saturday</span><span class="time-label">06:00 PM – 08:00 PM</span></div>
+ </div>
+ </div>
+ </div>
 
-  <main class="container">
-    <div class="card">
-      <h2 style="color: var(--navy);">📅 Master Batch Timetable</h2>
-      <p style="color: #64748B; font-size: 0.9rem;">General class schedule for foundation & target batches.</p>
-      
-      <div style="overflow-x: auto; margin-top: 1rem;">
-        <table>
-          <thead>
-            <tr>
-              <th>Batch Name</th>
-              <th>Day</th>
-              <th>Time Slot</th>
-              <th>Subject / Topic</th>
-              <th>Mode</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>Kiran Batch (Class 8)</strong></td><td>Monday & Thursday</td><td>05:00 PM - 06:30 PM</td><td>Physics Foundation</td><td>Offline</td></tr>
-            <tr><td><strong>Prabha Batch (Class 9)</strong></td><td>Tuesday & Friday</td><td>05:00 PM - 06:30 PM</td><td>Physics Foundation</td><td>Offline</td></tr>
-            <tr><td><strong>Tejas Batch (Class 10)</strong></td><td>Wednesday & Saturday</td><td>05:00 PM - 06:30 PM</td><td>Physics Foundation</td><td>Offline</td></tr>
-            <tr><td><strong>Pradeep Batch (Class 11)</strong></td><td>Mon, Wed, Fri</td><td>07:00 PM - 08:30 PM</td><td>JEE / NEET Physics</td><td>Offline / Hybrid</td></tr>
-            <tr><td><strong>Jyoti Batch (Class 12)</strong></td><td>Tue, Thu, Sat</td><td>07:00 PM - 08:30 PM</td><td>JEE / NEET Physics</td><td>Offline / Hybrid</td></tr>
-            <tr><td><strong>Agni Batch (Repeater)</strong></td><td>Daily (Mon - Sat)</td><td>10:00 AM - 01:00 PM</td><td>Target NEET / JEE</td><td>Offline / Online</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
+ <div class="card">
+ <div class="section-header">
+ <h2>Daily Topic & Homework Log</h2>
+ <span style="font-size: 0.85rem; color: var(--text-muted);">Updated Daily</span>
+ </div>
+ <div style="margin-top: 1rem;">
+ <div class="log-item latest">
+ <div class="log-date">Today</div>
+ <div class="log-topic">Pradeep Batch (Class 11): Rotational Motion & Moment of Inertia</div>
+ <div class="log-homework"><strong>Homework:</strong> Solve DPP #04 Questions 1 to 15.</div>
+ </div>
+ </div>
+ </div>
+ </div>
 
-  <footer>
-    <div class="footer-container">
-      <div>
-        <h3 style="color: #FFFFFF;">Vidyaalok Classes</h3>
-        <p style="color: var(--gold); font-size: 0.85rem;">The Light of Knowledge</p>
-      </div>
-      <div style="font-size: 0.88rem; color: #E2E8F0;">
-        📍 Kharagpur, West Bengal | 📞 +91 8240949137
-      </div>
-    </div>
-  </footer>
+ <footer>
+ <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
+ <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
+ </footer>
 
+ <script>
+ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+
+ document.addEventListener("DOMContentLoaded", function() {
+ if (SCRIPT_URL !== "YOUR_WEB_APP_URL_HERE") {
+ fetch(`${SCRIPT_URL}?action=getSchedule`)
+ .then(res => res.json())
+ .then(data => {
+ if (data.success && data.schedule.length > 0) {
+ const grid = document.querySelector('.batch-grid');
+ grid.innerHTML = "";
+ const batches = {};
+
+ data.schedule.forEach(row => {
+ if (!batches[row.batchKey]) {
+ batches[row.batchKey] = { name: row.batchName, sub: row.subtitle, timings: [] };
+ }
+ batches[row.batchKey].timings.push({ day: row.day, timing: row.timing });
+ });
+
+ for (let key in batches) {
+ const b = batches[key];
+ let timingRows = "";
+ b.timings.forEach(t => {
+ timingRows += `<div class="timing-row"><span class="day-label">${t.day}</span><span class="time-label">${t.timing}</span></div>`;
+ });
+ grid.innerHTML += `<div class="batch-card ${key}"><div class="batch-title">${b.name}</div><div class="batch-subtitle">${b.sub}</div>${timingRows}</div>`;
+ }
+
+ if (data.latestTopic) {
+ document.querySelector('.log-topic').textContent = `${data.latestTopic.batchName}: ${data.latestTopic.topic}`;
+ document.querySelector('.log-homework').innerHTML = `<strong>Homework:</strong> ${data.latestTopic.homework}`;
+ }
+ }
+ })
+ .catch(err => console.log("Using static schedule fallback."));
+ }
+ });
+ </script>
 </body>
 </html>
