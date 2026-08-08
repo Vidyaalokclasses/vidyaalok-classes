@@ -3,22 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Online Exams - Vidyaalok Classes</title>
+  <title>Vidyaalok Classes - The Light of Knowledge | Physics, JEE, NEET & Foundation Coaching</title>
+  
+  <!-- SEO Meta Tags for Google Search -->
+  <meta name="description" content="Vidyaalok Classes by Alokesh Nanda provides premier Physics and Foundation coaching for JEE Main, JEE Advanced, NEET, and Board exams in Kharagpur, West Bengal.">
+  <meta name="keywords" content="Vidyaalok Classes, Vidyaalok, Alokesh Nanda, Physics Coaching Kharagpur, JEE Physics, NEET Physics, Foundation Coaching Kharagpur, Board Exam Physics">
+  <meta name="author" content="Alokesh Nanda">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph Meta Tags for Social Sharing -->
+  <meta property="og:title" content="Vidyaalok Classes - The Light of Knowledge">
+  <meta property="og:description" content="Dedicated Physics, Foundation, JEE & NEET Coaching by Alokesh Nanda in Kharagpur.">
+  <meta property="og:type" content="website">
+
   <link rel="icon" type="image/jpeg" href="icon.jpg">
   <style>
     :root {
       --navy: #0B2545;
       --gold: #E5A93C;
       --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.98);
+      --card-bg: rgba(255, 255, 255, 0.92);
       --text-dark: #1E293B;
       --text-muted: #64748B;
-      --success-green: #10B981;
-      --error-red: #EF4444;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    html, body { width: 100%; overflow-x: hidden; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
 
     body {
       background-color: var(--light-bg);
@@ -27,548 +46,591 @@
       display: flex;
       flex-direction: column;
       padding-top: 75px;
+      position: relative;
     }
 
+    /* Fixed Center Background Watermark Layer */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      opacity: 0.15; /* Sharp, visible watermark opacity */
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Ensure content stays above the watermark */
+    header, section, .container, footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Fixed Top Navigation Bar */
     header {
       background-color: #FFFFFF;
-      padding: 0.6rem 1.5rem;
+      padding: 0.8rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       position: fixed;
-      top: 0; left: 0; width: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
       z-index: 1000;
     }
 
-    .brand img { height: 44px; width: auto; display: block; }
-
-    .timer-display {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--gold);
-      background: var(--navy);
-      padding: 6px 16px;
-      border-radius: 8px;
+    .brand img {
+      height: 52px;
+      width: auto;
+      display: block;
     }
 
-    .container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; width: 100%; flex: 1; }
+    nav {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--gold);
+      background-color: #F1F5F9;
+    }
+
+    .btn-portal {
+      background-color: var(--navy);
+      color: #FFFFFF !important;
+      border-radius: 6px;
+      padding: 8px 16px !important;
+    }
+
+    .btn-portal:hover {
+      background-color: #133966;
+      color: var(--gold) !important;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: rgba(11, 37, 69, 0.96);
+      color: white;
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .hero .tagline {
+      font-size: 1.2rem;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 0 auto 2rem auto;
+      color: #E2E8F0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background-color: var(--gold);
+      color: var(--navy);
+      padding: 12px 25px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #E6364B;
+      color: #FFFFFF;
+    }
+
+    .btn-secondary {
+      border: 2px solid #FFFFFF;
+      color: #FFFFFF;
+      padding: 10px 22px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background-color: #FFFFFF;
+      color: var(--navy);
+    }
+
+    /* Container & Cards */
+    .container {
+      max-width: 1000px;
+      margin: 2.5rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+
+    .section-title {
+      text-align: center;
+      color: var(--navy);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 60px;
+      height: 3px;
+      background-color: var(--gold);
+      margin: 6px auto 0 auto;
+      border-radius: 2px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
 
     .card {
       background: var(--card-bg);
+      backdrop-filter: blur(8px);
       border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
-    }
-
-    .btn {
-      background-color: var(--navy);
-      color: #FFFFFF;
-      padding: 8px 16px;
-      border-radius: 6px;
-      border: none;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn:disabled { background-color: #94A3B8 !important; cursor: not-allowed; }
-    .btn-submit { background-color: var(--success-green); width: 100%; font-size: 1.05rem; padding: 12px; }
-    .btn-wa { background-color: #25D366 !important; margin-top: 15px; font-size: 1rem; padding: 10px 20px; }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(11, 37, 69, 0.85);
-      backdrop-filter: blur(4px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      padding: 1rem;
-    }
-
-    .modal-box {
-      background: #FFFFFF;
-      border-radius: 12px;
-      max-width: 650px;
-      width: 100%;
       padding: 1.8rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      max-height: 90vh;
-      overflow-y: auto;
+      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.06);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .modal-box h2 { color: var(--navy); margin-bottom: 0.8rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.4rem; }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin: 1rem 0;
-      background: #F8FAFC;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #E2E8F0;
-      font-size: 0.9rem;
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(11, 37, 69, 0.12);
     }
 
-    .rules-list { margin: 1rem 0; padding-left: 1.2rem; font-size: 0.92rem; color: #334155; }
-    .rules-list li { margin-bottom: 0.5rem; }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
 
-    .warning-banner {
-      position: fixed;
-      top: 70px; left: 50%;
-      transform: translateX(-50%);
-      background: #EF4444;
-      color: #FFFFFF;
-      padding: 10px 20px;
-      border-radius: 8px;
+    .card h3 {
+      color: var(--navy);
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
       font-weight: 700;
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-      z-index: 3000;
-      display: none;
-      text-align: center;
-      width: 90%;
-      max-width: 600px;
     }
 
-    .split-layout { display: flex; gap: 1.2rem; align-items: flex-start; }
-    .pdf-pane { flex: 1.3; min-width: 0; }
-    .omr-pane { flex: 0.9; min-width: 0; background: #FFF; padding: 1.2rem; border-radius: 10px; border: 1px solid #CBD5E1; }
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
 
-    .omr-row {
+    .course-badge {
+      display: inline-block;
+      background-color: #FEF3C7;
+      color: #92400E;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--navy);
+      color: #94A3B8;
+      padding: 2.5rem 1rem;
+      border-top: 3px solid var(--gold);
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1000px;
+      margin: 0 auto;
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px dashed #E2E8F0;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: left;
     }
 
-    .omr-q-num { font-weight: 700; color: var(--navy); width: 60px; }
-    .omr-opts { display: flex; gap: 8px; }
-
-    .omr-btn {
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      border: 1px solid #CBD5E1;
-      background: #F8FAFC;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.85rem;
-      cursor: pointer;
+    .footer-copyright {
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 2rem;
+      padding-top: 1rem;
+      font-size: 0.8rem;
+      color: #64748B;
     }
 
-    .omr-btn.selected { background: var(--navy); color: #FFF; border-color: var(--navy); }
-    .num-input { width: 120px; padding: 6px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
+    /* Mobile Responsive Rules */
+    @media screen and (max-width: 768px) {
+      body {
+        padding-top: 125px;
+      }
 
-    @media screen and (max-width: 900px) {
-      .split-layout { flex-direction: column !important; }
-      .pdf-pane, .omr-pane { width: 100% !important; flex: none !important; }
-      .pdf-pane iframe { height: 450px !important; }
-      .info-grid { grid-template-columns: 1fr; }
+      /* Prominent Mobile Watermark */
+      body::before {
+        width: 360px !important;
+        height: 360px !important;
+        opacity: 0.22 !important; /* Increased opacity for clear mobile visibility */
+      }
+
+      header {
+        flex-direction: column !important;
+        padding: 0.8rem 1rem !important;
+        gap: 0.8rem !important;
+        align-items: center !important;
+      }
+
+      .brand img {
+        height: 40px !important;
+        width: auto !important;
+      }
+
+      nav {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 0.4rem 0.6rem !important;
+        width: 100% !important;
+      }
+
+      nav a {
+        font-size: 0.82rem !important;
+        padding: 5px 8px !important;
+        white-space: nowrap !important;
+      }
+
+      .btn-portal {
+        padding: 6px 12px !important;
+        font-size: 0.85rem !important;
+      }
+
+      .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 1rem !important;
+        margin: 1.5rem auto !important;
+      }
+
+      .section-title {
+        font-size: 1.5rem !important;
+        margin-bottom: 1.2rem !important;
+      }
+
+      .grid-3, .grid-4 {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+      }
+
+      .card {
+        padding: 1.2rem !important;
+        margin-bottom: 1rem !important;
+        width: 100% !important;
+      }
+
+      .hero {
+        padding: 2rem 1rem !important;
+      }
+
+      .hero h1 {
+        font-size: 1.7rem !important;
+      }
+
+      .hero .tagline {
+        font-size: 0.95rem !important;
+      }
+
+      .hero p {
+        font-size: 0.9rem !important;
+        margin-bottom: 1.2rem !important;
+      }
+
+      .hero-buttons {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 0.6rem !important;
+      }
+
+      .hero-buttons a {
+        width: 100% !important;
+        text-align: center !important;
+      }
+
+      .footer-container {
+        flex-direction: column !important;
+        text-align: center !important;
+        align-items: center !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="warning-banner" class="warning-banner">
-    ⚠️ WARNING! Tab switching detected (<span id="switch-count">0</span>). Repeatedly leaving the exam window is monitored!
-  </div>
-
+  <!-- Fixed Header Navigation -->
   <header>
     <div class="brand">
-      <a href="dashboard.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
     </div>
-    <div id="timer-box" style="display:none;" class="timer-display">
-      ⏱️ <span id="time-left">00:00:00</span>
-    </div>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="schedule.html">Schedule</a>
+      <a href="notes.html">Class Notes</a>
+      <a href="exam.html">Online Exams</a>
+      <a href="#about">About</a>
+      <a href="#courses">Courses</a>
+      <a href="#contact">Contact</a>
+      <a href="login.html" class="btn-portal">Student Portal</a>
+    </nav>
   </header>
 
-  <main class="container">
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>VIDYAALOK CLASSES</h1>
+    <div class="tagline">The Light of Knowledge</div>
+    <p>Empowering students through strong conceptual clarity, continuous evaluation, and dedicated mentorship for Board Exams, JEE, NEET, and Foundation Courses.</p>
+    <div class="hero-buttons">
+      <a href="#courses" class="btn-primary">Explore Batches</a>
+      <a href="https://wa.me/918240949137?text=Hello%20Vidyaalok%20Classes,%20I%20want%20to%20inquire%20about%20admissions." target="_blank" class="btn-secondary">Admission Inquiry</a>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <div class="container">
     
-    <div id="exam-portal" class="card">
-      <h2 style="color: var(--navy); margin-bottom: 1rem;">📋 Active Assigned Examinations</h2>
-      <div id="exam-list">Fetching active exams...</div>
-    </div>
-
-    <div id="active-test-container" class="card" style="display: none;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; flex-wrap:wrap; gap:10px;">
-        <div>
-          <h2 id="active-test-title" style="color: var(--navy);"></h2>
-          <p id="active-test-info" style="color: var(--text-muted); font-size: 0.88rem;"></p>
-        </div>
-        <button id="btn-finish-subj" class="btn" style="display:none; background:#25D366;" onclick="finishSubjectiveExam(false)">Finish & Submit Test</button>
+    <!-- Why Vidyaalok Section -->
+    <h2 class="section-title">Why Vidyaalok Classes?</h2>
+    <div class="grid-4">
+      <div class="card">
+        <div class="feature-icon">🎯</div>
+        <h3>Concept Mastery</h3>
+        <p>In-depth conceptual learning with targeted focus on analytical problem-solving skills.</p>
       </div>
-
-      <div class="split-layout" id="exam-split-layout">
-        <div class="pdf-pane" id="pdf-pane">
-          <iframe id="pdf-viewer" src="" width="100%" height="650px" style="border:1px solid #CBD5E1; border-radius:8px;"></iframe>
-        </div>
-
-        <div class="omr-pane" id="omr-pane" style="display:none;">
-          <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.4rem;">🎯 Answer Sheet (OMR)</h3>
-          <form id="omr-form">
-            <div id="omr-rows-container" style="max-height: 480px; overflow-y: auto; padding-right: 5px; margin-bottom: 1rem;"></div>
-            <button type="submit" class="btn btn-submit">Submit MCQ Exam</button>
-          </form>
-        </div>
+      <div class="card">
+        <div class="feature-icon">👨‍🏫</div>
+        <h3>Expert Faculty</h3>
+        <p>Personalized mentorship ensuring every student's queries and doubts are resolved promptly.</p>
+      </div>
+      <div class="card">
+        <div class="feature-icon">📊</div>
+        <h3>Regular Testing</h3>
+        <p>Weekly chapter tests, rank tracking, and detailed performance insights for parents.</p>
+      </div>
+      <div class="card">
+        <div class="feature-icon">💻</div>
+        <h3>Digital Portal</h3>
+        <p>Interactive exam engine, PDF study materials, schedule tracking, and daily topic logs.</p>
       </div>
     </div>
 
-    <div id="subj-complete-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
-      <h2 id="subj-status-title" style="color: var(--navy); margin-bottom: 0.6rem;"></h2>
-      <p style="color: var(--text-dark); margin-bottom: 1rem; max-width: 600px; margin-left:auto; margin-right:auto;">
-        The question paper is now locked. Take clear photos of your written answer pages and send them via WhatsApp immediately for evaluation.
-      </p>
-      <a id="wa-submit-btn" href="#" target="_blank" class="btn btn-wa">📱 Send Answer Sheets on WhatsApp</a>
-      <br><br>
-      <a href="dashboard.html" class="btn">Return to Dashboard</a>
-    </div>
-
-    <div id="result-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
-      <h2 style="color: var(--navy); margin-bottom: 0.8rem;">🎉 Exam Submitted Successfully!</h2>
-      <div id="score-summary" style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dark);"></div>
-      <a href="dashboard.html" class="btn">Return to Dashboard</a>
-    </div>
-
-  </main>
-
-  <div id="instructions-modal" class="modal-overlay">
-    <div class="modal-box">
-      <h2 id="modal-exam-title">Exam Details & Instructions</h2>
+    <!-- About Us & Lead Faculty Section -->
+    <section id="about" class="card" style="margin-top: 2rem;">
+      <h2 class="section-title">About Vidyaalok Classes & Lead Faculty</h2>
       
-      <div class="info-grid">
-        <div><strong>Batch Assigned:</strong> <span id="modal-batch">-</span></div>
-        <div><strong>Exam Type:</strong> <span id="modal-type">-</span></div>
-        <div><strong>Duration:</strong> <span id="modal-duration">-</span></div>
-        <div><strong>Expiry Date:</strong> <span id="modal-expiry">-</span></div>
+      <div style="display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; margin-top: 1rem;">
+        
+        <!-- Faculty Photo -->
+        <div style="flex: 0 0 200px; margin: 0 auto; text-align: center;">
+          <img src="faculty-photo.jpg" alt="Alokesh Nanda - Lead Physics Faculty" style="width: 180px; height: 220px; object-fit: cover; border-radius: 12px; border: 3px solid var(--navy); box-shadow: 0 4px 12px rgba(11, 37, 69, 0.15);">
+          <div style="margin-top: 8px; font-weight: 700; color: var(--navy); font-size: 1rem;">Alokesh Nanda</div>
+          <div style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">Physics Faculty (JEE/NEET)</div>
+        </div>
+
+        <!-- Faculty Biography -->
+        <div style="flex: 1; min-width: 280px;">
+          <p style="font-size: 1rem; line-height: 1.6; color: var(--text-dark); margin-bottom: 0.8rem;">
+            <strong>Vidyaalok Classes</strong> ("The Light of Knowledge") provides rigorous, concept-driven coaching for Foundation programs (Classes 8–10), Board Exams (Classes 11–12), and competitive entrance exams including JEE Main, JEE Advanced, and NEET.
+          </p>
+
+          <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 0.8rem;">
+            The institute is guided by <strong>Alokesh Nanda</strong>, Physics Integrated Faculty at Narayana International School with over 8 years of specialized experience in JEE/NEET mentoring. An alumnus of <strong>Ramakrishna Mission Institutions</strong> (Midnapore & Rahara) and <strong>Hyderabad Central University (M.Sc. Physics)</strong>, he holds a B.Ed. degree and was awarded the prestigious <strong>DST-INSPIRE Higher Education Scholarship</strong> by the Govt. of India after clearing both JEE and WBJEE.
+          </p>
+
+          <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);">
+            Having served as an EdTech Project Leader and Content Strategist developing advanced problem-solving modules for top platforms like Vedantu, Unacademy, and Doubtnut, he brings cutting-edge pedagogy and structured problem-solving to Vidyaalok Classes.
+          </p>
+        </div>
       </div>
 
-      <h3 style="color: var(--navy); font-size: 1rem; margin-top: 0.8rem;">📌 Important Guidelines:</h3>
-      <ul class="rules-list">
-        <li><strong>Automatic Timer:</strong> When the duration expires (00:00:00), the question paper will automatically lock and close.</li>
-        <li id="rule-type-desc"><strong>Subjective Test:</strong> Write your answers clearly on physical paper. Once completed or when time expires, submit the answer sheet photos on WhatsApp.</li>
-        <li><strong>Proctored Environment:</strong> Do not switch tabs or open other applications during the test. Tab switching is logged and flagged.</li>
-        <li><strong>Single Attempt Rule:</strong> Ensure a stable internet connection before starting.</li>
-      </ul>
+      <!-- Key Badges Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+        <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--navy);">
+          <strong style="color: var(--navy); display: block; font-size: 0.95rem; margin-bottom: 2px;">🎓 Elite Pedagogy</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Rooted in Ramakrishna Mission values and HCU academic rigor.</span>
+        </div>
+        <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--gold);">
+          <strong style="color: var(--navy); display: block; font-size: 0.95rem; margin-bottom: 2px;">🏆 Proven Track Record</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">DST-INSPIRE Scholar and JEE/WBJEE ranker with 8+ years experience.</span>
+        </div>
+        <div style="background: #F8FAFC; padding: 1rem; border-radius: 8px; border-left: 4px solid #16A34A;">
+          <strong style="color: var(--navy); display: block; font-size: 0.95rem; margin-bottom: 2px;">💻 EdTech Curriculum</strong>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Former EdTech Content Leader for national learning platforms.</span>
+        </div>
+      </div>
+    </section>
 
-      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:1.2rem;">
-        <button class="btn" style="background:#94A3B8;" onclick="closeModal()">Cancel</button>
-        <button class="btn" style="background:var(--success-green);" onclick="confirmStartExam()">I Agree & Start Test</button>
+    <!-- Course Offerings Section -->
+    <h2 class="section-title" id="courses" style="margin-top: 3rem;">Offered Batches & Programs</h2>
+    <div class="grid-3">
+      
+      <!-- Class 8: Kiran Batch -->
+      <div class="card">
+        <span class="course-badge">Class 8 Foundation</span>
+        <h3>Kiran Batch</h3>
+        <p style="margin-bottom: 0.8rem;"><em>"The First Ray of Knowledge"</em> — Sparking scientific curiosity and strengthening core fundamentals early.</p>
+        <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+          <li>Strong Concept Building & Curiosity Development</li>
+          <li>Interactive Problem-Solving Exercises</li>
+          <li>Weekly Assessments & Practice Worksheets</li>
+        </ul>
+      </div>
+
+      <!-- Class 9: Prabha Batch -->
+      <div class="card">
+        <span class="course-badge">Class 9 Foundation</span>
+        <h3>Prabha Batch</h3>
+        <p style="margin-bottom: 0.8rem;"><em>"Radiance of Understanding"</em> — Expanding analytical skills and preparing early for competitive excellence.</p>
+        <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+          <li>In-depth Board & Olympiad Foundation</li>
+          <li>Analytical Thinking & Application Practice</li>
+          <li>Regular Daily Practice Problems (DPPs)</li>
+        </ul>
+      </div>
+
+      <!-- Class 10: Tejas Batch -->
+      <div class="card">
+        <span class="course-badge">Class 10 Foundation</span>
+        <h3>Tejas Batch</h3>
+        <p style="margin-bottom: 0.8rem;"><em>"Brilliance & Mastery"</em> — Target batch for Class 10 Board perfection and seamless transition to Senior Secondary.</p>
+        <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+          <li>100% Board Exam Syllabus Mastery</li>
+          <li>Mock Board Test Series & Paper Presentation</li>
+          <li>NTSE & Entrance Orientation</li>
+        </ul>
+      </div>
+
+      <!-- Class 11: Pradeep Batch -->
+      <div class="card">
+        <span class="course-badge">Class 11 Target</span>
+        <h3>Pradeep Batch</h3>
+        <p style="margin-bottom: 0.8rem;"><em>"The Steady Flame"</em> — Comprehensive 2-year preparation building advanced conceptual depth for JEE & NEET.</p>
+        <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+          <li>Advanced Chapter Modules & Problem Sets</li>
+          <li>Integrated School & Entrance Exam Support</li>
+          <li>Digital Test Engine Practice & Analysis</li>
+        </ul>
+      </div>
+
+      <!-- Class 12: Jyoti Batch -->
+      <div class="card">
+        <span class="course-badge">Class 12 Target</span>
+        <h3>Jyoti Batch</h3>
+        <p style="margin-bottom: 0.8rem;"><em>"Illumination & Rank Peak"</em> — Synchronized focus on Senior Secondary Board results and competitive rank boosting.</p>
+        <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+          <li>Full Board & Entrance Syllabus Completion</li>
+          <li>Full-Length Mock Tests & Time Management</li>
+          <li>Rank Analytics & Personalized Mentorship</li>
+        </ul>
+      </div>
+
+      <!-- Repeater: Agni Batch -->
+      <div class="card">
+        <span class="course-badge">Class 12 Pass / Droppers</span>
+        <h3>Agni Batch</h3>
+        <p style="margin-bottom: 0.8rem;"><em>"Fire of Determination"</em> — High-intensity 1-year repeater program tailored for maximum speed and rank explosion.</p>
+        <ul style="color: var(--text-muted); font-size: 0.88rem; padding-left: 1.2rem; line-height: 1.6;">
+          <li>Rapid Syllabus Revision & Advanced Problem Sets</li>
+          <li>All-India Pattern Mock Test Series</li>
+          <li>Dedicated One-on-One Doubt Clearing</li>
+        </ul>
       </div>
     </div>
   </div>
 
-  <script>
-    const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
-    
-    let activeExamObj = null;
-    let selectedExamForModal = null;
-    let timerInterval = null;
-    let studentResponses = {};
-    let tabSwitchCount = 0;
-    let isExamActive = false;
+  <!-- Contact & Footer Section -->
+  <footer id="contact">
+    <div class="footer-container">
+      <!-- Brand Info -->
+      <div>
+        <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: 4px;">Vidyaalok Classes</h3>
+        <p style="color: var(--gold); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">The Light of Knowledge</p>
+        <p style="color: #64748B; font-size: 0.85rem; margin-top: 6px;">Dedicated Coaching for Foundation, Board & Competitive Exams</p>
+      </div>
 
-    document.addEventListener("DOMContentLoaded", async function() {
-      const studentId = localStorage.getItem("studentId");
-      if (!studentId) { window.location.href = "login.html"; return; }
+      <!-- Direct Contact Details -->
+      <div style="display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.95rem;">
+        <div style="color: #E2E8F0;">
+          📞 <strong>Call / Phone:</strong> <a href="tel:8240949137" style="color: #FFFFFF; text-decoration: none;">+91 8240949137</a>
+        </div>
+        <div style="color: #E2E8F0;">
+          ✉️ <strong>Email ID:</strong> <a href="mailto:vidyaalokclasses@gmail.com" style="color: #FFFFFF; text-decoration: none;">vidyaalokclasses@gmail.com</a>
+        </div>
+        <div style="color: #E2E8F0;">
+          📍 <strong>Location / Base:</strong> Kharagpur, West Bengal, India, Pin-721301
+        </div>
+      </div>
 
-      const savedTimerState = localStorage.getItem(`active_exam_timer_${studentId}`);
-
-      try {
-        const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
-        const data = await response.json();
-
-        if (data.status === "success" && data.student.exams) {
-          renderExamList(data.student.exams);
-
-          if (savedTimerState) {
-            const state = JSON.parse(savedTimerState);
-            const matchExam = data.student.exams.find(e => e.examId === state.examId);
-            if (matchExam && matchExam.canAttempt && Date.now() < state.endTimestamp) {
-              startExam(matchExam, state.endTimestamp);
-            } else {
-              localStorage.removeItem(`active_exam_timer_${studentId}`);
-            }
-          }
-        } else {
-          document.getElementById("exam-list").innerHTML = "<p style='text-align:center;'>No active exams assigned at this moment.</p>";
-        }
-      } catch (e) {
-        document.getElementById("exam-list").innerHTML = "<p style='text-align:center;'>Error loading exams.</p>";
-      }
-    });
-
-    document.addEventListener("visibilitychange", function() {
-      if (isExamActive && document.hidden) {
-        tabSwitchCount++;
-        document.getElementById("switch-count").textContent = tabSwitchCount;
-        const banner = document.getElementById("warning-banner");
-        banner.style.display = "block";
-
-        setTimeout(() => { banner.style.display = "none"; }, 5000);
-      }
-    });
-
-    function renderExamList(exams) {
-      const listDiv = document.getElementById("exam-list");
-      if (!exams || exams.length === 0) {
-        listDiv.innerHTML = "<p style='text-align:center;'>No active exams assigned to your batch right now.</p>";
-        return;
-      }
-
-      listDiv.innerHTML = "";
-      exams.forEach(exam => {
-        const attemptsText = exam.maxAttempts === -1 ? "Unlimited Attempts" : `Attempts: ${exam.userAttempts} / ${exam.maxAttempts}`;
-        const btnState = exam.canAttempt 
-          ? `<button class="btn" onclick='openInstructionsModal(${JSON.stringify(exam)})'>View Details & Start</button>` 
-          : `<button class="btn" disabled>Attempted (${exam.userAttempts}/${exam.maxAttempts})</button>`;
-
-        listDiv.innerHTML += `
-          <div style="border-bottom: 1px solid #E2E8F0; padding: 14px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <div>
-              <strong style="font-size: 1.05rem; color: var(--navy);">${exam.title}</strong>
-              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
-                Batch: <strong>${exam.batch}</strong> | Type: <strong>${exam.type}</strong> | Duration: ${exam.duration} Mins | ${attemptsText}
-              </div>
-            </div>
-            <div>${btnState}</div>
-          </div>
-        `;
-      });
-    }
-
-    function openInstructionsModal(exam) {
-      if (!exam.canAttempt) {
-        alert("Maximum attempt limit reached for this exam.");
-        return;
-      }
-      selectedExamForModal = exam;
-      document.getElementById("modal-exam-title").textContent = exam.title;
-      document.getElementById("modal-batch").textContent = exam.batch;
-      document.getElementById("modal-type").textContent = exam.type;
-      document.getElementById("modal-duration").textContent = exam.duration + " Minutes";
-      document.getElementById("modal-expiry").textContent = exam.expiry;
-
-      const ruleDesc = document.getElementById("rule-type-desc");
-      if (exam.type === "SUBJECTIVE") {
-        ruleDesc.innerHTML = "<strong>Subjective Test:</strong> Read the paper on screen, write answers on paper, and send photos on WhatsApp upon completion.";
-      } else {
-        ruleDesc.innerHTML = "<strong>MCQ / Objective Test:</strong> Mark your choices on the right-hand OMR panel. It auto-grades upon submission.";
-      }
-
-      document.getElementById("instructions-modal").style.display = "flex";
-    }
-
-    function closeModal() {
-      document.getElementById("instructions-modal").style.display = "none";
-      selectedExamForModal = null;
-    }
-
-    function confirmStartExam() {
-      if (selectedExamForModal) {
-        const exam = selectedExamForModal;
-        closeModal();
-        startExam(exam);
-      }
-    }
-
-    function startExam(exam, existingEndTime = null) {
-      if (!exam.canAttempt && !existingEndTime) {
-        alert("Maximum attempt limit reached for this exam.");
-        return;
-      }
-
-      activeExamObj = exam;
-      studentResponses = {};
-      isExamActive = true;
-      const studentId = localStorage.getItem("studentId");
-
-      document.getElementById("exam-portal").style.display = "none";
-      document.getElementById("active-test-container").style.display = "block";
-      document.getElementById("active-test-title").textContent = exam.title;
-      document.getElementById("active-test-info").textContent = `Batch: ${exam.batch} | Duration: ${exam.duration} Mins | Type: ${exam.type}`;
-
-      document.getElementById("pdf-viewer").src = exam.content;
-
-      const pdfPane = document.getElementById("pdf-pane");
-      const omrPane = document.getElementById("omr-pane");
-      const btnFinishSubj = document.getElementById("btn-finish-subj");
-
-      if (exam.type === "SUBJECTIVE") {
-        pdfPane.style.flex = "1";
-        omrPane.style.display = "none";
-        btnFinishSubj.style.display = "inline-block";
-      } else {
-        pdfPane.style.flex = "1.3";
-        omrPane.style.display = "block";
-        btnFinishSubj.style.display = "none";
-        renderOMRGrid(exam.answerKey);
-      }
-
-      let endTimestamp = existingEndTime;
-      if (!endTimestamp) {
-        endTimestamp = Date.now() + (parseInt(exam.duration) * 60 * 1000);
-        localStorage.setItem(`active_exam_timer_${studentId}`, JSON.stringify({
-          examId: exam.examId,
-          endTimestamp: endTimestamp
-        }));
-      }
-
-      document.getElementById("timer-box").style.display = "block";
-      
-      timerInterval = setInterval(function() {
-        const diff = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
-        if (diff <= 0) {
-          clearInterval(timerInterval);
-          if (exam.type === "SUBJECTIVE") {
-            finishSubjectiveExam(true);
-          } else {
-            submitMCQExam();
-          }
-          return;
-        }
-        const h = String(Math.floor(diff / 3600)).padStart(2, '0');
-        const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-        const s = String(diff % 60).padStart(2, '0');
-        document.getElementById("time-left").textContent = `${h}:${m}:${s}`;
-      }, 1000);
-    }
-
-    function renderOMRGrid(keys) {
-      const omrContainer = document.getElementById("omr-rows-container");
-      omrContainer.innerHTML = "";
-
-      if (!keys || keys.length === 0) {
-        omrContainer.innerHTML = "<p style='color:var(--error-red);'>AnswerKey not found in sheet for this test ID.</p>";
-        return;
-      }
-
-      keys.forEach(k => {
-        let html = `<div class="omr-row"><span class="omr-q-num">Q${k.qNo}</span>`;
-
-        if (k.type === "MCQ") {
-          html += `<div class="omr-opts">`;
-          ['A', 'B', 'C', 'D'].forEach(opt => {
-            html += `<div class="omr-btn" onclick="selectSingle(${k.qNo}, '${opt}', this)">${opt}</div>`;
-          });
-          html += `</div>`;
-        } else if (k.type === "MULTI") {
-          html += `<div class="omr-opts">`;
-          ['A', 'B', 'C', 'D'].forEach(opt => {
-            html += `<div class="omr-btn" onclick="toggleMulti(${k.qNo}, '${opt}', this)">${opt}</div>`;
-          });
-          html += `</div>`;
-        } else if (k.type === "NUMERICAL" || k.type === "INTEGER") {
-          html += `<input type="number" step="any" class="num-input" placeholder="Value" oninput="setNumResponse(${k.qNo}, this.value)">`;
-        }
-
-        html += `</div>`;
-        omrContainer.innerHTML += html;
-      });
-    }
-
-    function selectSingle(qNo, val, el) {
-      const parent = el.parentElement;
-      parent.querySelectorAll('.omr-btn').forEach(b => b.classList.remove('selected'));
-      el.classList.add('selected');
-      studentResponses[qNo] = val;
-    }
-
-    function toggleMulti(qNo, val, el) {
-      el.classList.toggle('selected');
-      const parent = el.parentElement;
-      const selectedBtns = parent.querySelectorAll('.omr-btn.selected');
-      const selectedVals = Array.from(selectedBtns).map(b => b.textContent).sort().join(',');
-      studentResponses[qNo] = selectedVals;
-    }
-
-    function setNumResponse(qNo, val) {
-      studentResponses[qNo] = val.trim();
-    }
-
-    async function finishSubjectiveExam(isTimeout) {
-      clearInterval(timerInterval);
-      isExamActive = false;
-      const studentId = localStorage.getItem("studentId");
-      localStorage.removeItem(`active_exam_timer_${studentId}`);
-
-      document.getElementById("active-test-container").style.display = "none";
-      document.getElementById("timer-box").style.display = "none";
-
-      const titleEl = document.getElementById("subj-status-title");
-      titleEl.textContent = isTimeout ? "⚠️ Time Expired!" : "✅ Test Completed!";
-      titleEl.style.color = isTimeout ? "var(--error-red)" : "var(--navy)";
-
-      const msg = encodeURIComponent(`Hello Sir, I have completed the Subjective Exam (${activeExamObj.title}) for Roll No: ${studentId}. Attached are my answer photos.`);
-      document.getElementById("wa-submit-btn").href = `https://wa.me/918240949137?text=${msg}`;
-
-      document.getElementById("subj-complete-screen").style.display = "block";
-
-      // Post attempt row to Submissions sheet
-      try {
-        await fetch(GOOGLE_WEB_APP_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({
-            action: "logSubjectiveAttempt",
-            roll: studentId,
-            examId: activeExamObj.examId,
-            examTitle: activeExamObj.title
-          })
-        });
-      } catch (e) {}
-    }
-
-    document.getElementById("omr-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      submitMCQExam();
-    });
-
-    async function submitMCQExam() {
-      clearInterval(timerInterval);
-      isExamActive = false;
-      const studentId = localStorage.getItem("studentId");
-      localStorage.removeItem(`active_exam_timer_${studentId}`);
-
-      document.getElementById("active-test-container").style.display = "none";
-      document.getElementById("timer-box").style.display = "none";
-
-      const payload = {
-        action: "submitOMRExam",
-        roll: studentId,
-        examId: activeExamObj.examId,
-        examTitle: activeExamObj.title,
-        responses: studentResponses
-      };
-
-      try {
-        const response = await fetch(GOOGLE_WEB_APP_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify(payload)
-        });
-        const res = await response.json();
-
-        if (res.status === "success") {
-          const r = res.result;
-          document.getElementById("score-summary").innerHTML = `
-            Score: <strong>${r.marksObtained} / ${r.totalMarks}</strong> (${r.percentage})<br><br>
-            Correct: <span style="color:#10B981;">${r.correct}</span> | 
-            Wrong: <span style="color:#EF4444;">${r.wrong}</span> | 
-            Unattempted: ${r.unattempted}
-          `;
-          document.getElementById("result-screen").style.display = "block";
-        }
-      } catch (e) {
-        alert("Submission recorded. Return to dashboard.");
-        window.location.href = "dashboard.html";
-      }
-    }
-  </script>
+      <!-- Instant WhatsApp Button -->
+      <div>
+        <a href="https://wa.me/918240949137?text=Hello%20Vidyaalok%20Classes,%20I%20want%20to%20inquire%20about%20admissions." 
+           target="_blank" 
+           style="background-color: #25D366; color: #FFFFFF; padding: 10px 18px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);">
+          💬 Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      © 2026 Vidyaalok Classes. All rights reserved.
+    </div>
+  </footer>
 </body>
 </html>
