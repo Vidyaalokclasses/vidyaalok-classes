@@ -80,7 +80,6 @@
     .btn-submit { background-color: var(--success-green); width: 100%; font-size: 1.05rem; padding: 12px; }
     .btn-wa { background-color: #25D366 !important; margin-top: 15px; font-size: 1rem; padding: 10px 20px; }
 
-    /* Modal Instructions Overlay */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -121,7 +120,6 @@
     .rules-list { margin: 1rem 0; padding-left: 1.2rem; font-size: 0.92rem; color: #334155; }
     .rules-list li { margin-bottom: 0.5rem; }
 
-    /* Warning Toast Bar */
     .warning-banner {
       position: fixed;
       top: 70px; left: 50%;
@@ -139,7 +137,6 @@
       max-width: 600px;
     }
 
-    /* Split Layout */
     .split-layout { display: flex; gap: 1.2rem; align-items: flex-start; }
     .pdf-pane { flex: 1.3; min-width: 0; }
     .omr-pane { flex: 0.9; min-width: 0; background: #FFF; padding: 1.2rem; border-radius: 10px; border: 1px solid #CBD5E1; }
@@ -178,7 +175,6 @@
 </head>
 <body>
 
-  <!-- Proctored Tab Switch Warning Banner -->
   <div id="warning-banner" class="warning-banner">
     ⚠️ WARNING! Tab switching detected (<span id="switch-count">0</span>). Repeatedly leaving the exam window is monitored!
   </div>
@@ -194,13 +190,11 @@
 
   <main class="container">
     
-    <!-- Active Exams List -->
     <div id="exam-portal" class="card">
       <h2 style="color: var(--navy); margin-bottom: 1rem;">📋 Active Assigned Examinations</h2>
       <div id="exam-list">Fetching active exams...</div>
     </div>
 
-    <!-- Active Test Viewport -->
     <div id="active-test-container" class="card" style="display: none;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; flex-wrap:wrap; gap:10px;">
         <div>
@@ -225,7 +219,6 @@
       </div>
     </div>
 
-    <!-- Subjective Completion Screen -->
     <div id="subj-complete-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
       <h2 id="subj-status-title" style="color: var(--navy); margin-bottom: 0.6rem;"></h2>
       <p style="color: var(--text-dark); margin-bottom: 1rem; max-width: 600px; margin-left:auto; margin-right:auto;">
@@ -236,7 +229,6 @@
       <a href="dashboard.html" class="btn">Return to Dashboard</a>
     </div>
 
-    <!-- MCQ Result Screen -->
     <div id="result-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
       <h2 style="color: var(--navy); margin-bottom: 0.8rem;">🎉 Exam Submitted Successfully!</h2>
       <div id="score-summary" style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dark);"></div>
@@ -245,7 +237,6 @@
 
   </main>
 
-  <!-- Pre-Exam Instructions Modal -->
   <div id="instructions-modal" class="modal-overlay">
     <div class="modal-box">
       <h2 id="modal-exam-title">Exam Details & Instructions</h2>
@@ -295,11 +286,10 @@
         if (data.status === "success" && data.student.exams) {
           renderExamList(data.student.exams);
 
-          // Resume active timer if reloaded
           if (savedTimerState) {
             const state = JSON.parse(savedTimerState);
             const matchExam = data.student.exams.find(e => e.examId === state.examId);
-            if (matchExam && Date.now() < state.endTimestamp) {
+            if (matchExam && matchExam.canAttempt && Date.now() < state.endTimestamp) {
               startExam(matchExam, state.endTimestamp);
             } else {
               localStorage.removeItem(`active_exam_timer_${studentId}`);
@@ -313,7 +303,6 @@
       }
     });
 
-    // Tab Switching Detection Logic
     document.addEventListener("visibilitychange", function() {
       if (isExamActive && document.hidden) {
         tabSwitchCount++;
@@ -337,7 +326,7 @@
         const attemptsText = exam.maxAttempts === -1 ? "Unlimited Attempts" : `Attempts: ${exam.userAttempts} / ${exam.maxAttempts}`;
         const btnState = exam.canAttempt 
           ? `<button class="btn" onclick='openInstructionsModal(${JSON.stringify(exam)})'>View Details & Start</button>` 
-          : `<button class="btn" disabled>Attempted</button>`;
+          : `<button class="btn" disabled>Attempted (${exam.userAttempts}/${exam.maxAttempts})</button>`;
 
         listDiv.innerHTML += `
           <div style="border-bottom: 1px solid #E2E8F0; padding: 14px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -354,6 +343,10 @@
     }
 
     function openInstructionsModal(exam) {
+      if (!exam.canAttempt) {
+        alert("Maximum attempt limit reached for this exam.");
+        return;
+      }
       selectedExamForModal = exam;
       document.getElementById("modal-exam-title").textContent = exam.title;
       document.getElementById("modal-batch").textContent = exam.batch;
@@ -385,6 +378,11 @@
     }
 
     function startExam(exam, existingEndTime = null) {
+      if (!exam.canAttempt && !existingEndTime) {
+        alert("Maximum attempt limit reached for this exam.");
+        return;
+      }
+
       activeExamObj = exam;
       studentResponses = {};
       isExamActive = true;
@@ -493,7 +491,7 @@
       studentResponses[qNo] = val.trim();
     }
 
-    function finishSubjectiveExam(isTimeout) {
+    async function finishSubjectiveExam(isTimeout) {
       clearInterval(timerInterval);
       isExamActive = false;
       const studentId = localStorage.getItem("studentId");
@@ -510,6 +508,20 @@
       document.getElementById("wa-submit-btn").href = `https://wa.me/918240949137?text=${msg}`;
 
       document.getElementById("subj-complete-screen").style.display = "block";
+
+      // Post attempt row to Submissions sheet
+      try {
+        await fetch(GOOGLE_WEB_APP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            action: "logSubjectiveAttempt",
+            roll: studentId,
+            examId: activeExamObj.examId,
+            examTitle: activeExamObj.title
+          })
+        });
+      } catch (e) {}
     }
 
     document.getElementById("omr-form").addEventListener("submit", function(e) {
