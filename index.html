@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Vidyaalok Classes - The Light of Knowledge</title>
   <link rel="icon" type="image/jpeg" href="icon.jpg">
   <style>
@@ -12,10 +12,20 @@
       --light-bg: #F1F5F9;
       --card-bg: rgba(255, 255, 255, 0.96);
       --text-dark: #1E293B;
+      --text-muted: #64748B;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 80px; }
+    html, body { width: 100%; overflow-x: hidden; }
+
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding-top: 80px;
+    }
 
     header {
       background-color: #FFFFFF;
@@ -24,33 +34,106 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      z-index: 1000;
     }
 
     .brand img { height: 48px; width: auto; display: block; }
+
     nav { display: flex; gap: 0.8rem; align-items: center; }
-    nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
-    .btn-portal { background-color: var(--navy); color: #FFFFFF !important; font-weight: 700; }
 
-    .hero { background: var(--navy); color: #FFFFFF; padding: 4rem 1.5rem; text-align: center; }
-    .hero h1 { font-size: 2.2rem; color: #FFFFFF; margin-bottom: 0.5rem; }
-    .hero p { color: var(--gold); font-size: 1.1rem; }
+    nav a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
 
-    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; flex: 1; }
+    .btn-portal {
+      background-color: var(--navy);
+      color: #FFFFFF !important;
+      font-weight: 700;
+    }
 
-    footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
-    .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; }
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #133B6B 100%);
+      color: #FFFFFF;
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 { font-size: 2.5rem; margin-bottom: 0.6rem; color: #FFFFFF; }
+    .hero p { font-size: 1.15rem; color: var(--gold); max-width: 650px; margin: 0 auto 1.5rem auto; font-weight: 600; }
+
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; flex: 1; }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
+    }
+
+    .section-title {
+      color: var(--navy);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 0.5rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-box {
+      background: #F8FAFC;
+      border-left: 4px solid var(--gold);
+      padding: 1.2rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .feature-box h3 { color: var(--navy); margin-bottom: 0.4rem; }
+
+    footer {
+      background-color: var(--navy);
+      color: #94A3B8;
+      padding: 2rem 1rem;
+      border-top: 3px solid var(--gold);
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+    }
 
     @media screen and (max-width: 768px) {
       body { padding-top: 110px; }
       header { flex-direction: column; padding: 0.5rem; gap: 0.5rem; }
+      .hero h1 { font-size: 1.8rem; }
       .footer-container { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Cleaned Header Navigation -->
+  <!-- Cleaned Header Navigation (Only Online Exams & Class Notes removed) -->
   <header>
     <div class="brand">
       <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
@@ -62,20 +145,57 @@
     </nav>
   </header>
 
+  <!-- Hero Banner -->
   <section class="hero">
     <h1>Vidyaalok Classes</h1>
-    <p>The Light of Knowledge | Physics Coaching for JEE, NEET & Foundations</p>
+    <p>The Light of Knowledge | Conceptual Physics for Board, NEET & JEE Foundations</p>
+    <a href="login.html" class="btn-portal" style="padding: 10px 24px; border-radius: 6px; text-decoration: none; display: inline-block;">Login to Student Portal</a>
   </section>
 
   <main class="container">
-    <div style="background: #FFF; padding: 2rem; border-radius: 12px; border: 1px solid #E2E8F0; text-align: center;">
-      <h2 style="color: var(--navy); margin-bottom: 0.5rem;">Welcome to Vidyaalok Classes</h2>
-      <p style="color: #64748B;">Please log in to your student portal to access your batch schedule, notices, homework assignments, class notes, and online exams.</p>
-      <br>
-      <a href="login.html" class="btn-portal" style="padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">Login to Student Portal</a>
+    
+    <!-- About Vidyaalok Classes -->
+    <div class="section-card">
+      <h2 class="section-title">About Vidyaalok Classes</h2>
+      <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-dark);">
+        Vidyaalok Classes is dedicated to shedding light on fundamental scientific concepts, making physics engaging, intuitive, and application-oriented for students across Class 8 to Class 12, as well as NEET/JEE repeaters. Our mission is to bridge conceptual clarity with structured problem-solving to help every student excel in academic and competitive examinations.
+      </p>
     </div>
+
+    <!-- Why Choose Vidyaalok Classes -->
+    <div class="section-card">
+      <h2 class="section-title">Why Choose Vidyaalok?</h2>
+      <div class="grid-2">
+        <div class="feature-box">
+          <h3>🎯 Concept-Driven Pedagogy</h3>
+          <p>Focus on core physical principles, derivation mechanics, and numerical confidence rather than rote memorization.</p>
+        </div>
+        <div class="feature-box">
+          <h3>📚 Structured Batch Progression</h3>
+          <p>Tailored curriculum designed for Foundation (Class 8-10), Target (Class 11-12), and Repeater (Agni Batch) students.</p>
+        </div>
+        <div class="feature-box">
+          <h3>📊 Hybrid Evaluation Portal</h3>
+          <p>Automated OMR marking for objective tests along with personalized evaluation for subjective answer sheets.</p>
+        </div>
+        <div class="feature-box">
+          <h3>📱 Direct Student Dashboard</h3>
+          <p>Access batch notices, weekly DPPs, lecture study notes, and test performance matrices in one dedicated location.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- About the Educator -->
+    <div class="section-card">
+      <h2 class="section-title">About the Educator</h2>
+      <p style="font-size: 1.05rem; line-height: 1.7; color: var(--text-dark);">
+        Led by <strong>Alokesh Nanda</strong>, Senior Physics Educator holding an M.Sc in Physics from the University of Hyderabad and a Bachelor of Education (B.Ed.). With years of teaching experience across premier senior secondary institutions and coaching centers, he specializes in simplifying complex physical phenomena, building rigorous problem-solving skills, and mentoring students towards competitive excellence in NEET, JEE, and Board Examinations.
+      </p>
+    </div>
+
   </main>
 
+  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div>
