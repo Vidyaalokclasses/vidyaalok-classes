@@ -10,7 +10,7 @@
       --navy: #0B2545;
       --gold: #E5A93C;
       --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.96);
+      --card-bg: rgba(255, 255, 255, 0.98);
       --text-dark: #1E293B;
       --text-muted: #64748B;
       --success-green: #10B981;
@@ -26,26 +26,8 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-top: 80px;
-      position: relative;
+      padding-top: 75px;
     }
-
-    body::before {
-      content: "";
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px; height: 600px;
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: contain;
-      opacity: 0.10;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    header, main, footer { position: relative; z-index: 1; }
 
     header {
       background-color: #FFFFFF;
@@ -54,13 +36,12 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       position: fixed;
       top: 0; left: 0; width: 100%;
       z-index: 1000;
     }
 
-    .brand img { height: 48px; width: auto; display: block; }
+    .brand img { height: 44px; width: auto; display: block; }
 
     .timer-display {
       font-size: 1.1rem;
@@ -71,11 +52,10 @@
       border-radius: 8px;
     }
 
-    .container { max-width: 1000px; margin: 1.5rem auto; padding: 0 1rem; width: 100%; flex: 1; }
+    .container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; width: 100%; flex: 1; }
 
     .card {
       background: var(--card-bg);
-      backdrop-filter: blur(8px);
       border-radius: 12px;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
@@ -96,46 +76,52 @@
       display: inline-block;
     }
 
-    .btn:disabled {
-      background-color: #94A3B8 !important;
-      cursor: not-allowed;
+    .btn:disabled { background-color: #94A3B8 !important; cursor: not-allowed; }
+    .btn-submit { background-color: var(--success-green); width: 100%; font-size: 1.05rem; padding: 12px; }
+    .btn-wa { background-color: #25D366 !important; margin-top: 15px; font-size: 1rem; padding: 10px 20px; }
+
+    .split-layout {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
     }
 
-    .btn-wa { background-color: #25D366 !important; }
+    .pdf-pane { flex: 1.3; min-width: 0; }
+    .omr-pane { flex: 0.9; min-width: 0; background: #FFF; padding: 1.2rem; border-radius: 10px; border: 1px solid #CBD5E1; }
 
-    .q-box {
-      border-bottom: 1px solid #E2E8F0;
-      padding: 1rem 0;
-      margin-bottom: 1rem;
+    .omr-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed #E2E8F0;
     }
 
-    .q-box h4 { margin-bottom: 0.6rem; color: var(--navy); }
+    .omr-q-num { font-weight: 700; color: var(--navy); width: 60px; }
+    .omr-opts { display: flex; gap: 8px; }
 
-    .opt-item {
-      display: block;
-      margin: 0.4rem 0;
-      font-size: 0.92rem;
+    .omr-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1px solid #CBD5E1;
+      background: #F8FAFC;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem;
       cursor: pointer;
     }
 
-    .num-input {
-      padding: 8px 12px;
-      border: 1px solid #CBD5E1;
-      border-radius: 6px;
-      font-size: 1rem;
-      width: 160px;
-    }
+    .omr-btn.selected { background: var(--navy); color: #FFF; border-color: var(--navy); }
+    .num-input { width: 120px; padding: 6px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
 
-    @media screen and (max-width: 768px) {
-      body { padding-top: 110px; }
-      header { flex-direction: column !important; padding: 0.5rem !important; gap: 0.5rem !important; }
-      .brand img { height: 38px !important; }
+    @media screen and (max-width: 900px) {
+      .split-layout { flex-direction: column !important; }
+      .pdf-pane, .omr-pane { width: 100% !important; flex: none !important; }
+      .pdf-pane iframe { height: 450px !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header Navigation -->
   <header>
     <div class="brand">
       <a href="dashboard.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
@@ -147,40 +133,55 @@
 
   <main class="container">
     
-    <!-- Exam Selector List -->
+    <!-- Active Exams List -->
     <div id="exam-portal" class="card">
       <h2 style="color: var(--navy); margin-bottom: 1rem;">📋 Active Assigned Examinations</h2>
       <div id="exam-list">Fetching active exams...</div>
     </div>
 
-    <!-- Active Exam Interface Container -->
+    <!-- Active Test Viewport -->
     <div id="active-test-container" class="card" style="display: none;">
-      <h2 id="active-test-title" style="color: var(--navy); margin-bottom: 0.5rem;"></h2>
-      <p id="active-test-info" style="color: var(--text-muted); margin-bottom: 1.2rem; font-size: 0.9rem;"></p>
-
-      <!-- Subjective Mode (PDF Viewer) -->
-      <div id="subjective-frame" style="display:none;">
-        <iframe id="pdf-viewer" src="" width="100%" height="600px" style="border:1px solid #CBD5E1; border-radius:8px;"></iframe>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h2 id="active-test-title" style="color: var(--navy);"></h2>
+          <p id="active-test-info" style="color: var(--text-muted); font-size: 0.88rem;"></p>
+        </div>
+        <button id="btn-finish-subj" class="btn" style="display:none; background:#25D366;" onclick="finishSubjectiveExam(false)">Finish & Submit Test</button>
       </div>
 
-      <!-- MCQ Mode (Dynamic Question Paper) -->
-      <div id="mcq-frame" style="display:none;">
-        <form id="mcq-form">
-          <div id="mcq-questions-container"></div>
-          <button type="submit" class="btn" style="margin-top: 1rem; width: 100%;">Submit Answer Paper</button>
-        </form>
-      </div>
+      <div class="split-layout" id="exam-split-layout">
+        <!-- PDF Pane -->
+        <div class="pdf-pane" id="pdf-pane">
+          <iframe id="pdf-viewer" src="" width="100%" height="650px" style="border:1px solid #CBD5E1; border-radius:8px;"></iframe>
+        </div>
 
-      <!-- Time Over / Submission Complete Screen -->
-      <div id="time-over-box" style="display:none; text-align:center; padding: 2rem 1rem;">
-        <h3 id="end-status-heading" style="color: var(--error-red); margin-bottom: 0.5rem;">⚠️ Exam Time Over!</h3>
-        <p id="end-status-desc" style="margin-bottom: 1.5rem; color: var(--text-dark);">
-          The question paper is now closed. Please send your written answer sheet photos on WhatsApp for evaluation.
-        </p>
-        <a id="wa-submit-btn" href="#" target="_blank" class="btn btn-wa">📱 Send Answer Sheets on WhatsApp</a>
-        <br><br>
-        <a href="dashboard.html" class="btn">Return to Student Dashboard</a>
+        <!-- OMR Pane (Hidden during Subjective exams) -->
+        <div class="omr-pane" id="omr-pane" style="display:none;">
+          <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.4rem;">🎯 Answer Sheet (OMR)</h3>
+          <form id="omr-form">
+            <div id="omr-rows-container" style="max-height: 480px; overflow-y: auto; padding-right: 5px; margin-bottom: 1rem;"></div>
+            <button type="submit" class="btn btn-submit">Submit MCQ Exam</button>
+          </form>
+        </div>
       </div>
+    </div>
+
+    <!-- Subjective Time Over / Completion Screen -->
+    <div id="subj-complete-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
+      <h2 id="subj-status-title" style="color: var(--navy); margin-bottom: 0.6rem;"></h2>
+      <p style="color: var(--text-dark); margin-bottom: 1rem; max-width: 600px; margin-left:auto; margin-right:auto;">
+        The question paper is now closed. Take clear photos of your written answer sheets and click the WhatsApp button below to submit them for evaluation.
+      </p>
+      <a id="wa-submit-btn" href="#" target="_blank" class="btn btn-wa">📱 Send Answer Sheets on WhatsApp</a>
+      <br><br>
+      <a href="dashboard.html" class="btn">Return to Dashboard</a>
+    </div>
+
+    <!-- MCQ Result Screen -->
+    <div id="result-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
+      <h2 style="color: var(--navy); margin-bottom: 0.8rem;">🎉 Exam Submitted Successfully!</h2>
+      <div id="score-summary" style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dark);"></div>
+      <a href="dashboard.html" class="btn">Return to Dashboard</a>
     </div>
 
   </main>
@@ -190,17 +191,14 @@
     
     let activeExamObj = null;
     let timerInterval = null;
+    let studentResponses = {};
 
     document.addEventListener("DOMContentLoaded", async function() {
       const studentId = localStorage.getItem("studentId");
-      if (!studentId) {
-        window.location.href = "login.html";
-        return;
-      }
+      if (!studentId) { window.location.href = "login.html"; return; }
 
-      // Check for an active unfinished exam in localStorage (Resumes if refreshed/disconnected)
       const savedTimerState = localStorage.getItem(`active_exam_timer_${studentId}`);
-      
+
       try {
         const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
         const data = await response.json();
@@ -208,7 +206,7 @@
         if (data.status === "success" && data.student.exams) {
           renderExamList(data.student.exams);
 
-          // Auto-resume test if browser reloaded or network reconnected
+          // Resume timer if page was refreshed or network reconnected
           if (savedTimerState) {
             const state = JSON.parse(savedTimerState);
             const matchExam = data.student.exams.find(e => e.examId === state.examId);
@@ -222,7 +220,7 @@
           document.getElementById("exam-list").innerHTML = "<p style='text-align:center;'>No active exams assigned at this moment.</p>";
         }
       } catch (e) {
-        document.getElementById("exam-list").innerHTML = "<p style='text-align:center;'>Error loading exams. Please try again.</p>";
+        document.getElementById("exam-list").innerHTML = "<p style='text-align:center;'>Error loading exams.</p>";
       }
     });
 
@@ -235,13 +233,10 @@
 
       listDiv.innerHTML = "";
       exams.forEach(exam => {
-        const attemptsText = exam.maxAttempts === -1 
-          ? "Unlimited Attempts" 
-          : `Attempts: ${exam.userAttempts} / ${exam.maxAttempts}`;
-
+        const attemptsText = exam.maxAttempts === -1 ? "Unlimited Attempts" : `Attempts: ${exam.userAttempts} / ${exam.maxAttempts}`;
         const btnState = exam.canAttempt 
           ? `<button class="btn" onclick='startExam(${JSON.stringify(exam)})'>Start Test</button>` 
-          : `<button class="btn" disabled>Max Attempts Reached</button>`;
+          : `<button class="btn" disabled>Attempted</button>`;
 
         listDiv.innerHTML += `
           <div style="border-bottom: 1px solid #E2E8F0; padding: 14px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
@@ -259,18 +254,36 @@
 
     function startExam(exam, existingEndTime = null) {
       activeExamObj = exam;
+      studentResponses = {};
       const studentId = localStorage.getItem("studentId");
 
       document.getElementById("exam-portal").style.display = "none";
       document.getElementById("active-test-container").style.display = "block";
       document.getElementById("active-test-title").textContent = exam.title;
-      document.getElementById("active-test-info").textContent = `Duration: ${exam.duration} Minutes | Type: ${exam.type}`;
+      document.getElementById("active-test-info").textContent = `Duration: ${exam.duration} Mins | Type: ${exam.type}`;
 
-      // Calculate Wall-Clock End Timestamp for Network & Reload Resistance
+      document.getElementById("pdf-viewer").src = exam.content;
+
+      const pdfPane = document.getElementById("pdf-pane");
+      const omrPane = document.getElementById("omr-pane");
+      const btnFinishSubj = document.getElementById("btn-finish-subj");
+
+      // SUBJECTIVE VS MCQ DISPLAY BRANCH
+      if (exam.type === "SUBJECTIVE") {
+        pdfPane.style.flex = "1";
+        omrPane.style.display = "none"; // Completely hide OMR and input options
+        btnFinishSubj.style.display = "inline-block";
+      } else {
+        pdfPane.style.flex = "1.3";
+        omrPane.style.display = "block"; // Show OMR options for MCQ
+        btnFinishSubj.style.display = "none";
+        renderOMRGrid(exam.answerKey);
+      }
+
+      // Calculate Real-Time Wall Clock Timer (Resists network drops/refreshes)
       let endTimestamp = existingEndTime;
       if (!endTimestamp) {
-        const durationMs = parseInt(exam.duration) * 60 * 1000;
-        endTimestamp = Date.now() + durationMs;
+        endTimestamp = Date.now() + (parseInt(exam.duration) * 60 * 1000);
         localStorage.setItem(`active_exam_timer_${studentId}`, JSON.stringify({
           examId: exam.examId,
           endTimestamp: endTimestamp
@@ -278,107 +291,139 @@
       }
 
       document.getElementById("timer-box").style.display = "block";
-      runTimer(endTimestamp);
-
-      // Render Mode
-      if (exam.type === "SUBJECTIVE") {
-        document.getElementById("subjective-frame").style.display = "block";
-        document.getElementById("pdf-viewer").src = exam.content;
-      } else {
-        // MCQ / Objective Mode
-        document.getElementById("mcq-frame").style.display = "block";
-        renderMCQQuestions(exam.content);
-      }
-    }
-
-    function runTimer(endTimestamp) {
-      clearInterval(timerInterval);
       
       timerInterval = setInterval(function() {
-        const now = Date.now();
-        const diffSeconds = Math.max(0, Math.floor((endTimestamp - now) / 1000));
-
-        if (diffSeconds <= 0) {
+        const diff = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
+        if (diff <= 0) {
           clearInterval(timerInterval);
-          finishExam(true);
+          if (exam.type === "SUBJECTIVE") {
+            finishSubjectiveExam(true);
+          } else {
+            submitMCQExam();
+          }
           return;
         }
-
-        const hrs = String(Math.floor(diffSeconds / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((diffSeconds % 3600) / 60)).padStart(2, '0');
-        const secs = String(diffSeconds % 60).padStart(2, '0');
-
-        document.getElementById("time-left").textContent = `${hrs}:${mins}:${secs}`;
+        const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+        const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+        const s = String(diff % 60).padStart(2, '0');
+        document.getElementById("time-left").textContent = `${h}:${m}:${s}`;
       }, 1000);
     }
 
-    function renderMCQQuestions(contentJsonStr) {
-      const qContainer = document.getElementById("mcq-questions-container");
-      qContainer.innerHTML = "";
+    function renderOMRGrid(keys) {
+      const omrContainer = document.getElementById("omr-rows-container");
+      omrContainer.innerHTML = "";
 
-      try {
-        const questions = typeof contentJsonStr === "string" ? JSON.parse(contentJsonStr) : contentJsonStr;
-
-        questions.forEach((q, idx) => {
-          let html = `<div class="q-box"><h4>Q${idx + 1}. ${q.q}</h4>`;
-
-          if (q.type === "SINGLE") {
-            q.opts.forEach((opt, oIdx) => {
-              html += `
-                <label class="opt-item">
-                  <input type="radio" name="q_${idx}" value="${oIdx}"> ${opt}
-                </label>
-              `;
-            });
-          } else if (q.type === "MULTI") {
-            q.opts.forEach((opt, oIdx) => {
-              html += `
-                <label class="opt-item">
-                  <input type="checkbox" name="q_${idx}" value="${oIdx}"> ${opt}
-                </label>
-              `;
-            });
-          } else if (q.type === "INTEGER") {
-            html += `
-              <input type="number" step="any" name="q_${idx}" class="num-input" placeholder="Enter Numerical Value">
-            `;
-          }
-
-          html += `</div>`;
-          qContainer.innerHTML += html;
-        });
-      } catch (e) {
-        qContainer.innerHTML = "<p>Error loading exam questions. Contact teacher.</p>";
+      if (!keys || keys.length === 0) {
+        omrContainer.innerHTML = "<p style='color:var(--error-red);'>AnswerKey not found in sheet for this test ID.</p>";
+        return;
       }
+
+      keys.forEach(k => {
+        let html = `<div class="omr-row"><span class="omr-q-num">Q${k.qNo}</span>`;
+
+        if (k.type === "MCQ") {
+          html += `<div class="omr-opts">`;
+          ['A', 'B', 'C', 'D'].forEach(opt => {
+            html += `<div class="omr-btn" onclick="selectSingle(${k.qNo}, '${opt}', this)">${opt}</div>`;
+          });
+          html += `</div>`;
+        } else if (k.type === "MULTI") {
+          html += `<div class="omr-opts">`;
+          ['A', 'B', 'C', 'D'].forEach(opt => {
+            html += `<div class="omr-btn" onclick="toggleMulti(${k.qNo}, '${opt}', this)">${opt}</div>`;
+          });
+          html += `</div>`;
+        } else if (k.type === "NUMERICAL" || k.type === "INTEGER") {
+          html += `<input type="number" step="any" class="num-input" placeholder="Value" oninput="setNumResponse(${k.qNo}, this.value)">`;
+        }
+
+        html += `</div>`;
+        omrContainer.innerHTML += html;
+      });
     }
 
-    // Submit Objective Answers
-    document.getElementById("mcq-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      finishExam(false);
-    });
+    function selectSingle(qNo, val, el) {
+      const parent = el.parentElement;
+      parent.querySelectorAll('.omr-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      studentResponses[qNo] = val;
+    }
 
-    function finishExam(isTimeout) {
+    function toggleMulti(qNo, val, el) {
+      el.classList.toggle('selected');
+      const parent = el.parentElement;
+      const selectedBtns = parent.querySelectorAll('.omr-btn.selected');
+      const selectedVals = Array.from(selectedBtns).map(b => b.textContent).sort().join(',');
+      studentResponses[qNo] = selectedVals;
+    }
+
+    function setNumResponse(qNo, val) {
+      studentResponses[qNo] = val.trim();
+    }
+
+    // Finish Subjective Exam (Paper locks & vanishes)
+    function finishSubjectiveExam(isTimeout) {
       clearInterval(timerInterval);
       const studentId = localStorage.getItem("studentId");
       localStorage.removeItem(`active_exam_timer_${studentId}`);
 
-      document.getElementById("subjective-frame").style.display = "none";
-      document.getElementById("mcq-frame").style.display = "none";
+      document.getElementById("active-test-container").style.display = "none";
       document.getElementById("timer-box").style.display = "none";
-      document.getElementById("time-over-box").style.display = "block";
 
-      if (activeExamObj.type === "SUBJECTIVE") {
-        document.getElementById("end-status-heading").textContent = isTimeout ? "⚠️ Exam Time Over!" : "✅ Paper Completed";
-        document.getElementById("end-status-desc").textContent = "The question paper is now locked. Please send your written answer sheet photos on WhatsApp for evaluation.";
-        
-        const waMsg = encodeURIComponent(`Hello Sir, I have completed the Subjective Exam (${activeExamObj.title}) for Roll No: ${studentId}. Attached are my answer photos.`);
-        document.getElementById("wa-submit-btn").href = `https://wa.me/918240949137?text=${waMsg}`;
-        document.getElementById("wa-submit-btn").style.display = "inline-block";
-      } else {
-        document.getElementById("end-status-heading").textContent = "✅ Exam Submitted Successfully!";
-        document.getElementById("end-status-desc").textContent = "Your objective answers have been recorded. Marks will reflect on your dashboard shortly.";
-        document.getElementById("wa-submit-btn").style.display = "none";
+      const titleEl = document.getElementById("subj-status-title");
+      titleEl.textContent = isTimeout ? "⚠️ Time Expired!" : "✅ Test Completed!";
+      titleEl.style.color = isTimeout ? "var(--error-red)" : "var(--navy)";
+
+      const msg = encodeURIComponent(`Hello Sir, I have completed the Subjective Exam (${activeExamObj.title}) for Roll No: ${studentId}. Attached are my answer photos.`);
+      document.getElementById("wa-submit-btn").href = `https://wa.me/918240949137?text=${msg}`;
+
+      document.getElementById("subj-complete-screen").style.display = "block";
+    }
+
+    // Finish MCQ Exam (Auto-evaluate & Sync to Google Sheet)
+    document.getElementById("omr-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      submitMCQExam();
+    });
+
+    async function submitMCQExam() {
+      clearInterval(timerInterval);
+      const studentId = localStorage.getItem("studentId");
+      localStorage.removeItem(`active_exam_timer_${studentId}`);
+
+      document.getElementById("active-test-container").style.display = "none";
+      document.getElementById("timer-box").style.display = "none";
+
+      const payload = {
+        action: "submitOMRExam",
+        roll: studentId,
+        examId: activeExamObj.examId,
+        examTitle: activeExamObj.title,
+        responses: studentResponses
+      };
+
+      try {
+        const response = await fetch(GOOGLE_WEB_APP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(payload)
+        });
+        const res = await response.json();
+
+        if (res.status === "success") {
+          const r = res.result;
+          document.getElementById("score-summary").innerHTML = `
+            Score: <strong>${r.marksObtained} / ${r.totalMarks}</strong> (${r.percentage})<br><br>
+            Correct: <span style="color:#10B981;">${r.correct}</span> | 
+            Wrong: <span style="color:#EF4444;">${r.wrong}</span> | 
+            Unattempted: ${r.unattempted}
+          `;
+          document.getElementById("result-screen").style.display = "block";
+        }
+      } catch (e) {
+        alert("Submission recorded. Return to dashboard.");
+        window.location.href = "dashboard.html";
       }
     }
   </script>
