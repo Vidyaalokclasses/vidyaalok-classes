@@ -12,12 +12,22 @@
       --light-bg: #F1F5F9;
       --card-bg: rgba(255, 255, 255, 0.96);
       --text-dark: #1E293B;
+      --text-muted: #64748B;
       --success-green: #10B981;
       --error-red: #EF4444;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    html, body { width: 100%; overflow-x: hidden; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
 
     body {
       background-color: var(--light-bg);
@@ -26,6 +36,29 @@
       display: flex;
       flex-direction: column;
       padding-top: 80px;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      opacity: 0.10;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header, main, footer {
+      position: relative;
+      z-index: 1;
     }
 
     header {
@@ -35,16 +68,52 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
     }
 
-    .brand img { height: 48px; width: auto; display: block; }
-    nav { display: flex; gap: 0.8rem; align-items: center; }
-    nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 6px 10px; border-radius: 6px; }
+    .brand img {
+      height: 48px;
+      width: auto;
+      display: block;
+    }
 
-    .btn-logout { background-color: #EF4444; color: #FFFFFF !important; border-radius: 6px; padding: 6px 14px !important; cursor: pointer; }
+    nav {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
 
-    .container { max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem; width: 100%; flex: 1; }
+    nav a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .btn-logout {
+      background-color: #EF4444;
+      color: #FFFFFF !important;
+      border-radius: 6px;
+      padding: 6px 14px !important;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 1.5rem auto;
+      padding: 0 1rem;
+      width: 100%;
+      flex: 1;
+    }
 
     .profile-card {
       background: var(--navy);
@@ -52,6 +121,7 @@
       border-radius: 12px;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(11, 37, 69, 0.12);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -59,13 +129,44 @@
       gap: 1.2rem;
     }
 
-    .profile-info h1 { font-size: 1.6rem; color: #FFFFFF; margin-bottom: 0.2rem; }
-    .profile-badges { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-    .badge { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; }
-    .badge strong { color: var(--gold); }
+    .profile-info h1 {
+      font-size: 1.6rem;
+      color: #FFFFFF;
+      margin-bottom: 0.2rem;
+      line-height: 1.2;
+    }
+
+    .profile-info p {
+      color: #94A3B8;
+      font-size: 0.9rem;
+    }
+
+    .profile-badges {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+
+    .badge strong {
+      color: var(--gold);
+    }
+
+    .status-paid {
+      color: #34D399;
+      font-weight: 700;
+    }
 
     .dashboard-section {
       background: var(--card-bg);
+      backdrop-filter: blur(8px);
       border-radius: 12px;
       padding: 1.4rem;
       margin-bottom: 1.5rem;
@@ -73,21 +174,105 @@
       box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
     }
 
-    .section-heading { color: var(--navy); font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; }
-    .table-responsive { width: 100%; overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
-    th { background-color: var(--navy); color: #FFFFFF; padding: 10px 12px; font-weight: 600; white-space: nowrap; }
-    td { padding: 10px 12px; border-bottom: 1px solid #E2E8F0; white-space: nowrap; }
+    .section-heading {
+      color: var(--navy);
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      line-height: 1.3;
+    }
 
-    .btn-download { background-color: var(--navy); color: #FFFFFF; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-block; }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
-    footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
-    .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      padding: 10px 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #E2E8F0;
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+
+    tr:hover {
+      background-color: #F8FAFC;
+    }
+
+    .score-high {
+      color: var(--success-green);
+      font-weight: 700;
+    }
+
+    .btn-download {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      padding: 6px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    footer {
+      background-color: var(--navy);
+      color: #94A3B8;
+      padding: 2rem 1rem;
+      border-top: 3px solid var(--gold);
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+    }
 
     @media screen and (max-width: 768px) {
       body { padding-top: 110px; }
-      header { flex-direction: column; padding: 0.5rem; gap: 0.5rem; }
-      .footer-container { flex-direction: column; text-align: center; }
+      body::before { width: 300px !important; height: 300px !important; opacity: 0.15 !important; }
+      header { flex-direction: column !important; padding: 0.5rem 0.8rem !important; gap: 0.5rem !important; }
+      .brand img { height: 38px !important; }
+      nav { width: 100% !important; overflow-x: auto !important; padding-bottom: 4px !important; justify-content: flex-start !important; gap: 0.4rem !important; }
+      nav a { font-size: 0.8rem !important; padding: 4px 8px !important; background-color: #F1F5F9; }
+      .profile-card { padding: 1.2rem !important; flex-direction: column !important; align-items: flex-start !important; gap: 0.8rem !important; }
+      .profile-info h1 { font-size: 1.3rem !important; }
+      .profile-badges { width: 100% !important; }
+      .badge { flex: 1 1 calc(50% - 0.5rem); text-align: center; padding: 6px 8px !important; font-size: 0.78rem !important; }
+      .dashboard-section { padding: 1rem !important; }
+      .section-heading { font-size: 1.05rem !important; }
+      .table-responsive table, .table-responsive thead, .table-responsive tbody, .table-responsive th, .table-responsive td, .table-responsive tr { display: block; }
+      .table-responsive thead { display: none; }
+      .table-responsive tr { background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; margin-bottom: 0.8rem; padding: 0.6rem 0.8rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+      .table-responsive td { display: flex; justify-content: space-between; align-items: center; padding: 6px 0 !important; border-bottom: 1px dashed #F1F5F9 !important; font-size: 0.85rem !important; white-space: normal !important; text-align: right; }
+      .table-responsive td:last-child { border-bottom: none !important; }
+      .table-responsive td::before { content: attr(data-label); font-weight: 700; color: var(--navy); text-align: left; padding-right: 10px; font-size: 0.82rem; }
+      .footer-container { flex-direction: column !important; text-align: center !important; }
     }
   </style>
 </head>
@@ -101,10 +286,13 @@
     <nav>
       <a href="index.html">Home</a>
       <a href="schedule.html">Schedule</a>
+      <a href="notes.html">Notes</a>
+      <a href="exam.html">Exams</a>
       <a class="btn-logout" onclick="logoutStudent()">Logout</a>
     </nav>
   </header>
 
+  <!-- Main Container -->
   <main class="container">
     
     <!-- Profile Card -->
@@ -116,28 +304,22 @@
       <div class="profile-badges">
         <div class="badge">Roll No: <strong id="student-roll">-</strong></div>
         <div class="badge">Batch: <strong id="student-batch">-</strong></div>
-        <div class="badge">Fee Status: <span id="student-fee" style="color:#34D399; font-weight:700;">-</span></div>
+        <div class="badge">Fee Status: <span id="student-fee" class="status-paid">-</span></div>
       </div>
     </div>
 
-    <!-- 1. Active Examinations Portal Card -->
-    <div class="dashboard-section" style="border-left: 4px solid var(--gold);">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <div>
-          <h3 style="color:var(--navy); font-size:1.15rem;">📝 Active Examinations Portal</h3>
-          <p style="color:#64748B; font-size:0.88rem;">Take assigned subjective or auto-graded MCQ tests.</p>
-        </div>
-        <a href="exam.html" class="btn-download" style="padding: 8px 16px; font-size:0.9rem;">Open Online Exam Portal</a>
-      </div>
-    </div>
-
-    <!-- 2. Batch Schedule & Timings -->
+    <!-- 1. Batch Schedule & Timings -->
     <div class="dashboard-section">
       <div class="section-heading">📅 Batch Schedule & Timings</div>
       <div class="table-responsive">
         <table>
           <thead>
-            <tr><th>Day</th><th>Time Slot</th><th>Subject / Topic</th><th>Mode</th></tr>
+            <tr>
+              <th>Day</th>
+              <th>Time Slot</th>
+              <th>Subject / Topic</th>
+              <th>Mode</th>
+            </tr>
           </thead>
           <tbody id="schedule-table-body">
             <tr><td colspan="4" style="text-align:center;">Fetching live schedule...</td></tr>
@@ -146,13 +328,18 @@
       </div>
     </div>
 
-    <!-- 3. Batch Notice Board -->
+    <!-- 2. Batch Notice Board -->
     <div class="dashboard-section">
       <div class="section-heading">📢 Batch Notice Board</div>
       <div class="table-responsive">
         <table>
           <thead>
-            <tr><th>Date</th><th>Notice Title / Subject</th><th>Category</th><th>Attachment</th></tr>
+            <tr>
+              <th>Date</th>
+              <th>Notice Title / Subject</th>
+              <th>Category</th>
+              <th>Attachment</th>
+            </tr>
           </thead>
           <tbody id="notice-table-body">
             <tr><td colspan="4" style="text-align:center;">Fetching notices...</td></tr>
@@ -161,13 +348,19 @@
       </div>
     </div>
 
-    <!-- 4. Batch Homework & Assignments -->
+    <!-- 3. Batch Homework & Assignments -->
     <div class="dashboard-section">
       <div class="section-heading">📝 Batch Homework & Assignments</div>
       <div class="table-responsive">
         <table>
           <thead>
-            <tr><th>Title</th><th>Batch</th><th>Class Date</th><th>Due Date</th><th>Assignment PDF</th></tr>
+            <tr>
+              <th>Title</th>
+              <th>Batch</th>
+              <th>Class Date</th>
+              <th>Due Date</th>
+              <th>Assignment PDF</th>
+            </tr>
           </thead>
           <tbody id="homework-table-body">
             <tr><td colspan="5" style="text-align:center;">Fetching homework...</td></tr>
@@ -176,13 +369,18 @@
       </div>
     </div>
 
-    <!-- 5. Class Notes & Study Resources -->
+    <!-- 4. Class Notes & Study Resources -->
     <div class="dashboard-section">
       <div class="section-heading">📚 Class Notes & Study Resources</div>
       <div class="table-responsive">
         <table>
           <thead>
-            <tr><th>Date</th><th>Topic / Chapter</th><th>Resource Type</th><th>Action</th></tr>
+            <tr>
+              <th>Date</th>
+              <th>Topic / Chapter</th>
+              <th>Resource Type</th>
+              <th>Action</th>
+            </tr>
           </thead>
           <tbody id="notes-table-body">
             <tr><td colspan="4" style="text-align:center;">Fetching class notes...</td></tr>
@@ -191,18 +389,26 @@
       </div>
     </div>
 
-    <!-- 6. Examination Results Matrix -->
+    <!-- 5. Examination Results Matrix -->
     <div class="dashboard-section">
       <div class="section-heading">📊 Examination Results Matrix</div>
       <div class="table-responsive">
         <table>
           <thead>
             <tr>
-              <th>Date</th><th>Exam Title</th><th>Total Qs</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Score Obtained</th><th>Percentage</th><th>Rank</th>
+              <th>Date</th>
+              <th>Exam Title</th>
+              <th>Total Qs</th>
+              <th>Correct</th>
+              <th>Wrong</th>
+              <th>Unattempted</th>
+              <th>Score Obtained</th>
+              <th>Percentage</th>
+              <th>Rank</th>
             </tr>
           </thead>
           <tbody id="results-table-body">
-            <tr><td colspan="9" style="text-align:center;">Fetching test results...</td></tr>
+            <tr><td colspan="9" style="text-align:center;">Fetching detailed test results...</td></tr>
           </tbody>
         </table>
       </div>
@@ -210,6 +416,7 @@
 
   </main>
 
+  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div>
@@ -233,10 +440,16 @@
 
     document.addEventListener("DOMContentLoaded", async function() {
       const studentId = localStorage.getItem("studentId");
-      if (!studentId) { window.location.href = "login.html"; return; }
+
+      if (!studentId) {
+        window.location.href = "login.html";
+        return;
+      }
 
       const cachedData = localStorage.getItem("studentData");
-      if (cachedData) { try { renderDashboard(JSON.parse(cachedData)); } catch (e) {} }
+      if (cachedData) {
+        try { renderDashboard(JSON.parse(cachedData)); } catch (e) {}
+      }
 
       try {
         const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
@@ -246,7 +459,9 @@
           renderDashboard(data.student);
           localStorage.setItem("studentData", JSON.stringify(data.student));
         }
-      } catch (err) {}
+      } catch (err) {
+        console.warn("Could not fetch live sheet data, displaying cached data.", err);
+      }
     });
 
     function renderDashboard(student) {
@@ -257,58 +472,124 @@
       document.getElementById("student-batch").textContent = safeVal(student.batch);
       document.getElementById("student-fee").textContent = safeVal(student.feeStatus);
 
-      // Schedule
+      // 1. Render Schedule
       const scheduleBody = document.getElementById("schedule-table-body");
       if (student.schedule && student.schedule.length > 0) {
         scheduleBody.innerHTML = "";
         student.schedule.forEach(item => {
-          scheduleBody.innerHTML += `<tr><td><strong>${safeVal(item.day)}</strong></td><td>${safeVal(item.time)}</td><td>${safeVal(item.topic)}</td><td>${safeVal(item.mode)}</td></tr>`;
+          scheduleBody.innerHTML += `
+            <tr>
+              <td data-label="Day"><strong>${safeVal(item.day)}</strong></td>
+              <td data-label="Time Slot">${safeVal(item.time)}</td>
+              <td data-label="Topic">${safeVal(item.topic)}</td>
+              <td data-label="Mode">${safeVal(item.mode)}</td>
+            </tr>
+          `;
         });
-      } else { scheduleBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`; }
+      } else {
+        scheduleBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
+      }
 
-      // Notices
+      // 2. Render Batch Notices
       const noticeBody = document.getElementById("notice-table-body");
       if (student.notices && student.notices.length > 0) {
         noticeBody.innerHTML = "";
         student.notices.forEach(item => {
           const rawLink = safeVal(item.link);
-          const btn = (rawLink !== "-" && rawLink !== "#") ? `<a href="${rawLink}" target="_blank" class="btn-download">View PDF</a>` : `-`;
-          noticeBody.innerHTML += `<tr><td>${safeVal(item.date)}</td><td><strong>${safeVal(item.title)}</strong></td><td>${safeVal(item.type)}</td><td>${btn}</td></tr>`;
-        });
-      } else { noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No active notices for your batch.</td></tr>`; }
+          const hasValidLink = rawLink !== "-" && rawLink !== "#";
+          const actionBtn = hasValidLink 
+            ? `<a href="${rawLink}" target="_blank" class="btn-download">View PDF</a>` 
+            : `-`;
 
-      // Homework
+          noticeBody.innerHTML += `
+            <tr>
+              <td data-label="Date">${safeVal(item.date)}</td>
+              <td data-label="Title"><strong>${safeVal(item.title)}</strong></td>
+              <td data-label="Category">${safeVal(item.type)}</td>
+              <td data-label="Attachment">${actionBtn}</td>
+            </tr>
+          `;
+        });
+      } else {
+        noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No active notices for your batch.</td></tr>`;
+      }
+
+      // 3. Render Batch Homework (Columns: Title, Batch, Class Date, Due Date, PdfUrl)
       const hwBody = document.getElementById("homework-table-body");
       if (student.homework && student.homework.length > 0) {
         hwBody.innerHTML = "";
         student.homework.forEach(item => {
           const rawLink = safeVal(item.link);
-          const btn = (rawLink !== "-" && rawLink !== "#") ? `<a href="${rawLink}" target="_blank" class="btn-download">Download PDF</a>` : `-`;
-          hwBody.innerHTML += `<tr><td><strong>${safeVal(item.title || item.topic)}</strong></td><td>${safeVal(item.batch)}</td><td>${safeVal(item.classDate || item.assignedDate)}</td><td style="color:#EF4444; font-weight:700;">${safeVal(item.dueDate)}</td><td>${btn}</td></tr>`;
-        });
-      } else { hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`; }
+          const hasValidLink = rawLink !== "-" && rawLink !== "#";
+          const actionBtn = hasValidLink 
+            ? `<a href="${rawLink}" target="_blank" class="btn-download">Download PDF</a>` 
+            : `-`;
 
-      // Notes
+          hwBody.innerHTML += `
+            <tr>
+              <td data-label="Title"><strong>${safeVal(item.title || item.topic)}</strong></td>
+              <td data-label="Batch">${safeVal(item.batch)}</td>
+              <td data-label="Class Date">${safeVal(item.classDate || item.assignedDate)}</td>
+              <td data-label="Due Date" style="color: #EF4444; font-weight: 700;">${safeVal(item.dueDate)}</td>
+              <td data-label="Assignment">${actionBtn}</td>
+            </tr>
+          `;
+        });
+      } else {
+        hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`;
+      }
+
+      // 4. Render Notes
       const notesBody = document.getElementById("notes-table-body");
       if (student.notes && student.notes.length > 0) {
         notesBody.innerHTML = "";
         student.notes.forEach(item => {
           const rawLink = safeVal(item.link);
-          const btn = (rawLink !== "-" && rawLink !== "#") ? `<a href="${rawLink}" target="_blank" class="btn-download">View PDF</a>` : `-`;
-          notesBody.innerHTML += `<tr><td>${safeVal(item.date)}</td><td><strong>${safeVal(item.topic)}</strong></td><td>${safeVal(item.type)}</td><td>${btn}</td></tr>`;
-        });
-      } else { notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available yet.</td></tr>`; }
+          const hasValidLink = rawLink !== "-" && rawLink !== "#";
+          const actionBtn = hasValidLink 
+            ? `<a href="${rawLink}" target="_blank" class="btn-download">View PDF</a>` 
+            : `-`;
 
-      // Results
+          notesBody.innerHTML += `
+            <tr>
+              <td data-label="Date">${safeVal(item.date)}</td>
+              <td data-label="Topic"><strong>${safeVal(item.topic)}</strong></td>
+              <td data-label="Type">${safeVal(item.type)}</td>
+              <td data-label="Action">${actionBtn}</td>
+            </tr>
+          `;
+        });
+      } else {
+        notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available yet.</td></tr>`;
+      }
+
+      // 5. Render Results
       const resultsBody = document.getElementById("results-table-body");
       if (student.results && student.results.length > 0) {
         resultsBody.innerHTML = "";
         student.results.forEach(item => {
           var rawPct = safeVal(item.percentage);
-          var formattedPct = (rawPct !== "-" && !rawPct.includes("%")) ? (parseFloat(rawPct).toFixed(1) + "%") : rawPct;
-          resultsBody.innerHTML += `<tr><td>${safeVal(item.date)}</td><td><strong>${safeVal(item.examTitle || item.name)}</strong></td><td>${safeVal(item.totalQuestions)}</td><td style="color:#10B981; font-weight:700;">${safeVal(item.correct)}</td><td style="color:#EF4444; font-weight:700;">${safeVal(item.wrong)}</td><td>${safeVal(item.unattempted)}</td><td><strong>${safeVal(item.marksObtained)}</strong> / ${safeVal(item.totalMarks)}</td><td><strong>${formattedPct}</strong></td><td><strong>${safeVal(item.rank)}</strong></td></tr>`;
+          var formattedPct = (rawPct !== "-" && !rawPct.includes("%")) 
+            ? (parseFloat(rawPct).toFixed(1) + "%") 
+            : rawPct;
+
+          resultsBody.innerHTML += `
+            <tr>
+              <td data-label="Date">${safeVal(item.date)}</td>
+              <td data-label="Exam Title"><strong>${safeVal(item.examTitle || item.name)}</strong></td>
+              <td data-label="Total Qs">${safeVal(item.totalQuestions)}</td>
+              <td data-label="Correct" style="color: #10B981; font-weight: 700;">${safeVal(item.correct)}</td>
+              <td data-label="Wrong" style="color: #EF4444; font-weight: 700;">${safeVal(item.wrong)}</td>
+              <td data-label="Unattempted" style="color: #64748B;">${safeVal(item.unattempted)}</td>
+              <td data-label="Score"><strong class="score-high">${safeVal(item.marksObtained)}</strong> / ${safeVal(item.totalMarks)}</td>
+              <td data-label="Percentage"><strong>${formattedPct}</strong></td>
+              <td data-label="Rank"><strong>${safeVal(item.rank)}</strong></td>
+            </tr>
+          `;
         });
-      } else { resultsBody.innerHTML = `<tr><td colspan="9" style="text-align:center;">No test submission records found.</td></tr>`; }
+      } else {
+        resultsBody.innerHTML = `<tr><td colspan="9" style="text-align:center;">No test submission records found.</td></tr>`;
+      }
     }
 
     function logoutStudent() {
