@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Online Exams - Vidyaalok Classes</title>
   <link rel="icon" type="image/jpeg" href="icon.jpg">
   <style>
@@ -52,7 +52,7 @@
       border-radius: 8px;
     }
 
-    .container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; width: 100%; flex: 1; }
+    .container { max-width: 1280px; margin: 1rem auto; padding: 0 1rem; width: 100%; flex: 1; }
 
     .card {
       background: var(--card-bg);
@@ -80,6 +80,7 @@
     .btn-submit { background-color: var(--success-green); width: 100%; font-size: 1.05rem; padding: 12px; }
     .btn-wa { background-color: #25D366 !important; margin-top: 15px; font-size: 1rem; padding: 10px 20px; }
 
+    /* Modal Instructions Overlay */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -120,6 +121,7 @@
     .rules-list { margin: 1rem 0; padding-left: 1.2rem; font-size: 0.92rem; color: #334155; }
     .rules-list li { margin-bottom: 0.5rem; }
 
+    /* Proctored Warning Banner */
     .warning-banner {
       position: fixed;
       top: 70px; left: 50%;
@@ -137,9 +139,48 @@
       max-width: 600px;
     }
 
+    /* Split Screen Responsive Layout */
     .split-layout { display: flex; gap: 1.2rem; align-items: flex-start; }
-    .pdf-pane { flex: 1.3; min-width: 0; }
-    .omr-pane { flex: 0.9; min-width: 0; background: #FFF; padding: 1.2rem; border-radius: 10px; border: 1px solid #CBD5E1; }
+    
+    /* PDF Container Wrapper to Hide Top-Right Pop-Out Button */
+    .pdf-pane {
+      flex: 1.4;
+      min-width: 0;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      background: #525659;
+    }
+
+    /* Transparent Overlay Covering Google Drive Top-Right Popout Icon */
+    .pdf-pane::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 56px;
+      height: 56px;
+      background: rgba(82, 86, 89, 0.01);
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    .pdf-pane iframe {
+      width: 100%;
+      height: 680px;
+      border: none;
+      display: block;
+    }
+
+    .omr-pane {
+      flex: 0.9;
+      min-width: 0;
+      background: #FFF;
+      padding: 1.2rem;
+      border-radius: 10px;
+      border: 1px solid #CBD5E1;
+    }
 
     .omr-row {
       display: flex;
@@ -165,16 +206,25 @@
     .omr-btn.selected { background: var(--navy); color: #FFF; border-color: var(--navy); }
     .num-input { width: 120px; padding: 6px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
 
-    @media screen and (max-width: 900px) {
+    /* Tablet & Mobile Responsiveness */
+    @media screen and (max-width: 992px) {
       .split-layout { flex-direction: column !important; }
       .pdf-pane, .omr-pane { width: 100% !important; flex: none !important; }
-      .pdf-pane iframe { height: 450px !important; }
+      .pdf-pane iframe { height: 500px !important; }
       .info-grid { grid-template-columns: 1fr; }
+    }
+
+    @media screen and (max-width: 600px) {
+      body { padding-top: 110px; }
+      header { flex-direction: column; gap: 0.4rem; padding: 0.5rem 1rem; }
+      .pdf-pane iframe { height: 420px !important; }
+      .omr-btn { width: 30px; height: 30px; font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Proctored Warning Banner -->
   <div id="warning-banner" class="warning-banner">
     ⚠️ WARNING! Tab switching detected (<span id="switch-count">0</span>). Repeatedly leaving the exam window is monitored!
   </div>
@@ -190,11 +240,13 @@
 
   <main class="container">
     
+    <!-- Active Exams List -->
     <div id="exam-portal" class="card">
       <h2 style="color: var(--navy); margin-bottom: 1rem;">📋 Active Assigned Examinations</h2>
       <div id="exam-list">Fetching active exams...</div>
     </div>
 
+    <!-- Active Test Viewport -->
     <div id="active-test-container" class="card" style="display: none;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; flex-wrap:wrap; gap:10px;">
         <div>
@@ -205,10 +257,12 @@
       </div>
 
       <div class="split-layout" id="exam-split-layout">
+        <!-- Embedded PDF Pane (Pop-Out Masked) -->
         <div class="pdf-pane" id="pdf-pane">
-          <iframe id="pdf-viewer" src="" width="100%" height="650px" style="border:1px solid #CBD5E1; border-radius:8px;"></iframe>
+          <iframe id="pdf-viewer" src="" allow="autoplay"></iframe>
         </div>
 
+        <!-- Interactive OMR Pane -->
         <div class="omr-pane" id="omr-pane" style="display:none;">
           <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.4rem;">🎯 Answer Sheet (OMR)</h3>
           <form id="omr-form">
@@ -219,6 +273,7 @@
       </div>
     </div>
 
+    <!-- Subjective Completion Screen -->
     <div id="subj-complete-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
       <h2 id="subj-status-title" style="color: var(--navy); margin-bottom: 0.6rem;"></h2>
       <p style="color: var(--text-dark); margin-bottom: 1rem; max-width: 600px; margin-left:auto; margin-right:auto;">
@@ -229,6 +284,7 @@
       <a href="dashboard.html" class="btn">Return to Dashboard</a>
     </div>
 
+    <!-- MCQ Result Screen -->
     <div id="result-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
       <h2 style="color: var(--navy); margin-bottom: 0.8rem;">🎉 Exam Submitted Successfully!</h2>
       <div id="score-summary" style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dark);"></div>
@@ -237,6 +293,7 @@
 
   </main>
 
+  <!-- Instructions Modal -->
   <div id="instructions-modal" class="modal-overlay">
     <div class="modal-box">
       <h2 id="modal-exam-title">Exam Details & Instructions</h2>
@@ -251,7 +308,7 @@
       <h3 style="color: var(--navy); font-size: 1rem; margin-top: 0.8rem;">📌 Important Guidelines:</h3>
       <ul class="rules-list">
         <li><strong>Automatic Timer:</strong> When the duration expires (00:00:00), the question paper will automatically lock and close.</li>
-        <li id="rule-type-desc"><strong>Subjective Test:</strong> Write your answers clearly on physical paper. Once completed or when time expires, submit the answer sheet photos on WhatsApp.</li>
+        <li id="rule-type-desc"><strong>Subjective Test:</strong> Read the paper on screen, write answers on paper, and send photos on WhatsApp upon completion.</li>
         <li><strong>Proctored Environment:</strong> Do not switch tabs or open other applications during the test. Tab switching is logged and flagged.</li>
         <li><strong>Single Attempt Rule:</strong> Ensure a stable internet connection before starting.</li>
       </ul>
@@ -303,6 +360,7 @@
       }
     });
 
+    // Tab Switching Detection
     document.addEventListener("visibilitychange", function() {
       if (isExamActive && document.hidden) {
         tabSwitchCount++;
@@ -393,7 +451,15 @@
       document.getElementById("active-test-title").textContent = exam.title;
       document.getElementById("active-test-info").textContent = `Batch: ${exam.batch} | Duration: ${exam.duration} Mins | Type: ${exam.type}`;
 
-      document.getElementById("pdf-viewer").src = exam.content;
+      // Append embed parameters to ensure inline viewer without popout buttons
+      let cleanContentUrl = exam.content;
+      if (cleanContentUrl.includes("drive.google.com")) {
+        cleanContentUrl = cleanContentUrl.replace("/view", "/preview").replace("/edit", "/preview");
+        if (!cleanContentUrl.includes("rm=minimal")) {
+          cleanContentUrl += (cleanContentUrl.includes("?") ? "&" : "?") + "rm=minimal";
+        }
+      }
+      document.getElementById("pdf-viewer").src = cleanContentUrl;
 
       const pdfPane = document.getElementById("pdf-pane");
       const omrPane = document.getElementById("omr-pane");
@@ -404,7 +470,7 @@
         omrPane.style.display = "none";
         btnFinishSubj.style.display = "inline-block";
       } else {
-        pdfPane.style.flex = "1.3";
+        pdfPane.style.flex = "1.4";
         omrPane.style.display = "block";
         btnFinishSubj.style.display = "none";
         renderOMRGrid(exam.answerKey);
@@ -509,7 +575,6 @@
 
       document.getElementById("subj-complete-screen").style.display = "block";
 
-      // Post attempt row to Submissions sheet
       try {
         await fetch(GOOGLE_WEB_APP_URL, {
           method: "POST",
