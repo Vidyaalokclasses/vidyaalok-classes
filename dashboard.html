@@ -355,14 +355,15 @@
         <table>
           <thead>
             <tr>
-              <th>Assigned Date</th>
-              <th>Homework Topic / Chapter</th>
+              <th>Title</th>
+              <th>Batch</th>
+              <th>Class Date</th>
               <th>Due Date</th>
               <th>Assignment PDF</th>
             </tr>
           </thead>
           <tbody id="homework-table-body">
-            <tr><td colspan="4" style="text-align:center;">Fetching homework...</td></tr>
+            <tr><td colspan="5" style="text-align:center;">Fetching homework...</td></tr>
           </tbody>
         </table>
       </div>
@@ -513,7 +514,7 @@
         noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No active notices for your batch.</td></tr>`;
       }
 
-      // 3. Render Batch Homework
+      // 3. Render Batch Homework (Columns: Title, Batch, Class Date, Due Date, PdfUrl)
       const hwBody = document.getElementById("homework-table-body");
       if (student.homework && student.homework.length > 0) {
         hwBody.innerHTML = "";
@@ -526,15 +527,16 @@
 
           hwBody.innerHTML += `
             <tr>
-              <td data-label="Assigned Date">${safeVal(item.assignedDate)}</td>
-              <td data-label="Homework Topic"><strong>${safeVal(item.topic)}</strong></td>
+              <td data-label="Title"><strong>${safeVal(item.title || item.topic)}</strong></td>
+              <td data-label="Batch">${safeVal(item.batch)}</td>
+              <td data-label="Class Date">${safeVal(item.classDate || item.assignedDate)}</td>
               <td data-label="Due Date" style="color: #EF4444; font-weight: 700;">${safeVal(item.dueDate)}</td>
               <td data-label="Assignment">${actionBtn}</td>
             </tr>
           `;
         });
       } else {
-        hwBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No pending homework for your batch.</td></tr>`;
+        hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`;
       }
 
       // 4. Render Notes
