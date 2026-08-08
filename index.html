@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vidyaalok Classes - The Light of Knowledge</title>
   <link rel="icon" type="image/jpeg" href="icon.jpg">
   <style>
@@ -12,20 +12,10 @@
       --light-bg: #F1F5F9;
       --card-bg: rgba(255, 255, 255, 0.96);
       --text-dark: #1E293B;
-      --text-muted: #64748B;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    html, body { width: 100%; overflow-x: hidden; }
-
-    body {
-      background-color: var(--light-bg);
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding-top: 80px;
-    }
+    body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 80px; }
 
     header {
       background-color: #FFFFFF;
@@ -34,127 +24,58 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      position: fixed;
-      top: 0; left: 0; width: 100%;
-      z-index: 1000;
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
     }
 
     .brand img { height: 48px; width: auto; display: block; }
-
     nav { display: flex; gap: 0.8rem; align-items: center; }
+    nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; }
+    .btn-portal { background-color: var(--navy); color: #FFFFFF !important; font-weight: 700; }
 
-    nav a {
-      color: var(--navy);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
+    .hero { background: var(--navy); color: #FFFFFF; padding: 4rem 1.5rem; text-align: center; }
+    .hero h1 { font-size: 2.2rem; color: #FFFFFF; margin-bottom: 0.5rem; }
+    .hero p { color: var(--gold); font-size: 1.1rem; }
 
-    .btn-portal {
-      background-color: var(--navy);
-      color: #FFFFFF !important;
-      font-weight: 700;
-    }
+    .container { max-width: 1000px; margin: 2rem auto; padding: 0 1rem; flex: 1; }
 
-    .hero {
-      background: linear-gradient(135deg, var(--navy) 0%, #133B6B 100%);
-      color: #FFFFFF;
-      padding: 4rem 1.5rem;
-      text-align: center;
-    }
-
-    .hero h1 { font-size: 2.5rem; margin-bottom: 0.8rem; color: #FFFFFF; }
-    .hero p { font-size: 1.1rem; color: var(--gold); max-width: 600px; margin: 0 auto 1.5rem auto; }
-
-    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; flex: 1; }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .feature-card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 1.8rem;
-      border: 1px solid #E2E8F0;
-      box-shadow: 0 4px 12px rgba(11, 37, 69, 0.04);
-      text-align: center;
-    }
-
-    .feature-card h3 { color: var(--navy); margin-bottom: 0.5rem; }
-
-    footer {
-      background-color: var(--navy);
-      color: #94A3B8;
-      padding: 2rem 1rem;
-      border-top: 3px solid var(--gold);
-      margin-top: auto;
-    }
-
-    .footer-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.2rem;
-    }
+    footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
+    .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.2rem; }
 
     @media screen and (max-width: 768px) {
       body { padding-top: 110px; }
       header { flex-direction: column; padding: 0.5rem; gap: 0.5rem; }
-      .hero h1 { font-size: 1.8rem; }
       .footer-container { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header Navigation -->
+  <!-- Cleaned Header Navigation -->
   <header>
     <div class="brand">
       <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
     </div>
     <nav>
-      <a href="index.html">Home</a>
+      <a href="index.html" style="background:#E2E8F0;">Home</a>
       <a href="schedule.html">Schedule</a>
       <a href="login.html" class="btn-portal">Student Portal</a>
     </nav>
   </header>
 
-  <!-- Hero Banner -->
   <section class="hero">
     <h1>Vidyaalok Classes</h1>
-    <p>Empowering Physics Learning for JEE, NEET & Board Foundations</p>
-    <a href="login.html" class="btn-portal" style="padding: 10px 24px; border-radius: 6px; text-decoration: none; display: inline-block;">Login to Student Portal</a>
+    <p>The Light of Knowledge | Physics Coaching for JEE, NEET & Foundations</p>
   </section>
 
-  <!-- Main Features -->
   <main class="container">
-    <div class="features-grid">
-      <div class="feature-card">
-        <h3>📅 Structured Schedules</h3>
-        <p>Access updated weekly timetables and class timings for all foundation & target batches.</p>
-      </div>
-      <div class="feature-card">
-        <h3>📚 Digital Study Portal</h3>
-        <p>Logged-in students receive chapter notes, DPP assignments, and batch announcements directly.</p>
-      </div>
-      <div class="feature-card">
-        <h3>📊 Proctored Examinations</h3>
-        <p>Take timed subjective and auto-graded MCQ tests with real-time result matrix updates.</p>
-      </div>
+    <div style="background: #FFF; padding: 2rem; border-radius: 12px; border: 1px solid #E2E8F0; text-align: center;">
+      <h2 style="color: var(--navy); margin-bottom: 0.5rem;">Welcome to Vidyaalok Classes</h2>
+      <p style="color: #64748B;">Please log in to your student portal to access your batch schedule, notices, homework assignments, class notes, and online exams.</p>
+      <br>
+      <a href="login.html" class="btn-portal" style="padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">Login to Student Portal</a>
     </div>
   </main>
 
-  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div>
