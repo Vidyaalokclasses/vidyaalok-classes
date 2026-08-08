@@ -10,362 +10,377 @@
       --navy: #0B2545;
       --gold: #E5A93C;
       --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-bg: rgba(255, 255, 255, 0.96);
       --text-dark: #1E293B;
       --text-muted: #64748B;
-      --error-red: #EF4444;
       --success-green: #10B981;
+      --error-red: #EF4444;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    html, body {
-      width: 100%;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    html, body { width: 100%; overflow-x: hidden; }
 
     body {
       background-color: var(--light-bg);
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center 250px;
-      background-attachment: fixed;
-      background-size: 550px;
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-top: 75px; /* Keeps top content visible below fixed header */
+      padding-top: 80px;
+      position: relative;
     }
 
-    /* Fixed Header Navigation */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background-image: url('logo.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: contain;
+      opacity: 0.10;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    header, main, footer { position: relative; z-index: 1; }
+
     header {
       background-color: #FFFFFF;
-      padding: 0.8rem 2rem;
+      padding: 0.6rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #E2E8F0;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+      top: 0; left: 0; width: 100%;
       z-index: 1000;
     }
 
-    .brand img {
-      height: 52px;
-      width: auto;
-      display: block;
-    }
+    .brand img { height: 48px; width: auto; display: block; }
 
-    nav {
-      display: flex;
-      gap: 1.2rem;
-      align-items: center;
-    }
-
-    nav a {
-      color: var(--navy);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
-
-    nav a:hover, nav a.active {
+    .timer-display {
+      font-size: 1.1rem;
+      font-weight: 800;
       color: var(--gold);
-      background-color: #F1F5F9;
+      background: var(--navy);
+      padding: 6px 16px;
+      border-radius: 8px;
     }
 
-    .btn-portal {
-      background-color: var(--navy);
-      color: #FFFFFF !important;
-      border-radius: 6px;
-      padding: 8px 16px !important;
-    }
+    .container { max-width: 1000px; margin: 1.5rem auto; padding: 0 1rem; width: 100%; flex: 1; }
 
-    .btn-portal:hover {
-      background-color: #133966;
-      color: var(--gold) !important;
-    }
-
-    /* Main Section Container */
-    .container {
-      max-width: 500px;
-      margin: 3rem auto;
-      padding: 0 1.5rem;
-      width: 100%;
-      flex: 1;
-    }
-
-    .exam-card {
+    .card {
       background: var(--card-bg);
       backdrop-filter: blur(8px);
       border-radius: 12px;
-      padding: 2.2rem 2rem;
-      box-shadow: 0 8px 24px rgba(11, 37, 69, 0.08);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
       border: 1px solid rgba(226, 232, 240, 0.9);
-      text-align: center;
+      box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
     }
 
-    .exam-card h1 {
-      color: var(--navy);
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    .exam-card p {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      margin-bottom: 1.8rem;
-    }
-
-    /* Form Inputs */
-    .form-group {
-      text-align: left;
-      margin-bottom: 1.2rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 0.4rem;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 0.95rem;
-      border: 1px solid #CBD5E1;
-      border-radius: 6px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus {
-      border-color: var(--navy);
-      box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
-    }
-
-    .btn-submit {
-      width: 100%;
+    .btn {
       background-color: var(--navy);
       color: #FFFFFF;
+      padding: 8px 16px;
+      border-radius: 6px;
       border: none;
-      padding: 12px;
-      font-size: 1rem;
       font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 0.5rem;
-    }
-
-    .btn-submit:hover {
-      background-color: #133966;
-    }
-
-    /* Status Alert Message */
-    .status-message {
-      display: none;
-      margin-top: 1.5rem;
-      padding: 12px;
-      border-radius: 6px;
       font-size: 0.9rem;
-      font-weight: 600;
-      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .status-message.error {
-      background-color: #FEE2E2;
-      color: var(--error-red);
-      border: 1px solid #FCA5A5;
+    .btn:disabled {
+      background-color: #94A3B8 !important;
+      cursor: not-allowed;
     }
 
-    .status-message.success {
-      background-color: #D1FAE5;
-      color: var(--success-green);
-      border: 1px solid #6EE7B7;
+    .btn-wa { background-color: #25D366 !important; }
+
+    .q-box {
+      border-bottom: 1px solid #E2E8F0;
+      padding: 1rem 0;
+      margin-bottom: 1rem;
     }
 
-    /* Footer */
-    footer {
-      background-color: var(--navy);
-      color: #94A3B8;
-      padding: 2.5rem 1rem;
-      border-top: 3px solid var(--gold);
-      margin-top: auto;
+    .q-box h4 { margin-bottom: 0.6rem; color: var(--navy); }
+
+    .opt-item {
+      display: block;
+      margin: 0.4rem 0;
+      font-size: 0.92rem;
+      cursor: pointer;
     }
 
-    .footer-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1.5rem;
-      text-align: left;
+    .num-input {
+      padding: 8px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 160px;
     }
 
-    .footer-copyright {
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin-top: 2rem;
-      padding-top: 1rem;
-      font-size: 0.8rem;
-      color: #64748B;
-    }
-
-    /* Mobile Responsive Rules */
     @media screen and (max-width: 768px) {
-      body {
-        padding-top: 110px;
-      }
-
-      header {
-        flex-direction: column !important;
-        padding: 0.8rem 1rem !important;
-        gap: 0.8rem !important;
-      }
-
-      nav {
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 0.4rem 0.6rem !important;
-        width: 100% !important;
-      }
-
-      nav a {
-        font-size: 0.82rem !important;
-        padding: 5px 8px !important;
-      }
-
-      .footer-container {
-        flex-direction: column !important;
-        text-align: center !important;
-      }
+      body { padding-top: 110px; }
+      header { flex-direction: column !important; padding: 0.5rem !important; gap: 0.5rem !important; }
+      .brand img { height: 38px !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Fixed Header Navigation -->
+  <!-- Header Navigation -->
   <header>
     <div class="brand">
-      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes - The Light of Knowledge"></a>
+      <a href="dashboard.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
     </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="schedule.html">Schedule</a>
-      <a href="notes.html">Class Notes</a>
-      <a href="exam.html" class="active">Online Exams</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#courses">Courses</a>
-      <a href="index.html#contact">Contact</a>
-      <a href="login.html" class="btn-portal">Student Portal</a>
-    </nav>
+    <div id="timer-box" style="display:none;" class="timer-display">
+      ⏱️ <span id="time-left">00:00:00</span>
+    </div>
   </header>
 
-  <!-- Main Exam Access Portal -->
   <main class="container">
-    <div class="exam-card">
-      <h1>Online Examination Engine</h1>
-      <p>Enter your Roll Number and Password to access your active test papers.</p>
-
-      <form id="exam-access-form">
-        <div class="form-group">
-          <label for="student-id">Student Roll No. / ID</label>
-          <input type="text" id="student-id" placeholder="e.g. VAK26001" required autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="password">Exam Password</label>
-          <input type="password" id="password" placeholder="Enter Password" required>
-        </div>
-
-        <button type="submit" class="btn-submit">Access Exams</button>
-      </form>
-
-      <!-- Message container stays completely hidden until form submission -->
-      <div id="status-message" class="status-message"></div>
+    
+    <!-- Exam Selector List -->
+    <div id="exam-portal" class="card">
+      <h2 style="color: var(--navy); margin-bottom: 1rem;">📋 Active Assigned Examinations</h2>
+      <div id="exam-list">Fetching active exams...</div>
     </div>
+
+    <!-- Active Exam Interface Container -->
+    <div id="active-test-container" class="card" style="display: none;">
+      <h2 id="active-test-title" style="color: var(--navy); margin-bottom: 0.5rem;"></h2>
+      <p id="active-test-info" style="color: var(--text-muted); margin-bottom: 1.2rem; font-size: 0.9rem;"></p>
+
+      <!-- Subjective Mode (PDF Viewer) -->
+      <div id="subjective-frame" style="display:none;">
+        <iframe id="pdf-viewer" src="" width="100%" height="600px" style="border:1px solid #CBD5E1; border-radius:8px;"></iframe>
+      </div>
+
+      <!-- MCQ Mode (Dynamic Question Paper) -->
+      <div id="mcq-frame" style="display:none;">
+        <form id="mcq-form">
+          <div id="mcq-questions-container"></div>
+          <button type="submit" class="btn" style="margin-top: 1rem; width: 100%;">Submit Answer Paper</button>
+        </form>
+      </div>
+
+      <!-- Time Over / Submission Complete Screen -->
+      <div id="time-over-box" style="display:none; text-align:center; padding: 2rem 1rem;">
+        <h3 id="end-status-heading" style="color: var(--error-red); margin-bottom: 0.5rem;">⚠️ Exam Time Over!</h3>
+        <p id="end-status-desc" style="margin-bottom: 1.5rem; color: var(--text-dark);">
+          The question paper is now closed. Please send your written answer sheet photos on WhatsApp for evaluation.
+        </p>
+        <a id="wa-submit-btn" href="#" target="_blank" class="btn btn-wa">📱 Send Answer Sheets on WhatsApp</a>
+        <br><br>
+        <a href="dashboard.html" class="btn">Return to Student Dashboard</a>
+      </div>
+    </div>
+
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <div>
-        <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: 4px;">Vidyaalok Classes</h3>
-        <p style="color: var(--gold); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">The Light of Knowledge</p>
-      </div>
-      <div style="font-size: 0.9rem; color: #E2E8F0;">
-        📍 Kharagpur, West Bengal | 📞 +91 8240949137
-      </div>
-    </div>
-    <div class="footer-copyright">
-      © 2026 Vidyaalok Classes. All rights reserved.
-    </div>
-  </footer>
-
-  <!-- JavaScript Logic -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const examForm = document.getElementById('exam-access-form');
-      const statusMsg = document.getElementById('status-message');
+    const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+    
+    let activeExamObj = null;
+    let timerInterval = null;
 
-      // Attach event listener ONLY to form submit event (prevents firing while typing)
-      examForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevents page reload
+    document.addEventListener("DOMContentLoaded", async function() {
+      const studentId = localStorage.getItem("studentId");
+      if (!studentId) {
+        window.location.href = "login.html";
+        return;
+      }
 
-        const studentId = document.getElementById('student-id').value.trim();
-        const password = document.getElementById('password').value.trim();
+      // Check for an active unfinished exam in localStorage (Resumes if refreshed/disconnected)
+      const savedTimerState = localStorage.getItem(`active_exam_timer_${studentId}`);
+      
+      try {
+        const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
+        const data = await response.json();
 
-        // Ensure fields are populated before running check
-        if (!studentId || !password) {
-          showStatus("Please enter both Student ID and Password.", "error");
+        if (data.status === "success" && data.student.exams) {
+          renderExamList(data.student.exams);
+
+          // Auto-resume test if browser reloaded or network reconnected
+          if (savedTimerState) {
+            const state = JSON.parse(savedTimerState);
+            const matchExam = data.student.exams.find(e => e.examId === state.examId);
+            if (matchExam && Date.now() < state.endTimestamp) {
+              startExam(matchExam, state.endTimestamp);
+            } else {
+              localStorage.removeItem(`active_exam_timer_${studentId}`);
+            }
+          }
+        } else {
+          document.getElementById("exam-list").innerHTML = "<p style='text-align:center;'>No active exams assigned at this moment.</p>";
+        }
+      } catch (e) {
+        document.getElementById("exam-list").innerHTML = "<p style='text-align:center;'>Error loading exams. Please try again.</p>";
+      }
+    });
+
+    function renderExamList(exams) {
+      const listDiv = document.getElementById("exam-list");
+      if (!exams || exams.length === 0) {
+        listDiv.innerHTML = "<p style='text-align:center;'>No active exams assigned to your batch right now.</p>";
+        return;
+      }
+
+      listDiv.innerHTML = "";
+      exams.forEach(exam => {
+        const attemptsText = exam.maxAttempts === -1 
+          ? "Unlimited Attempts" 
+          : `Attempts: ${exam.userAttempts} / ${exam.maxAttempts}`;
+
+        const btnState = exam.canAttempt 
+          ? `<button class="btn" onclick='startExam(${JSON.stringify(exam)})'>Start Test</button>` 
+          : `<button class="btn" disabled>Max Attempts Reached</button>`;
+
+        listDiv.innerHTML += `
+          <div style="border-bottom: 1px solid #E2E8F0; padding: 14px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <strong style="font-size: 1.05rem; color: var(--navy);">${exam.title}</strong>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
+                Type: <strong>${exam.type}</strong> | Duration: ${exam.duration} Mins | ${attemptsText} | Expires: ${exam.expiry}
+              </div>
+            </div>
+            <div>${btnState}</div>
+          </div>
+        `;
+      });
+    }
+
+    function startExam(exam, existingEndTime = null) {
+      activeExamObj = exam;
+      const studentId = localStorage.getItem("studentId");
+
+      document.getElementById("exam-portal").style.display = "none";
+      document.getElementById("active-test-container").style.display = "block";
+      document.getElementById("active-test-title").textContent = exam.title;
+      document.getElementById("active-test-info").textContent = `Duration: ${exam.duration} Minutes | Type: ${exam.type}`;
+
+      // Calculate Wall-Clock End Timestamp for Network & Reload Resistance
+      let endTimestamp = existingEndTime;
+      if (!endTimestamp) {
+        const durationMs = parseInt(exam.duration) * 60 * 1000;
+        endTimestamp = Date.now() + durationMs;
+        localStorage.setItem(`active_exam_timer_${studentId}`, JSON.stringify({
+          examId: exam.examId,
+          endTimestamp: endTimestamp
+        }));
+      }
+
+      document.getElementById("timer-box").style.display = "block";
+      runTimer(endTimestamp);
+
+      // Render Mode
+      if (exam.type === "SUBJECTIVE") {
+        document.getElementById("subjective-frame").style.display = "block";
+        document.getElementById("pdf-viewer").src = exam.content;
+      } else {
+        // MCQ / Objective Mode
+        document.getElementById("mcq-frame").style.display = "block";
+        renderMCQQuestions(exam.content);
+      }
+    }
+
+    function runTimer(endTimestamp) {
+      clearInterval(timerInterval);
+      
+      timerInterval = setInterval(function() {
+        const now = Date.now();
+        const diffSeconds = Math.max(0, Math.floor((endTimestamp - now) / 1000));
+
+        if (diffSeconds <= 0) {
+          clearInterval(timerInterval);
+          finishExam(true);
           return;
         }
 
-        // Validate credentials upon explicit submit click
-        verifyExamAccess(studentId, password);
-      });
+        const hrs = String(Math.floor(diffSeconds / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((diffSeconds % 3600) / 60)).padStart(2, '0');
+        const secs = String(diffSeconds % 60).padStart(2, '0');
 
-      function verifyExamAccess(id, pass) {
-        // Mock verification logic (Replace with API or database check if needed)
-        const activeExams = {
-          "VAK26001": "pass123",
-          "TEST2026": "exam2026"
-        };
+        document.getElementById("time-left").textContent = `${hrs}:${mins}:${secs}`;
+      }, 1000);
+    }
 
-        if (activeExams[id] && activeExams[id] === pass) {
-          showStatus("Login successful! Loading active examination...", "success");
-          // Redirect or show test list after successful validation
-          // window.location.href = "test-paper.html";
-        } else {
-          // Display error message ONLY on failed form submit
-          showStatus("No active examination found for these credentials.", "error");
-        }
+    function renderMCQQuestions(contentJsonStr) {
+      const qContainer = document.getElementById("mcq-questions-container");
+      qContainer.innerHTML = "";
+
+      try {
+        const questions = typeof contentJsonStr === "string" ? JSON.parse(contentJsonStr) : contentJsonStr;
+
+        questions.forEach((q, idx) => {
+          let html = `<div class="q-box"><h4>Q${idx + 1}. ${q.q}</h4>`;
+
+          if (q.type === "SINGLE") {
+            q.opts.forEach((opt, oIdx) => {
+              html += `
+                <label class="opt-item">
+                  <input type="radio" name="q_${idx}" value="${oIdx}"> ${opt}
+                </label>
+              `;
+            });
+          } else if (q.type === "MULTI") {
+            q.opts.forEach((opt, oIdx) => {
+              html += `
+                <label class="opt-item">
+                  <input type="checkbox" name="q_${idx}" value="${oIdx}"> ${opt}
+                </label>
+              `;
+            });
+          } else if (q.type === "INTEGER") {
+            html += `
+              <input type="number" step="any" name="q_${idx}" class="num-input" placeholder="Enter Numerical Value">
+            `;
+          }
+
+          html += `</div>`;
+          qContainer.innerHTML += html;
+        });
+      } catch (e) {
+        qContainer.innerHTML = "<p>Error loading exam questions. Contact teacher.</p>";
       }
+    }
 
-      function showStatus(text, type) {
-        statusMsg.textContent = text;
-        statusMsg.className = "status-message " + type;
-        statusMsg.style.display = "block";
-      }
+    // Submit Objective Answers
+    document.getElementById("mcq-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      finishExam(false);
     });
+
+    function finishExam(isTimeout) {
+      clearInterval(timerInterval);
+      const studentId = localStorage.getItem("studentId");
+      localStorage.removeItem(`active_exam_timer_${studentId}`);
+
+      document.getElementById("subjective-frame").style.display = "none";
+      document.getElementById("mcq-frame").style.display = "none";
+      document.getElementById("timer-box").style.display = "none";
+      document.getElementById("time-over-box").style.display = "block";
+
+      if (activeExamObj.type === "SUBJECTIVE") {
+        document.getElementById("end-status-heading").textContent = isTimeout ? "⚠️ Exam Time Over!" : "✅ Paper Completed";
+        document.getElementById("end-status-desc").textContent = "The question paper is now locked. Please send your written answer sheet photos on WhatsApp for evaluation.";
+        
+        const waMsg = encodeURIComponent(`Hello Sir, I have completed the Subjective Exam (${activeExamObj.title}) for Roll No: ${studentId}. Attached are my answer photos.`);
+        document.getElementById("wa-submit-btn").href = `https://wa.me/918240949137?text=${waMsg}`;
+        document.getElementById("wa-submit-btn").style.display = "inline-block";
+      } else {
+        document.getElementById("end-status-heading").textContent = "✅ Exam Submitted Successfully!";
+        document.getElementById("end-status-desc").textContent = "Your objective answers have been recorded. Marks will reflect on your dashboard shortly.";
+        document.getElementById("wa-submit-btn").style.display = "none";
+      }
+    }
   </script>
 </body>
 </html>
