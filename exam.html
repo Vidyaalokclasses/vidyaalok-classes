@@ -80,7 +80,6 @@
     .btn-submit { background-color: var(--success-green); width: 100%; font-size: 1.05rem; padding: 12px; }
     .btn-wa { background-color: #25D366 !important; margin-top: 15px; font-size: 1rem; padding: 10px 20px; }
 
-    /* Modal Instructions Overlay */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -121,14 +120,13 @@
     .rules-list { margin: 1rem 0; padding-left: 1.2rem; font-size: 0.92rem; color: #334155; }
     .rules-list li { margin-bottom: 0.5rem; }
 
-    /* Proctored Warning Banner */
     .warning-banner {
       position: fixed;
       top: 70px; left: 50%;
       transform: translateX(-50%);
       background: #EF4444;
       color: #FFFFFF;
-      padding: 10px 20px;
+      padding: 12px 20px;
       border-radius: 8px;
       font-weight: 700;
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
@@ -136,13 +134,11 @@
       display: none;
       text-align: center;
       width: 90%;
-      max-width: 600px;
+      max-width: 650px;
     }
 
-    /* Split Screen Responsive Layout */
     .split-layout { display: flex; gap: 1.2rem; align-items: flex-start; }
     
-    /* PDF Container Wrapper to Hide Top-Right Pop-Out Button */
     .pdf-pane {
       flex: 1.4;
       min-width: 0;
@@ -153,7 +149,6 @@
       background: #525659;
     }
 
-    /* Transparent Overlay Covering Google Drive Top-Right Popout Icon */
     .pdf-pane::after {
       content: "";
       position: absolute;
@@ -206,7 +201,6 @@
     .omr-btn.selected { background: var(--navy); color: #FFF; border-color: var(--navy); }
     .num-input { width: 120px; padding: 6px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
 
-    /* Tablet & Mobile Responsiveness */
     @media screen and (max-width: 992px) {
       .split-layout { flex-direction: column !important; }
       .pdf-pane, .omr-pane { width: 100% !important; flex: none !important; }
@@ -224,9 +218,8 @@
 </head>
 <body>
 
-  <!-- Proctored Warning Banner -->
   <div id="warning-banner" class="warning-banner">
-    ⚠️ WARNING! Tab switching detected (<span id="switch-count">0</span>). Repeatedly leaving the exam window is monitored!
+    ⚠️ WARNING! Tab switching detected (<span id="switch-count">0</span>).
   </div>
 
   <header>
@@ -240,13 +233,11 @@
 
   <main class="container">
     
-    <!-- Active Exams List -->
     <div id="exam-portal" class="card">
       <h2 style="color: var(--navy); margin-bottom: 1rem;">📋 Active Assigned Examinations</h2>
       <div id="exam-list">Fetching active exams...</div>
     </div>
 
-    <!-- Active Test Viewport -->
     <div id="active-test-container" class="card" style="display: none;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; flex-wrap:wrap; gap:10px;">
         <div>
@@ -257,12 +248,10 @@
       </div>
 
       <div class="split-layout" id="exam-split-layout">
-        <!-- Embedded PDF Pane (Pop-Out Masked) -->
         <div class="pdf-pane" id="pdf-pane">
           <iframe id="pdf-viewer" src="" allow="autoplay"></iframe>
         </div>
 
-        <!-- Interactive OMR Pane -->
         <div class="omr-pane" id="omr-pane" style="display:none;">
           <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.4rem;">🎯 Answer Sheet (OMR)</h3>
           <form id="omr-form">
@@ -273,7 +262,6 @@
       </div>
     </div>
 
-    <!-- Subjective Completion Screen -->
     <div id="subj-complete-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
       <h2 id="subj-status-title" style="color: var(--navy); margin-bottom: 0.6rem;"></h2>
       <p style="color: var(--text-dark); margin-bottom: 1rem; max-width: 600px; margin-left:auto; margin-right:auto;">
@@ -284,7 +272,6 @@
       <a href="dashboard.html" class="btn">Return to Dashboard</a>
     </div>
 
-    <!-- MCQ Result Screen -->
     <div id="result-screen" class="card" style="display:none; text-align:center; padding: 2.5rem 1rem;">
       <h2 style="color: var(--navy); margin-bottom: 0.8rem;">🎉 Exam Submitted Successfully!</h2>
       <div id="score-summary" style="font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--text-dark);"></div>
@@ -293,7 +280,6 @@
 
   </main>
 
-  <!-- Instructions Modal -->
   <div id="instructions-modal" class="modal-overlay">
     <div class="modal-box">
       <h2 id="modal-exam-title">Exam Details & Instructions</h2>
@@ -360,17 +346,61 @@
       }
     });
 
-    // Tab Switching Detection
+    // Tab-Switching Violation Tracker (Locks and Emails Admin on 3rd Violation)
     document.addEventListener("visibilitychange", function() {
       if (isExamActive && document.hidden) {
         tabSwitchCount++;
         document.getElementById("switch-count").textContent = tabSwitchCount;
+        
         const banner = document.getElementById("warning-banner");
-        banner.style.display = "block";
-
-        setTimeout(() => { banner.style.display = "none"; }, 5000);
+        
+        if (tabSwitchCount < 3) {
+          banner.style.display = "block";
+          banner.innerHTML = `⚠️ WARNING (${tabSwitchCount}/3)! Tab switching detected. Leaving the window again will cause auto-termination.`;
+          setTimeout(() => { banner.style.display = "none"; }, 6000);
+        } else {
+          banner.style.display = "block";
+          banner.innerHTML = `🚨 VIOLATION LIMIT REACHED! Tab switched 3 times. Terminating exam...`;
+          setTimeout(() => {
+            handleProctoredTermination();
+          }, 1500);
+        }
       }
     });
+
+    async function handleProctoredTermination() {
+      clearInterval(timerInterval);
+      isExamActive = false;
+      const studentId = localStorage.getItem("studentId");
+      localStorage.removeItem(`active_exam_timer_${studentId}`);
+
+      document.getElementById("active-test-container").style.display = "none";
+      document.getElementById("timer-box").style.display = "none";
+
+      document.getElementById("subj-status-title").textContent = "🚨 Exam Terminated due to Violations";
+      document.getElementById("subj-status-title").style.color = "var(--error-red)";
+      
+      const completeScreen = document.getElementById("subj-complete-screen");
+      completeScreen.querySelector("p").textContent = 
+        "Your exam was automatically terminated because you switched tabs or left the browser window 3 times. An email notification has been sent to vidyaalokclasses@gmail.com.";
+      
+      document.getElementById("wa-submit-btn").style.display = "none";
+      completeScreen.style.display = "block";
+
+      try {
+        await fetch(GOOGLE_WEB_APP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            action: "logTabViolation",
+            roll: studentId,
+            examId: activeExamObj.examId,
+            examTitle: activeExamObj.title,
+            switchCount: tabSwitchCount
+          })
+        });
+      } catch (e) {}
+    }
 
     function renderExamList(exams) {
       const listDiv = document.getElementById("exam-list");
@@ -387,7 +417,7 @@
           : `<button class="btn" disabled>Attempted (${exam.userAttempts}/${exam.maxAttempts})</button>`;
 
         listDiv.innerHTML += `
-          <div style="border-bottom: 1px solid #E2E8F0; padding: 14px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div style="border-bottom: 1px solid #E2E8F0; padding: 14px 0; display:flex; justify-between; align-items:center; flex-wrap:wrap; gap:10px;">
             <div>
               <strong style="font-size: 1.05rem; color: var(--navy);">${exam.title}</strong>
               <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
@@ -451,7 +481,6 @@
       document.getElementById("active-test-title").textContent = exam.title;
       document.getElementById("active-test-info").textContent = `Batch: ${exam.batch} | Duration: ${exam.duration} Mins | Type: ${exam.type}`;
 
-      // Append embed parameters to ensure inline viewer without popout buttons
       let cleanContentUrl = exam.content;
       if (cleanContentUrl.includes("drive.google.com")) {
         cleanContentUrl = cleanContentUrl.replace("/view", "/preview").replace("/edit", "/preview");
