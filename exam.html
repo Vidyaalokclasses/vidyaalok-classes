@@ -160,6 +160,19 @@
         let tabSwitchCount = 0;
         let isExamActive = false;
         let isHandlingViolation = false;
+        
+        let wakeLock = null;
+
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    console.log('Screen Wake Lock is active');
+                }
+            } catch (err) {
+                console.warn(`Wake Lock error: ${err.name}, ${err.message}`);
+            }
+        }
 
         async function fetchWithRetry(url, options = {}, retries = 3, backoff = 2000) {
             for (let i = 0; i < retries; i++) {
@@ -203,7 +216,6 @@
             }
         });
 
-        // --- ENHANCED: Window Blur & Visibility Violation Tracker ---
         function detectFocusLoss() {
             if (!isExamActive || isHandlingViolation) return;
             
@@ -217,7 +229,6 @@
                 banner.style.display = "block";
                 banner.innerHTML = `⚠️ WARNING! Focus lost or window change detected (<span id="switch-count">${tabSwitchCount}</span>/3). Repeatedly leaving the exam window will terminate your test.`;
                 
-                // 3-second debounce cooldown to prevent double-strikes when clicking away
                 setTimeout(() => { 
                     banner.style.display = "none"; 
                     isHandlingViolation = false;
@@ -229,17 +240,22 @@
             }
         }
 
-        // Trigger on both window blur (new applications) and tab switching (visibility change)
         window.addEventListener("blur", detectFocusLoss);
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
                 detectFocusLoss();
+            } else if (isExamActive) {
+                requestWakeLock();
             }
         });
 
         async function handleProctoredTermination() {
             clearInterval(timerInterval);
             isExamActive = false;
+            
+            if (wakeLock !== null) {
+                wakeLock.release().then(() => { wakeLock = null; });
+            }
             
             const studentId = localStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
@@ -391,8 +407,10 @@
 
             document.getElementById("timer-box").style.display = "block";
             
-            // Allow tracking to begin ONLY after full interface setup is complete
-            setTimeout(() => { isExamActive = true; }, 1000);
+            setTimeout(() => { 
+                isExamActive = true; 
+                requestWakeLock();
+            }, 1000);
             
             timerInterval = setInterval(function() {
                 const diff = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
@@ -465,6 +483,11 @@
         async function FinishSubjectiveExamTimeout() {
             clearInterval(timerInterval);
             isExamActive = false;
+            
+            if (wakeLock !== null) {
+                wakeLock.release().then(() => { wakeLock = null; });
+            }
+
             const studentId = localStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
             
@@ -501,6 +524,10 @@
             e.preventDefault();
             clearInterval(timerInterval);
             isExamActive = false;
+            
+            if (wakeLock !== null) {
+                wakeLock.release().then(() => { wakeLock = null; });
+            }
             
             const studentId = localStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
