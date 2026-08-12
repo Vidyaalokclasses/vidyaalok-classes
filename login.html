@@ -66,7 +66,7 @@
         // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
 
-        // FIX FOR NORMAL MODE: Wipe out old persistent data conflicts immediately
+        // Wipes old persistent data conflicts immediately
         localStorage.removeItem("studentId");
         localStorage.removeItem("dashboardData");
 
@@ -88,23 +88,23 @@
             loginBtn.disabled = true;
             loginBtn.style.opacity = "0.7";
 
-            const requestUrl = `${SCRIPT_URL}?studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}`;
+            // The &nocache= timestamp completely prevents Safari from using old broken cached files
+            const requestUrl = `${SCRIPT_URL}?studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}&nocache=${Date.now()}`;
 
-            fetch(requestUrl, { method: "GET", redirect: "follow" })
+            fetch(requestUrl, { 
+                method: "GET", 
+                redirect: "follow",
+                cache: "no-store" 
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         sessionStorage.setItem("studentId", studentId);
                         sessionStorage.setItem("dashboardData", JSON.stringify(data.student));
                         
-                        // FIX FOR SPEED: keepalive tells browser to send this in the background, 
-                        // allowing us to redirect instantly without waiting!
-                        fetch(SCRIPT_URL, {
-                            method: "POST",
-                            headers: { "Content-Type": "text/plain" },
-                            body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" }),
-                            keepalive: true 
-                        });
+                        // sendBeacon perfectly pings Google in the background with zero lag
+                        const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" });
+                        navigator.sendBeacon(SCRIPT_URL, payload);
 
                         // INSTANT REDIRECT
                         window.location.href = "dashboard.html";
@@ -120,7 +120,7 @@
                 .catch(error => {
                     console.error("Fetch Error:", error);
                     errorMsg.style.color = "#DC2626";
-                    errorMsg.textContent = "Error connecting to server. Please check deployment settings.";
+                    errorMsg.textContent = "Error: Connection blocked. Try clearing browser cache or check deployment settings.";
                     loginBtn.textContent = "Login to Dashboard";
                     loginBtn.disabled = false;
                     loginBtn.style.opacity = "1";
