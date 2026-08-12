@@ -167,7 +167,7 @@
         }
 
         function trackActivity(actionDetail) {
-            const studentId = localStorage.getItem("studentId");
+            const studentId = sessionStorage.getItem("studentId");
             if (!studentId) return;
             
             fetch(GOOGLE_WEB_APP_URL, {
@@ -178,23 +178,22 @@
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
-            const studentId = localStorage.getItem("studentId");
+            // Check sessionStorage instead of localStorage
+            const studentId = sessionStorage.getItem("studentId");
             if (!studentId) {
                 window.location.href = "login.html";
                 return;
             }
 
-            // INSTANT LOAD
-            const cachedData = localStorage.getItem("dashboardData");
+            const cachedData = sessionStorage.getItem("dashboardData");
             if (cachedData) renderDashboard(JSON.parse(cachedData));
 
-            // BACKGROUND REFRESH
             try {
                 const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
                 const data = await response.json();
                 
                 if (data.status === "success" && data.student) {
-                    localStorage.setItem("dashboardData", JSON.stringify(data.student));
+                    sessionStorage.setItem("dashboardData", JSON.stringify(data.student));
                     renderDashboard(data.student);
                 } else if (!cachedData) {
                     alert("Student record not found. Please log in again.");
@@ -319,9 +318,8 @@
             }
         }
 
-        // --- NEW: Track Logout & Clear Session ---
         function logoutStudent() {
-            const studentId = localStorage.getItem("studentId");
+            const studentId = sessionStorage.getItem("studentId");
             const logoutBtn = document.getElementById("logoutBtn");
             
             if (studentId) {
@@ -331,7 +329,6 @@
                     logoutBtn.style.pointerEvents = "none";
                 }
 
-                // Send the log out ping before redirecting
                 fetch(GOOGLE_WEB_APP_URL, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain" },
@@ -350,8 +347,8 @@
         }
 
         function finishLogout() {
-            localStorage.removeItem("studentId");
-            localStorage.removeItem("dashboardData");
+            sessionStorage.removeItem("studentId");
+            sessionStorage.removeItem("dashboardData");
             window.location.href = "login.html";
         }
     </script>
