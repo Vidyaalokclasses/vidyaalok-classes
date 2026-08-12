@@ -184,18 +184,24 @@
                 return;
             }
 
+            // INSTANT LOAD
+            const cachedData = localStorage.getItem("dashboardData");
+            if (cachedData) renderDashboard(JSON.parse(cachedData));
+
+            // BACKGROUND REFRESH
             try {
                 const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
                 const data = await response.json();
                 
                 if (data.status === "success" && data.student) {
+                    localStorage.setItem("dashboardData", JSON.stringify(data.student));
                     renderDashboard(data.student);
-                } else {
+                } else if (!cachedData) {
                     alert("Student record not found. Please log in again.");
                     logoutStudent();
                 }
             } catch (e) {
-                console.error("Error loading dashboard:", e);
+                console.error("Error loading fresh dashboard data:", e);
             }
         });
 
@@ -315,6 +321,7 @@
 
         function logoutStudent() {
             localStorage.removeItem("studentId");
+            localStorage.removeItem("dashboardData");
             window.location.href = "login.html";
         }
     </script>
