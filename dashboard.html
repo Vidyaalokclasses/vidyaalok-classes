@@ -47,7 +47,6 @@
     </header>
 
     <main class="container">
-        <!-- Integrated Profile & Fee Card -->
         <div class="profile-card">
             <div class="profile-info">
                 <h2 id="student-name">Welcome, Student</h2>
@@ -184,11 +183,9 @@
                 return;
             }
 
-            // INSTANT LOAD
             const cachedData = localStorage.getItem("dashboardData");
             if (cachedData) renderDashboard(JSON.parse(cachedData));
 
-            // BACKGROUND REFRESH
             try {
                 const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
                 const data = await response.json();
@@ -213,7 +210,6 @@
             document.getElementById("student-batch").textContent = safeVal(student.batch);
             document.getElementById("student-attendance").textContent = safeVal(student.attendance);
 
-            // Populate Fee Details
             document.getElementById("fee-total").textContent = "₹" + safeVal(student.totalFees);
             document.getElementById("fee-paid").textContent = "₹" + safeVal(student.amountPaid);
             const balance = Number(student.totalFees || 0) - Number(student.amountPaid || 0);
@@ -235,7 +231,6 @@
                 statusElem.style.color = "#B91C1C";
             }
 
-            // 1. Schedule Rendering
             const schedBody = document.getElementById("schedule-table-body");
             if (student.schedule && student.schedule.length > 0) {
                 schedBody.innerHTML = "";
@@ -246,7 +241,6 @@
                 schedBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
             }
 
-            // 2. Notice Board Rendering
             const noticeBody = document.getElementById("notice-table-body");
             if (student.notices && student.notices.length > 0) {
                 noticeBody.innerHTML = "";
@@ -259,7 +253,6 @@
                 noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No notices available for your batch.</td></tr>`;
             }
 
-            // 3. Homework Rendering
             const hwBody = document.getElementById("homework-table-body");
             if (student.homework && student.homework.length > 0) {
                 hwBody.innerHTML = "";
@@ -280,7 +273,6 @@
                 hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`;
             }
 
-            // 4. Class Notes Rendering
             const notesBody = document.getElementById("notes-table-body");
             if (student.notes && student.notes.length > 0) {
                 notesBody.innerHTML = "";
@@ -293,7 +285,6 @@
                 notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available.</td></tr>`;
             }
 
-            // 5. Results Matrix Rendering
             const resultsBody = document.getElementById("results-table-body");
             if (student.results && student.results.length > 0) {
                 resultsBody.innerHTML = "";
