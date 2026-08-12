@@ -66,6 +66,10 @@
         // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
 
+        // FIX FOR NORMAL MODE: Wipe out old persistent data conflicts immediately
+        localStorage.removeItem("studentId");
+        localStorage.removeItem("dashboardData");
+
         function login() {
             const studentId = document.getElementById('studentId').value.trim();
             const password = document.getElementById('password').value.trim();
@@ -79,7 +83,7 @@
             }
 
             errorMsg.style.color = "#0284C7";
-            errorMsg.textContent = "Authenticating & loading portal data... Please wait.";
+            errorMsg.textContent = "Authenticating... Please wait.";
             loginBtn.textContent = "Loading...";
             loginBtn.disabled = true;
             loginBtn.style.opacity = "0.7";
@@ -90,22 +94,20 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Use sessionStorage so it erases when the tab is closed
                         sessionStorage.setItem("studentId", studentId);
                         sessionStorage.setItem("dashboardData", JSON.stringify(data.student));
                         
+                        // FIX FOR SPEED: keepalive tells browser to send this in the background, 
+                        // allowing us to redirect instantly without waiting!
                         fetch(SCRIPT_URL, {
                             method: "POST",
                             headers: { "Content-Type": "text/plain" },
-                            body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" })
-                        })
-                        .then(() => {
-                            window.location.href = "dashboard.html";
-                        })
-                        .catch(e => {
-                            console.log("Log ping failed", e);
-                            window.location.href = "dashboard.html"; 
+                            body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" }),
+                            keepalive: true 
                         });
+
+                        // INSTANT REDIRECT
+                        window.location.href = "dashboard.html";
 
                     } else {
                         errorMsg.style.color = "#DC2626";
