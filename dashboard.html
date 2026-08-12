@@ -6,16 +6,7 @@
     <title>Student Dashboard | Vidyaalok Classes</title>
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <style>
-        :root {
-            --navy: #0B2545;
-            --gold: #E5A93C;
-            --light-bg: #F1F5F9;
-            --card-bg: rgba(255, 255, 255, 0.96);
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-            --success-green: #10B981;
-            --error-red: #EF4444;
-        }
+        :root { --navy: #0B2545; --gold: #E5A93C; --light-bg: #F1F5F9; --card-bg: rgba(255, 255, 255, 0.96); --text-dark: #1E293B; --text-muted: #64748B; --success-green: #10B981; --error-red: #EF4444; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         html, body { width: 100%; overflow-x: hidden; }
         body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 15px; }
@@ -40,15 +31,10 @@
         .btn-download:hover { background-color: #133966; color: var(--gold); }
         footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
         .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-        @media screen and (max-width: 768px) {
-            body { padding-top: 100px; }
-            header { flex-direction: column; padding: 0.5rem 1rem; }
-            .footer-container { flex-direction: column; text-align: center; }
-        }
+        @media screen and (max-width: 768px) { body { padding-top: 100px; } header { flex-direction: column; padding: 0.5rem 1rem; } .footer-container { flex-direction: column; text-align: center; } }
     </style>
 </head>
 <body>
-
     <header>
         <div class="brand">
             <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
@@ -61,7 +47,6 @@
     </header>
 
     <main class="container">
-        <!-- Profile Card -->
         <div class="profile-card">
             <div class="profile-info">
                 <h2 id="student-name">Welcome, Student</h2>
@@ -74,7 +59,6 @@
             </div>
         </div>
 
-        <!-- Active Examinations Portal Card -->
         <div class="dashboard-section" style="border-left: 4px solid var(--navy);">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <div>
@@ -85,14 +69,11 @@
             </div>
         </div>
 
-        <!-- Batch Schedule & Timings -->
         <div class="dashboard-section">
             <div class="section-heading">Batch Schedules & Timings</div>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr><th>Day</th><th>Time Slot</th><th>Subject / Topics</th><th>Mode</th></tr>
-                    </thead>
+                    <thead><tr><th>Day</th><th>Time Slot</th><th>Subject / Topics</th><th>Mode</th></tr></thead>
                     <tbody id="schedule-table-body">
                         <tr><td colspan="4" style="text-align:center;">Fetching live schedule...</td></tr>
                     </tbody>
@@ -100,14 +81,11 @@
             </div>
         </div>
 
-        <!-- Batch Notice Board -->
         <div class="dashboard-section">
             <div class="section-heading">Batch Notice Board</div>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr><th>Date</th><th>Notice Title / Subject</th><th>Category</th><th>Attachment</th></tr>
-                    </thead>
+                    <thead><tr><th>Date</th><th>Notice Title / Subject</th><th>Category</th><th>Attachment</th></tr></thead>
                     <tbody id="notice-table-body">
                         <tr><td colspan="4" style="text-align:center;">Fetching notices...</td></tr>
                     </tbody>
@@ -115,14 +93,11 @@
             </div>
         </div>
 
-        <!-- FIXED: Batch Homework & Assignments -->
         <div class="dashboard-section">
             <div class="section-heading">Batch Homework & Assignments</div>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr><th>Title</th><th>Batch</th><th>Class Date</th><th>Due Date</th><th>Assignment PDF</th></tr>
-                    </thead>
+                    <thead><tr><th>Title</th><th>Batch</th><th>Class Date</th><th>Due Date</th><th>Assignment PDF</th></tr></thead>
                     <tbody id="homework-table-body">
                         <tr><td colspan="5" style="text-align:center;">Fetching homework...</td></tr>
                     </tbody>
@@ -130,14 +105,11 @@
             </div>
         </div>
 
-        <!-- Class Notes & Study Resources -->
         <div class="dashboard-section">
             <div class="section-heading">Class Notes & Study Resources</div>
             <div class="table-responsive">
                 <table>
-                    <thead>
-                        <tr><th>Date</th><th>Topic / Chapter</th><th>Resource Type</th><th>Action</th></tr>
-                    </thead>
+                    <thead><tr><th>Date</th><th>Topic / Chapter</th><th>Resource Type</th><th>Action</th></tr></thead>
                     <tbody id="notes-table-body">
                         <tr><td colspan="4" style="text-align:center;">Fetching class notes...</td></tr>
                     </tbody>
@@ -145,15 +117,12 @@
             </div>
         </div>
 
-        <!-- Examination Results Matrix -->
         <div class="dashboard-section">
             <div class="section-heading">Examination Results Matrix</div>
             <div class="table-responsive">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Date</th><th>Exam Title</th><th>Total Qs</th><th>Attempted</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Total Marks</th><th>Marks Obtained</th><th>Percentage</th><th>Rank</th>
-                        </tr>
+                        <tr><th>Date</th><th>Exam Title</th><th>Total Qs</th><th>Attempted</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Total Marks</th><th>Marks Obtained</th><th>Percentage</th><th>Rank</th></tr>
                     </thead>
                     <tbody id="results-table-body">
                         <tr><td colspan="11" style="text-align:center;">Fetching test results...</td></tr>
@@ -186,6 +155,18 @@
             return str.length > 0 ? str : "-";
         }
 
+        // Function to send silent activity pings
+        function trackActivity(actionDetail) {
+            const studentId = localStorage.getItem("studentId");
+            if (!studentId) return;
+            
+            fetch(GOOGLE_WEB_APP_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: actionDetail })
+            }).catch(e => console.log("Activity log failed", e));
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
             const studentId = localStorage.getItem("studentId");
             if (!studentId) {
@@ -216,7 +197,6 @@
             document.getElementById("student-batch").textContent = safeVal(student.batch);
             document.getElementById("student-fee").textContent = safeVal(student.feeStatus || "Active");
 
-            // 1. Schedule Rendering
             const schedBody = document.getElementById("schedule-table-body");
             if (student.schedule && student.schedule.length > 0) {
                 schedBody.innerHTML = "";
@@ -227,26 +207,24 @@
                 schedBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
             }
 
-            // 2. Notice Board Rendering
             const noticeBody = document.getElementById("notice-table-body");
             if (student.notices && student.notices.length > 0) {
                 noticeBody.innerHTML = "";
                 student.notices.forEach(item => {
                     const rawLink = safeVal(item.link);
-                    const linkBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download">View Attachment</a>` : "-";
+                    const linkBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download" onclick="trackActivity('Viewed Notice: ${safeVal(item.title).replace(/'/g, "\\'")}')">View Attachment</a>` : "-";
                     noticeBody.innerHTML += `<tr><td>${safeVal(item.date)}</td><td><strong>${safeVal(item.title)}</strong></td><td>${safeVal(item.type)}</td><td>${linkBtn}</td></tr>`;
                 });
             } else {
                 noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No notices available for your batch.</td></tr>`;
             }
 
-            // 3. FIXED: Homework Rendering
             const hwBody = document.getElementById("homework-table-body");
             if (student.homework && student.homework.length > 0) {
                 hwBody.innerHTML = "";
                 student.homework.forEach(item => {
                     const rawLink = safeVal(item.link);
-                    const downloadBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download">Download PDF</a>` : "-";
+                    const downloadBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download" onclick="trackActivity('Viewed Homework: ${safeVal(item.title).replace(/'/g, "\\'")}')">Download PDF</a>` : "-";
                     hwBody.innerHTML += `
                         <tr>
                             <td><strong>${safeVal(item.title)}</strong></td>
@@ -261,20 +239,18 @@
                 hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`;
             }
 
-            // 4. Class Notes Rendering
             const notesBody = document.getElementById("notes-table-body");
             if (student.notes && student.notes.length > 0) {
                 notesBody.innerHTML = "";
                 student.notes.forEach(item => {
                     const rawLink = safeVal(item.link);
-                    const downloadBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download">View Resource</a>` : "-";
+                    const downloadBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download" onclick="trackActivity('Viewed Class Note: ${safeVal(item.topic).replace(/'/g, "\\'")}')">View Resource</a>` : "-";
                     notesBody.innerHTML += `<tr><td>${safeVal(item.date)}</td><td><strong>${safeVal(item.topic)}</strong></td><td>${safeVal(item.type)}</td><td>${downloadBtn}</td></tr>`;
                 });
             } else {
                 notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available.</td></tr>`;
             }
 
-            // 5. Results Matrix Rendering
             const resultsBody = document.getElementById("results-table-body");
             if (student.results && student.results.length > 0) {
                 resultsBody.innerHTML = "";
