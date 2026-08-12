@@ -97,9 +97,15 @@
                             method: "POST",
                             headers: { "Content-Type": "text/plain" },
                             body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" })
-                        }).catch(e => console.log("Log ping failed"));
+                        })
+                        .then(() => {
+                            window.location.href = "dashboard.html";
+                        })
+                        .catch(e => {
+                            console.log("Log ping failed", e);
+                            window.location.href = "dashboard.html"; 
+                        });
 
-                        window.location.href = "dashboard.html";
                     } else {
                         errorMsg.style.color = "#DC2626";
                         errorMsg.textContent = data.message || "Invalid Student ID or Password.";
