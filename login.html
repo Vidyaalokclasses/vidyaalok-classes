@@ -70,6 +70,7 @@
             const studentId = document.getElementById('studentId').value.trim();
             const password = document.getElementById('password').value.trim();
             const errorMsg = document.getElementById('errorMsg');
+            const loginBtn = document.querySelector('.btn-login');
 
             if (!studentId || !password) {
                 errorMsg.style.color = "#DC2626";
@@ -78,7 +79,10 @@
             }
 
             errorMsg.style.color = "#0284C7";
-            errorMsg.textContent = "Verifying credentials...";
+            errorMsg.textContent = "Authenticating & loading portal data... Please wait.";
+            loginBtn.textContent = "Loading...";
+            loginBtn.disabled = true;
+            loginBtn.style.opacity = "0.7";
 
             const requestUrl = `${SCRIPT_URL}?studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}`;
 
@@ -86,8 +90,8 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Log activity and save session
                         localStorage.setItem("studentId", studentId);
+                        localStorage.setItem("dashboardData", JSON.stringify(data.student));
                         
                         fetch(SCRIPT_URL, {
                             method: "POST",
@@ -95,17 +99,22 @@
                             body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" })
                         }).catch(e => console.log("Log ping failed"));
 
-                        // REDIRECT TO MAIN DASHBOARD
                         window.location.href = "dashboard.html";
                     } else {
                         errorMsg.style.color = "#DC2626";
                         errorMsg.textContent = data.message || "Invalid Student ID or Password.";
+                        loginBtn.textContent = "Login to Dashboard";
+                        loginBtn.disabled = false;
+                        loginBtn.style.opacity = "1";
                     }
                 })
                 .catch(error => {
                     console.error("Fetch Error:", error);
                     errorMsg.style.color = "#DC2626";
                     errorMsg.textContent = "Error connecting to server. Please check deployment settings.";
+                    loginBtn.textContent = "Login to Dashboard";
+                    loginBtn.disabled = false;
+                    loginBtn.style.opacity = "1";
                 });
         }
     </script>
