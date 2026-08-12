@@ -6,16 +6,7 @@
     <title>Online Exams | Vidyaalok Classes</title>
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <style>
-        :root {
-            --navy: #0B2545;
-            --gold: #E5A93C;
-            --light-bg: #F1F5F9;
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-            --success-green: #10B981;
-            --error-red: #EF4444;
-        }
+        :root { --navy: #0B2545; --gold: #E5A93C; --light-bg: #F1F5F9; --card-bg: rgba(255, 255, 255, 0.95); --text-dark: #1E293B; --text-muted: #64748B; --success-green: #10B981; --error-red: #EF4444; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         html, body { width: 100%; overflow: hidden; }
         body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 15px; }
@@ -187,9 +178,11 @@
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
-            const studentId = localStorage.getItem("studentId");
+            // Reads from sessionStorage to ensure tab-close logs out the student
+            const studentId = sessionStorage.getItem("studentId");
             if (!studentId) { window.location.href = "login.html"; return; }
 
+            // Keeps timer in localStorage so it doesn't reset if they accidentally close tab!
             const savedTimerState = localStorage.getItem(`active_exam_timer_${studentId}`);
             
             try {
@@ -257,7 +250,7 @@
                 wakeLock.release().then(() => { wakeLock = null; });
             }
             
-            const studentId = localStorage.getItem("studentId");
+            const studentId = sessionStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
             
             document.getElementById("active-test-container").style.display = "none";
@@ -395,7 +388,7 @@
             isHandlingViolation = false;
 
             let endTimestamp = existingEndTime;
-            const studentId = localStorage.getItem("studentId");
+            const studentId = sessionStorage.getItem("studentId");
             
             if (!endTimestamp) {
                 endTimestamp = Date.now() + (parseInt(exam.duration) * 60 * 1000);
@@ -488,7 +481,7 @@
                 wakeLock.release().then(() => { wakeLock = null; });
             }
 
-            const studentId = localStorage.getItem("studentId");
+            const studentId = sessionStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
             
             document.getElementById("active-test-container").style.display = "none";
@@ -529,7 +522,7 @@
                 wakeLock.release().then(() => { wakeLock = null; });
             }
             
-            const studentId = localStorage.getItem("studentId");
+            const studentId = sessionStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
             
             document.getElementById("active-test-container").style.display = "none";
