@@ -14,7 +14,7 @@
         .brand img { height: 44px; width: auto; display: block; }
         nav { display: flex; gap: 1rem; align-items: center; }
         nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 4px 8px; }
-        .btn-logout { background-color: var(--error-red); color: #FFFFFF !important; border-radius: 5px; padding: 6px 14px !important; cursor: pointer; text-decoration: none; font-weight: 600; }
+        .btn-logout { background-color: var(--error-red); color: #FFFFFF !important; border-radius: 5px; padding: 6px 14px !important; cursor: pointer; text-decoration: none; font-weight: 600; transition: opacity 0.2s; }
         .container { max-width: 1200px; margin: 4rem auto 2rem; padding: 1rem; width: 100%; flex: 1; }
         .profile-card { background: var(--navy); color: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
         .profile-info h2 { font-size: 1.6rem; color: #FFFFFF; margin-bottom: 4px; }
@@ -42,11 +42,12 @@
         <nav>
             <a href="index.html">Home</a>
             <a href="schedule.html">Schedule</a>
-            <a class="btn-logout" onclick="logoutStudent()">Student Logout</a>
+            <a class="btn-logout" id="logoutBtn" onclick="logoutStudent()">Student Logout</a>
         </nav>
     </header>
 
     <main class="container">
+        <!-- Integrated Profile & Fee Card -->
         <div class="profile-card">
             <div class="profile-info">
                 <h2 id="student-name">Welcome, Student</h2>
@@ -183,9 +184,11 @@
                 return;
             }
 
+            // INSTANT LOAD
             const cachedData = localStorage.getItem("dashboardData");
             if (cachedData) renderDashboard(JSON.parse(cachedData));
 
+            // BACKGROUND REFRESH
             try {
                 const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
                 const data = await response.json();
@@ -195,7 +198,7 @@
                     renderDashboard(data.student);
                 } else if (!cachedData) {
                     alert("Student record not found. Please log in again.");
-                    logoutStudent();
+                    finishLogout();
                 }
             } catch (e) {
                 console.error("Error loading fresh dashboard data:", e);
@@ -210,6 +213,7 @@
             document.getElementById("student-batch").textContent = safeVal(student.batch);
             document.getElementById("student-attendance").textContent = safeVal(student.attendance);
 
+            // Populate Fee Details
             document.getElementById("fee-total").textContent = "₹" + safeVal(student.totalFees);
             document.getElementById("fee-paid").textContent = "₹" + safeVal(student.amountPaid);
             const balance = Number(student.totalFees || 0) - Number(student.amountPaid || 0);
@@ -231,6 +235,7 @@
                 statusElem.style.color = "#B91C1C";
             }
 
+            // 1. Schedule Rendering
             const schedBody = document.getElementById("schedule-table-body");
             if (student.schedule && student.schedule.length > 0) {
                 schedBody.innerHTML = "";
@@ -241,6 +246,7 @@
                 schedBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
             }
 
+            // 2. Notice Board Rendering
             const noticeBody = document.getElementById("notice-table-body");
             if (student.notices && student.notices.length > 0) {
                 noticeBody.innerHTML = "";
@@ -253,6 +259,7 @@
                 noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No notices available for your batch.</td></tr>`;
             }
 
+            // 3. Homework Rendering
             const hwBody = document.getElementById("homework-table-body");
             if (student.homework && student.homework.length > 0) {
                 hwBody.innerHTML = "";
@@ -273,6 +280,7 @@
                 hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`;
             }
 
+            // 4. Class Notes Rendering
             const notesBody = document.getElementById("notes-table-body");
             if (student.notes && student.notes.length > 0) {
                 notesBody.innerHTML = "";
@@ -285,6 +293,7 @@
                 notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available.</td></tr>`;
             }
 
+            // 5. Results Matrix Rendering
             const resultsBody = document.getElementById("results-table-body");
             if (student.results && student.results.length > 0) {
                 resultsBody.innerHTML = "";
@@ -310,7 +319,37 @@
             }
         }
 
+        // --- NEW: Track Logout & Clear Session ---
         function logoutStudent() {
+            const studentId = localStorage.getItem("studentId");
+            const logoutBtn = document.getElementById("logoutBtn");
+            
+            if (studentId) {
+                if(logoutBtn) {
+                    logoutBtn.textContent = "Logging out...";
+                    logoutBtn.style.opacity = "0.7";
+                    logoutBtn.style.pointerEvents = "none";
+                }
+
+                // Send the log out ping before redirecting
+                fetch(GOOGLE_WEB_APP_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged out of Portal" })
+                })
+                .then(() => {
+                    finishLogout();
+                })
+                .catch(e => {
+                    console.log("Logout log failed", e);
+                    finishLogout();
+                });
+            } else {
+                finishLogout();
+            }
+        }
+
+        function finishLogout() {
             localStorage.removeItem("studentId");
             localStorage.removeItem("dashboardData");
             window.location.href = "login.html";
