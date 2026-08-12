@@ -16,9 +16,9 @@
         nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 4px 8px; }
         .btn-logout { background-color: var(--error-red); color: #FFFFFF !important; border-radius: 5px; padding: 6px 14px !important; cursor: pointer; text-decoration: none; font-weight: 600; }
         .container { max-width: 1200px; margin: 4rem auto 2rem; padding: 1rem; width: 100%; flex: 1; }
-        .profile-card { background: var(--navy); color: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .profile-card { background: var(--navy); color: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
         .profile-info h2 { font-size: 1.6rem; color: #FFFFFF; margin-bottom: 4px; }
-        .profile-badges { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 8px; }
+        .profile-badges { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 12px; }
         .badge { background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
         .badge strong { color: var(--gold); }
         .dashboard-section { background: var(--card-bg); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(226, 232, 240, 0.9); box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04); }
@@ -47,15 +47,26 @@
     </header>
 
     <main class="container">
+        <!-- Integrated Profile & Fee Card -->
         <div class="profile-card">
             <div class="profile-info">
                 <h2 id="student-name">Welcome, Student</h2>
                 <div style="color: var(--gold); font-size: 0.9rem;">Board & Entrance Coaching</div>
+                <div class="profile-badges">
+                    <div class="badge">Roll No: <strong id="student-roll">--</strong></div>
+                    <div class="badge">Batch: <strong id="student-batch">--</strong></div>
+                    <div class="badge">Attendance: <strong id="student-attendance">--</strong></div>
+                </div>
             </div>
-            <div class="profile-badges">
-                <div class="badge">Roll No: <strong id="student-roll">--</strong></div>
-                <div class="badge">Batch: <strong id="student-batch">--</strong></div>
-                <div class="badge">Fee Status: <span id="student-fee" style="color:#10B981; font-weight:700;">--</span></div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; min-width: 260px; border: 1px solid rgba(255,255,255,0.2);">
+                <h4 style="margin-bottom: 10px; color: var(--gold); border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; font-size: 1rem;">Fee Status</h4>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;"><span>Total:</span> <strong id="fee-total">₹0</strong></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;"><span>Paid:</span> <strong id="fee-paid" style="color: #10B981;">₹0</strong></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 10px;"><span>Balance:</span> <strong id="fee-balance" style="color: #EF4444;">₹0</strong></div>
+                <div style="text-align: right;">
+                    <span id="fee-badge" style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">PENDING</span>
+                </div>
             </div>
         </div>
 
@@ -155,7 +166,6 @@
             return str.length > 0 ? str : "-";
         }
 
-        // Function to send silent activity pings
         function trackActivity(actionDetail) {
             const studentId = localStorage.getItem("studentId");
             if (!studentId) return;
@@ -195,8 +205,31 @@
             document.getElementById("student-name").textContent = "Welcome, " + safeVal(student.name);
             document.getElementById("student-roll").textContent = safeVal(student.roll);
             document.getElementById("student-batch").textContent = safeVal(student.batch);
-            document.getElementById("student-fee").textContent = safeVal(student.feeStatus || "Active");
+            document.getElementById("student-attendance").textContent = safeVal(student.attendance);
 
+            // Populate Fee Details
+            document.getElementById("fee-total").textContent = "₹" + safeVal(student.totalFees);
+            document.getElementById("fee-paid").textContent = "₹" + safeVal(student.amountPaid);
+            const balance = Number(student.totalFees || 0) - Number(student.amountPaid || 0);
+            document.getElementById("fee-balance").textContent = "₹" + balance;
+
+            const statusElem = document.getElementById("fee-badge");
+            const feeStatus = safeVal(student.feeStatus);
+            statusElem.textContent = feeStatus;
+            const statusLower = feeStatus.toLowerCase();
+            
+            if (statusLower.includes('paid') && !statusLower.includes('partial')) {
+                statusElem.style.backgroundColor = "#DCFCE7";
+                statusElem.style.color = "#15803D";
+            } else if (statusLower.includes('partial')) {
+                statusElem.style.backgroundColor = "#FEF3C7";
+                statusElem.style.color = "#92400E";
+            } else {
+                statusElem.style.backgroundColor = "#FEE2E2";
+                statusElem.style.color = "#B91C1C";
+            }
+
+            // 1. Schedule Rendering
             const schedBody = document.getElementById("schedule-table-body");
             if (student.schedule && student.schedule.length > 0) {
                 schedBody.innerHTML = "";
@@ -207,6 +240,7 @@
                 schedBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
             }
 
+            // 2. Notice Board Rendering
             const noticeBody = document.getElementById("notice-table-body");
             if (student.notices && student.notices.length > 0) {
                 noticeBody.innerHTML = "";
@@ -219,6 +253,7 @@
                 noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No notices available for your batch.</td></tr>`;
             }
 
+            // 3. Homework Rendering
             const hwBody = document.getElementById("homework-table-body");
             if (student.homework && student.homework.length > 0) {
                 hwBody.innerHTML = "";
@@ -239,6 +274,7 @@
                 hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`;
             }
 
+            // 4. Class Notes Rendering
             const notesBody = document.getElementById("notes-table-body");
             if (student.notes && student.notes.length > 0) {
                 notesBody.innerHTML = "";
@@ -251,6 +287,7 @@
                 notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available.</td></tr>`;
             }
 
+            // 5. Results Matrix Rendering
             const resultsBody = document.getElementById("results-table-body");
             if (student.results && student.results.length > 0) {
                 resultsBody.innerHTML = "";
