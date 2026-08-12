@@ -173,12 +173,26 @@
             fetch(GOOGLE_WEB_APP_URL, {
                 method: "POST",
                 headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: actionDetail })
+                body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: actionDetail }),
+                keepalive: true
             }).catch(e => console.log("Activity log failed", e));
         }
 
+        // FIX FOR TAB CLOSE: Detect when the tab is closed directly
+        window.addEventListener('pagehide', function(event) {
+            const studentId = sessionStorage.getItem("studentId");
+            if (studentId) {
+                // navigator.sendBeacon guarantees data reaches Google even if tab dies immediately
+                const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Closed Browser Tab" });
+                navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", async function() {
-            // Check sessionStorage instead of localStorage
+            // Also explicitly wipe normal localStorage again just in case
+            localStorage.removeItem("studentId");
+            localStorage.removeItem("dashboardData");
+
             const studentId = sessionStorage.getItem("studentId");
             if (!studentId) {
                 window.location.href = "login.html";
@@ -329,21 +343,16 @@
                     logoutBtn.style.pointerEvents = "none";
                 }
 
+                // Explicit Logout Button Ping
                 fetch(GOOGLE_WEB_APP_URL, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain" },
-                    body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged out of Portal" })
-                })
-                .then(() => {
-                    finishLogout();
-                })
-                .catch(e => {
-                    console.log("Logout log failed", e);
-                    finishLogout();
+                    body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged out manually via Button" }),
+                    keepalive: true
                 });
-            } else {
-                finishLogout();
             }
+            
+            finishLogout();
         }
 
         function finishLogout() {
