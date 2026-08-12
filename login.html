@@ -90,8 +90,9 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        localStorage.setItem("studentId", studentId);
-                        localStorage.setItem("dashboardData", JSON.stringify(data.student));
+                        // Use sessionStorage so it erases when the tab is closed
+                        sessionStorage.setItem("studentId", studentId);
+                        sessionStorage.setItem("dashboardData", JSON.stringify(data.student));
                         
                         fetch(SCRIPT_URL, {
                             method: "POST",
