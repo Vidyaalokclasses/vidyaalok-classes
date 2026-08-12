@@ -23,12 +23,6 @@
         .form-group input { width: 100%; padding: 10px 14px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
         .btn-login { width: 100%; background-color: var(--navy); color: #FFFFFF; border: none; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
         .btn-login:hover { background-color: #133966; color: var(--gold); }
-        .dashboard { display: none; }
-        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
-        .status-paid { background-color: #DCFCE7; color: #15803D; }
-        .status-partial { background-color: #FEF3C7; color: #92400E; }
-        .status-pending { background-color: #FEE2E2; color: #B91C1C; }
-        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #E2E8F0; font-size: 0.95rem; }
         footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); text-align: center; font-size: 0.85rem; margin-top: auto; }
     </style>
 </head>
@@ -61,21 +55,6 @@
             </div>
             <button class="btn-login" onclick="login()">Login to Dashboard</button>
         </div>
-
-        <div class="card dashboard" id="dashboardCard">
-            <h2 style="color: var(--navy); border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; margin-bottom: 1rem;" id="dashName">Student Profile</h2>
-            <div class="info-row"><strong>Batch:</strong> <span id="dashBatch">--</span></div>
-            <div class="info-row"><strong>Attendance Rate:</strong> <span id="dashAttendance" style="font-weight: 700; color: var(--navy);">--</span></div>
-            
-            <h3 style="color: var(--navy); margin-top: 1.5rem; margin-bottom: 0.8rem; font-size: 1.1rem;">Fee Details</h3>
-            <div class="info-row"><strong>Total Annual Fees:</strong> <span id="dashTotalFees">₹0</span></div>
-            <div class="info-row"><strong>Amount Paid:</strong> <span id="dashAmountPaid" style="color: #16A34A; font-weight: 700;">₹0</span></div>
-            <div class="info-row"><strong>Remaining Balance:</strong> <span id="dashBalance" style="color: #DC2626; font-weight: 700;">₹0</span></div>
-            <div class="info-row" style="border-bottom: none; margin-top: 8px;">
-                <strong>Payment Status:</strong> <span id="dashStatus" class="status-badge status-pending">Pending</span>
-            </div>
-            <button class="btn-login" onclick="logout()" style="margin-top: 1.5rem; background-color: #64748B;">Logout</button>
-        </div>
     </div>
 
     <footer>
@@ -107,36 +86,17 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Silent ping to log the login activity
+                        // Log activity and save session
+                        localStorage.setItem("studentId", studentId);
+                        
                         fetch(SCRIPT_URL, {
                             method: "POST",
                             headers: { "Content-Type": "text/plain" },
                             body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" })
                         }).catch(e => console.log("Log ping failed"));
 
-                        document.getElementById('loginCard').style.display = 'none';
-                        document.getElementById('dashboardCard').style.display = 'block';
-                        
-                        document.getElementById('dashName').textContent = data.studentName;
-                        document.getElementById('dashBatch').textContent = data.batch;
-                        document.getElementById('dashAttendance').textContent = data.attendance;
-                        document.getElementById('dashTotalFees').textContent = '₹' + data.totalFees;
-                        document.getElementById('dashAmountPaid').textContent = '₹' + data.amountPaid;
-                        
-                        const balance = Number(data.totalFees) - Number(data.amountPaid);
-                        document.getElementById('dashBalance').textContent = '₹' + balance;
-                        
-                        const statusElem = document.getElementById('dashStatus');
-                        statusElem.textContent = data.feeStatus;
-                        const statusLower = String(data.feeStatus).toLowerCase();
-                        
-                        if (statusLower.includes('paid') && !statusLower.includes('partial')) {
-                            statusElem.className = 'status-badge status-paid';
-                        } else if (statusLower.includes('partial')) {
-                            statusElem.className = 'status-badge status-partial';
-                        } else {
-                            statusElem.className = 'status-badge status-pending';
-                        }
+                        // REDIRECT TO MAIN DASHBOARD
+                        window.location.href = "dashboard.html";
                     } else {
                         errorMsg.style.color = "#DC2626";
                         errorMsg.textContent = data.message || "Invalid Student ID or Password.";
@@ -147,14 +107,6 @@
                     errorMsg.style.color = "#DC2626";
                     errorMsg.textContent = "Error connecting to server. Please check deployment settings.";
                 });
-        }
-
-        function logout() {
-            document.getElementById('studentId').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('errorMsg').textContent = '';
-            document.getElementById('dashboardCard').style.display = 'none';
-            document.getElementById('loginCard').style.display = 'block';
         }
     </script>
 </body>
