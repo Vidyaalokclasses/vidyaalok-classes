@@ -1,365 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Student Portal - Vidyaalok Classes</title>
-  <link rel="icon" type="image/jpeg" href="icon.jpg">
-  <style>
-    :root {
-      --navy: #0B2545;
-      --gold: #E5A93C;
-      --light-bg: #F1F5F9;
-      --card-bg: rgba(255, 255, 255, 0.94);
-      --text-dark: #1E293B;
-      --text-muted: #64748B;
-      --error-red: #EF4444;
-      --success-green: #10B981;
-      --info-blue: #2563EB;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    html, body {
-      width: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      background-color: var(--light-bg);
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      padding-top: 75px;
-      position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 700px;
-      height: 700px;
-      background-image: url('logo.png');
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-size: contain;
-      opacity: 0.15;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    header, main, footer {
-      position: relative;
-      z-index: 1;
-    }
-
-    header {
-      background-color: #FFFFFF;
-      padding: 0.8rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #E2E8F0;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-
-    .brand img {
-      height: 52px;
-      width: auto;
-      display: block;
-    }
-
-    nav {
-      display: flex;
-      gap: 1.2rem;
-      align-items: center;
-    }
-
-    nav a {
-      color: var(--navy);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 6px;
-      transition: all 0.2s;
-    }
-
-    nav a:hover, nav a.active {
-      color: var(--gold);
-      background-color: #F1F5F9;
-    }
-
-    .btn-portal {
-      background-color: var(--navy);
-      color: #FFFFFF !important;
-      border-radius: 6px;
-      padding: 8px 16px !important;
-    }
-
-    .container {
-      max-width: 440px;
-      margin: 3rem auto;
-      padding: 0 1.5rem;
-      width: 100%;
-      flex: 1;
-    }
-
-    .login-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 2.2rem 2rem;
-      box-shadow: 0 8px 24px rgba(11, 37, 69, 0.08);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      text-align: center;
-    }
-
-    .login-card h1 {
-      color: var(--navy);
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 0.4rem;
-    }
-
-    .login-card p {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      margin-bottom: 1.8rem;
-    }
-
-    .form-group {
-      text-align: left;
-      margin-bottom: 1.2rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--navy);
-      margin-bottom: 0.4rem;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 0.95rem;
-      border: 1px solid #CBD5E1;
-      border-radius: 6px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus {
-      border-color: var(--navy);
-      box-shadow: 0 0 0 3px rgba(11, 37, 69, 0.1);
-    }
-
-    .btn-submit {
-      width: 100%;
-      background-color: var(--navy);
-      color: #FFFFFF;
-      border: none;
-      padding: 12px;
-      font-size: 1rem;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 0.5rem;
-    }
-
-    .btn-submit:hover {
-      background-color: #133966;
-    }
-
-    .status-message {
-      display: none;
-      margin-top: 1.5rem;
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .status-message.error {
-      background-color: #FEE2E2;
-      color: var(--error-red);
-      border: 1px solid #FCA5A5;
-    }
-
-    .status-message.success {
-      background-color: #D1FAE5;
-      color: var(--success-green);
-      border: 1px solid #6EE7B7;
-    }
-
-    .status-message.info {
-      background-color: #DBEAFE;
-      color: var(--info-blue);
-      border: 1px solid #93C5FD;
-    }
-
-    footer {
-      background-color: var(--navy);
-      color: #94A3B8;
-      padding: 2.5rem 1rem;
-      border-top: 3px solid var(--gold);
-      margin-top: auto;
-    }
-
-    .footer-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1.5rem;
-      text-align: left;
-    }
-
-    .footer-copyright {
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin-top: 2rem;
-      padding-top: 1rem;
-      font-size: 0.8rem;
-      color: #64748B;
-    }
-
-    @media screen and (max-width: 768px) {
-      body { padding-top: 120px; }
-      body::before { width: 360px !important; height: 360px !important; opacity: 0.22 !important; }
-      header { flex-direction: column !important; padding: 0.8rem 1rem !important; gap: 0.8rem !important; }
-      nav { flex-wrap: wrap !important; justify-content: center !important; gap: 0.4rem 0.6rem !important; width: 100% !important; }
-      nav a { font-size: 0.82rem !important; padding: 5px 8px !important; }
-      .footer-container { flex-direction: column !important; text-align: center !important; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent & Student Portal | Vidyaalok Classes</title>
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+    <style>
+        :root { --navy: #0B2545; --gold: #E5A93C; --card-bg: rgba(255, 255, 255, 0.95); --text-dark: #1E293B; --text-muted: #64748B; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #F1F5F9; background-image: url('logo.png'); background-repeat: no-repeat; background-position: center 250px; background-attachment: fixed; background-size: 550px; color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background-color: #FFFFFF; padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 100; }
+        .brand img { height: 52px; width: auto; display: block; }
+        nav { display: flex; gap: 1.2rem; align-items: center; }
+        nav a { color: var(--navy); text-decoration: none; font-size: 0.95rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; }
+        nav a:hover, nav a.active { color: var(--gold); background-color: #F1F5F9; }
+        .btn-portal { background-color: var(--navy); color: #FFFFFF !important; border-radius: 6px; padding: 8px 16px !important; }
+        .btn-portal:hover { background-color: #133966; color: var(--gold) !important; }
+        .container { max-width: 500px; margin: 3rem auto; padding: 0 1.5rem; flex: 1; }
+        .card { background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 16px rgba(11, 37, 69, 0.08); border: 1px solid rgba(226, 232, 240, 0.9); }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 0.4rem; color: var(--navy); font-size: 0.9rem; }
+        .form-group input { width: 100%; padding: 10px 14px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
+        .btn-login { width: 100%; background-color: var(--navy); color: #FFFFFF; border: none; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+        .btn-login:hover { background-color: #133966; color: var(--gold); }
+        .dashboard { display: none; }
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        .status-paid { background-color: #DCFCE7; color: #15803D; }
+        .status-partial { background-color: #FEF3C7; color: #92400E; }
+        .status-pending { background-color: #FEE2E2; color: #B91C1C; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #E2E8F0; font-size: 0.95rem; }
+        footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); text-align: center; font-size: 0.85rem; margin-top: auto; }
+    </style>
 </head>
 <body>
+    <header>
+        <div class="brand">
+            <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="schedule.html">Schedule</a>
+            <a href="notes.html">Class Notes</a>
+            <a href="exam.html">Online Exams</a>
+            <a href="login.html" class="btn-portal">Student Portal</a>
+        </nav>
+    </header>
 
-  <header>
-    <div class="brand">
-      <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
-    </div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="schedule.html">Schedule</a>
-      <a href="notes.html">Class Notes</a>
-      <a href="exam.html">Online Exams</a>
-      <a href="index.html#about">About</a>
-      <a href="index.html#courses">Courses</a>
-      <a href="index.html#contact">Contact</a>
-      <a href="login.html" class="btn-portal active">Student Portal</a>
-    </nav>
-  </header>
-
-  <main class="container">
-    <div class="login-card">
-      <h1>Student Portal Login</h1>
-      <p>Enter your Roll Number and Password to access your personal dashboard.</p>
-
-      <form id="student-login-form">
-        <div class="form-group">
-          <label for="student-id">Student Roll No. / ID</label>
-          <input type="text" id="student-id" placeholder="e.g. AGNI26001" required autocomplete="off">
+    <div class="container">
+        <div class="card" id="loginCard">
+            <h2 style="color: var(--navy); text-align: center; margin-bottom: 1.5rem;">Parent & Student Login</h2>
+            <div id="errorMsg" style="font-size: 0.88rem; margin-bottom: 1rem; text-align: center;"></div>
+            
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="studentId" placeholder="Enter Student ID (e.g., VAK26001)">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter Password">
+            </div>
+            <button class="btn-login" onclick="login()">Login to Dashboard</button>
         </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter Password" required>
+        <div class="card dashboard" id="dashboardCard">
+            <h2 style="color: var(--navy); border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; margin-bottom: 1rem;" id="dashName">Student Profile</h2>
+            <div class="info-row"><strong>Batch:</strong> <span id="dashBatch">--</span></div>
+            <div class="info-row"><strong>Attendance Rate:</strong> <span id="dashAttendance" style="font-weight: 700; color: var(--navy);">--</span></div>
+            
+            <h3 style="color: var(--navy); margin-top: 1.5rem; margin-bottom: 0.8rem; font-size: 1.1rem;">Fee Details</h3>
+            <div class="info-row"><strong>Total Annual Fees:</strong> <span id="dashTotalFees">₹0</span></div>
+            <div class="info-row"><strong>Amount Paid:</strong> <span id="dashAmountPaid" style="color: #16A34A; font-weight: 700;">₹0</span></div>
+            <div class="info-row"><strong>Remaining Balance:</strong> <span id="dashBalance" style="color: #DC2626; font-weight: 700;">₹0</span></div>
+            <div class="info-row" style="border-bottom: none; margin-top: 8px;">
+                <strong>Payment Status:</strong> <span id="dashStatus" class="status-badge status-pending">Pending</span>
+            </div>
+            <button class="btn-login" onclick="logout()" style="margin-top: 1.5rem; background-color: #64748B;">Logout</button>
         </div>
-
-        <button type="submit" class="btn-submit">Login to Dashboard</button>
-      </form>
-
-      <div id="status-message" class="status-message"></div>
     </div>
-  </main>
 
-  <footer>
-    <div class="footer-container">
-      <div>
-        <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: 4px;">Vidyaalok Classes</h3>
-        <p style="color: var(--gold); font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">The Light of Knowledge</p>
-      </div>
-      <div style="font-size: 0.9rem; color: #E2E8F0;">
-        📍 Kharagpur, West Bengal | 📞 +91 8240949137
-      </div>
-    </div>
-    <div class="footer-copyright">
-      © 2026 Vidyaalok Classes. All rights reserved.
-    </div>
-  </footer>
+    <footer>
+        <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
+        <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
+    </footer>
 
-  <script>
-    // Paste your Web App URL from Google Sheets Apps Script here:
-    const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+    <script>
+        // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const loginForm = document.getElementById('student-login-form');
+        function login() {
+            const studentId = document.getElementById('studentId').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
 
-      loginForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        const studentId = document.getElementById('student-id').value.trim().toUpperCase();
-        const password = document.getElementById('password').value.trim();
-
-        if (!studentId || !password) {
-          showStatus("Please enter both Student ID and Password.", "error");
-          return;
-        }
-
-        showStatus("Verifying credentials with Google database...", "info");
-
-        try {
-          // Send login request to Google Apps Script
-          const requestUrl = `${GOOGLE_WEB_APP_URL}?action=login&roll=${encodeURIComponent(studentId)}&pass=${encodeURIComponent(password)}`;
-          const response = await fetch(requestUrl);
-          const data = await response.json();
-
-          if (data.status === "success" || data.result === "success") {
-            // Save payload into local storage
-            localStorage.setItem("studentId", studentId);
-            if (data.student) {
-              localStorage.setItem("studentData", JSON.stringify(data.student));
+            if (!studentId || !password) {
+                errorMsg.style.color = "#DC2626";
+                errorMsg.textContent = "Please enter both Student ID and Password.";
+                return;
             }
-            showStatus("Login successful! Redirecting to dashboard...", "success");
-            setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
-          } else {
-            showStatus(data.message || "Invalid Student Roll No. or Password.", "error");
-          }
-        } catch (error) {
-          console.error("Login fetch error:", error);
-          showStatus("Error connecting to database. Please verify your connection.", "error");
-        }
-      });
 
-      function showStatus(text, type) {
-        const statusMsg = document.getElementById('status-message');
-        statusMsg.textContent = text;
-        statusMsg.className = "status-message " + type;
-        statusMsg.style.display = "block";
-      }
-    });
-  </script>
+            errorMsg.style.color = "#0284C7";
+            errorMsg.textContent = "Verifying credentials...";
+
+            const requestUrl = `${SCRIPT_URL}?studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}`;
+
+            fetch(requestUrl, { method: "GET", redirect: "follow" })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Silent ping to log the login activity
+                        fetch(SCRIPT_URL, {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" })
+                        }).catch(e => console.log("Log ping failed"));
+
+                        document.getElementById('loginCard').style.display = 'none';
+                        document.getElementById('dashboardCard').style.display = 'block';
+                        
+                        document.getElementById('dashName').textContent = data.studentName;
+                        document.getElementById('dashBatch').textContent = data.batch;
+                        document.getElementById('dashAttendance').textContent = data.attendance;
+                        document.getElementById('dashTotalFees').textContent = '₹' + data.totalFees;
+                        document.getElementById('dashAmountPaid').textContent = '₹' + data.amountPaid;
+                        
+                        const balance = Number(data.totalFees) - Number(data.amountPaid);
+                        document.getElementById('dashBalance').textContent = '₹' + balance;
+                        
+                        const statusElem = document.getElementById('dashStatus');
+                        statusElem.textContent = data.feeStatus;
+                        const statusLower = String(data.feeStatus).toLowerCase();
+                        
+                        if (statusLower.includes('paid') && !statusLower.includes('partial')) {
+                            statusElem.className = 'status-badge status-paid';
+                        } else if (statusLower.includes('partial')) {
+                            statusElem.className = 'status-badge status-partial';
+                        } else {
+                            statusElem.className = 'status-badge status-pending';
+                        }
+                    } else {
+                        errorMsg.style.color = "#DC2626";
+                        errorMsg.textContent = data.message || "Invalid Student ID or Password.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Fetch Error:", error);
+                    errorMsg.style.color = "#DC2626";
+                    errorMsg.textContent = "Error connecting to server. Please check deployment settings.";
+                });
+        }
+
+        function logout() {
+            document.getElementById('studentId').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('errorMsg').textContent = '';
+            document.getElementById('dashboardCard').style.display = 'none';
+            document.getElementById('loginCard').style.display = 'block';
+        }
+    </script>
 </body>
 </html>
