@@ -8,12 +8,19 @@
     <style>
         :root { --navy: #0B2545; --gold: #E5A93C; --light-bg: #F1F5F9; --card-bg: rgba(255, 255, 255, 0.96); --text-dark: #1E293B; --text-muted: #64748B; --success-green: #10B981; --error-red: #EF4444; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        html, body { width: 100%; overflow-x: hidden; }
+        html, body { width: 100%; overflow-x: hidden; scroll-behavior: smooth; }
         body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 15px; }
         header { background-color: #FFFFFF; padding: 0.62rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; }
         .brand img { height: 44px; width: auto; display: block; }
         nav { display: flex; gap: 1rem; align-items: center; }
         nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 4px 8px; }
+        
+        /* Notification Bell Styles */
+        .notification-bell { position: relative; cursor: pointer; padding: 4px 8px; display: flex; align-items: center; margin-right: 5px; }
+        .notification-bell svg { width: 22px; height: 22px; stroke: var(--navy); }
+        .notification-bell:hover svg { stroke: var(--gold); }
+        .badge-count { position: absolute; top: -2px; right: 2px; background-color: var(--error-red); color: white; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 12px; border: 2px solid white; display: none; }
+        
         .btn-logout { background-color: var(--error-red); color: #FFFFFF !important; border-radius: 5px; padding: 6px 14px !important; cursor: pointer; text-decoration: none; font-weight: 600; transition: opacity 0.2s; }
         .container { max-width: 1200px; margin: 4rem auto 2rem; padding: 1rem; width: 100%; flex: 1; }
         .profile-card { background: var(--navy); color: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
@@ -21,7 +28,7 @@
         .profile-badges { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 12px; }
         .badge { background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
         .badge strong { color: var(--gold); }
-        .dashboard-section { background: var(--card-bg); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(226, 232, 240, 0.9); box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04); }
+        .dashboard-section { background: var(--card-bg); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(226, 232, 240, 0.9); box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04); transition: background-color 0.8s ease; }
         .section-heading { color: var(--navy); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; }
         .table-responsive { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
@@ -31,7 +38,20 @@
         .btn-download:hover { background-color: #133966; color: var(--gold); }
         footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
         .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        
+        /* Toast Popup Styles */
+        .toast-popup { position: fixed; bottom: 30px; right: 30px; background-color: var(--navy); color: white; padding: 16px 20px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-left: 4px solid var(--gold); display: flex; flex-direction: column; gap: 6px; z-index: 4000; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); min-width: 280px; }
+        .toast-popup.show { transform: translateX(0); }
+        .toast-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1rem; color: var(--gold); border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; margin-bottom: 4px; }
+        .toast-close { background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 1.2rem; }
+        .toast-close:hover { color: white; }
+        .toast-body { font-size: 0.9rem; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
+        .toast-item { cursor: pointer; padding: 6px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); transition: background 0.2s; }
+        .toast-item:hover { background: rgba(255,255,255,0.15); }
+        .toast-item strong { color: var(--gold); }
+        
         @media screen and (max-width: 768px) { body { padding-top: 100px; } header { flex-direction: column; padding: 0.5rem 1rem; } .footer-container { flex-direction: column; text-align: center; } }
+        @media screen and (max-width: 600px) { .toast-popup { right: 15px; left: 15px; bottom: 15px; min-width: 0; } }
     </style>
 </head>
 <body>
@@ -42,11 +62,33 @@
         <nav>
             <a href="index.html">Home</a>
             <a href="schedule.html">Schedule</a>
+            
+            <!-- Notification Bell Icon -->
+            <div class="notification-bell" onclick="markNotificationsRead()" title="Notifications">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="badge-count" id="notif-badge">0</span>
+            </div>
+            
             <a class="btn-logout" id="logoutBtn" onclick="logoutStudent()">Student Logout</a>
         </nav>
     </header>
 
+    <!-- Floating Toast Popup container -->
+    <div id="toast-notification" class="toast-popup">
+        <div class="toast-header">
+            <span>New Profile Updates!</span>
+            <button class="toast-close" onclick="markNotificationsRead()">&times;</button>
+        </div>
+        <div class="toast-body" id="toast-body-text">
+            <!-- Dynamic Clickable Messages go here -->
+        </div>
+    </div>
+
     <main class="container">
+        <!-- Integrated Profile & Fee Card -->
         <div class="profile-card">
             <div class="profile-info">
                 <h2 id="student-name">Welcome, Student</h2>
@@ -69,7 +111,7 @@
             </div>
         </div>
 
-        <div class="dashboard-section" style="border-left: 4px solid var(--navy);">
+        <div class="dashboard-section" id="section-exams" style="border-left: 4px solid var(--navy);">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                 <div>
                     <h3 style="color: var(--navy); font-size: 1.15rem;">Active Examinations Portal</h3>
@@ -79,7 +121,7 @@
             </div>
         </div>
 
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-schedule">
             <div class="section-heading">Batch Schedules & Timings</div>
             <div class="table-responsive">
                 <table>
@@ -91,7 +133,7 @@
             </div>
         </div>
 
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-notices">
             <div class="section-heading">Batch Notice Board</div>
             <div class="table-responsive">
                 <table>
@@ -103,7 +145,7 @@
             </div>
         </div>
 
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-homework">
             <div class="section-heading">Batch Homework & Assignments</div>
             <div class="table-responsive">
                 <table>
@@ -115,7 +157,7 @@
             </div>
         </div>
 
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-notes">
             <div class="section-heading">Class Notes & Study Resources</div>
             <div class="table-responsive">
                 <table>
@@ -127,7 +169,7 @@
             </div>
         </div>
 
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-results">
             <div class="section-heading">Examination Results Matrix</div>
             <div class="table-responsive">
                 <table>
@@ -158,6 +200,9 @@
     <script>
         // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
         const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+        
+        let globalCurrentCounts = null;
+        let globalStudentRoll = null;
 
         function safeVal(val) {
             if (val === null || val === undefined) return "-";
@@ -172,7 +217,6 @@
             navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
         }
 
-        // PERFECTED: Detect when the tab is closed directly and send background log
         window.addEventListener('pagehide', function(event) {
             const studentId = sessionStorage.getItem("studentId");
             if (studentId) {
@@ -181,8 +225,99 @@
             }
         });
 
+        // NOTIFICATION LOGIC
+        function processNotifications(student) {
+            globalStudentRoll = student.roll;
+            
+            // Calculate current counts
+            globalCurrentCounts = {
+                notices: student.notices ? student.notices.length : 0,
+                homework: student.homework ? student.homework.length : 0,
+                notes: student.notes ? student.notes.length : 0,
+                exams: student.exams ? student.exams.length : 0,
+                results: student.results ? student.results.length : 0
+            };
+
+            const savedCountsStr = localStorage.getItem("notifyBaseline_" + student.roll);
+            
+            if (!savedCountsStr) {
+                localStorage.setItem("notifyBaseline_" + student.roll, JSON.stringify(globalCurrentCounts));
+                return;
+            }
+
+            const savedCounts = JSON.parse(savedCountsStr);
+            let updates = [];
+            let totalNewItems = 0;
+
+            // Generate clickable toast items that jump to the respective section
+            if (globalCurrentCounts.notices > (savedCounts.notices || 0)) {
+                let diff = globalCurrentCounts.notices - (savedCounts.notices || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-notices')"><span><strong>${diff}</strong> New Notice(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.homework > (savedCounts.homework || 0)) {
+                let diff = globalCurrentCounts.homework - (savedCounts.homework || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-homework')"><span><strong>${diff}</strong> New Assignment(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.notes > (savedCounts.notes || 0)) {
+                let diff = globalCurrentCounts.notes - (savedCounts.notes || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-notes')"><span><strong>${diff}</strong> New Class Note(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.exams > (savedCounts.exams || 0)) {
+                let diff = globalCurrentCounts.exams - (savedCounts.exams || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-exams')"><span><strong>${diff}</strong> New Active Exam(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.results > (savedCounts.results || 0)) {
+                let diff = globalCurrentCounts.results - (savedCounts.results || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-results')"><span><strong>${diff}</strong> New Result(s) Published</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+
+            if (updates.length > 0) {
+                const badge = document.getElementById("notif-badge");
+                badge.textContent = totalNewItems;
+                badge.style.display = "block";
+
+                document.getElementById("toast-body-text").innerHTML = updates.join("");
+                const toast = document.getElementById("toast-notification");
+                toast.classList.add("show");
+            } else {
+                localStorage.setItem("notifyBaseline_" + student.roll, JSON.stringify(globalCurrentCounts));
+            }
+        }
+
+        // Click to Scroll & Highlight feature
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if(section) {
+                // Scroll accounting for the fixed header
+                const headerOffset = 80;
+                const elementPosition = section.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                
+                // Highlight the section briefly so student knows exactly what updated
+                const originalBg = section.style.backgroundColor || "var(--card-bg)";
+                section.style.backgroundColor = "#FEF3C7"; // Light yellow highlight
+                setTimeout(() => { section.style.backgroundColor = originalBg; }, 2000);
+                
+                markNotificationsRead();
+            }
+        }
+
+        function markNotificationsRead() {
+            if (globalStudentRoll && globalCurrentCounts) {
+                localStorage.setItem("notifyBaseline_" + globalStudentRoll, JSON.stringify(globalCurrentCounts));
+                document.getElementById("notif-badge").style.display = "none";
+                document.getElementById("toast-notification").classList.remove("show");
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", async function() {
-            localStorage.removeItem("studentId");
+            localStorage.removeItem("studentId"); // Backup clear
             localStorage.removeItem("dashboardData");
 
             const studentId = sessionStorage.getItem("studentId");
@@ -192,16 +327,20 @@
             }
 
             const cachedData = sessionStorage.getItem("dashboardData");
-            if (cachedData) renderDashboard(JSON.parse(cachedData));
+            if (cachedData) {
+                const parsedData = JSON.parse(cachedData);
+                renderDashboard(parsedData);
+                processNotifications(parsedData); 
+            }
 
             try {
-                // ADDED &nocache to instantly bypass Safari dashboard lag
                 const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}&nocache=${Date.now()}`, { cache: "no-store" });
                 const data = await response.json();
                 
                 if (data.status === "success" && data.student) {
                     sessionStorage.setItem("dashboardData", JSON.stringify(data.student));
                     renderDashboard(data.student);
+                    processNotifications(data.student); 
                 } else if (!cachedData) {
                     alert("Student record not found. Please log in again.");
                     finishLogout();
