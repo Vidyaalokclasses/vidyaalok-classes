@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
   <title>Vidyaalok Classes - The Light of Knowledge | Physics, JEE, NEET & Foundation Coaching</title>
   
   <!-- SEO Meta Tags for Google Search -->
@@ -37,6 +38,7 @@
     html, body {
       width: 100%;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     body {
@@ -315,14 +317,15 @@
     /* Mobile Responsive Rules */
     @media screen and (max-width: 768px) {
       body {
-        padding-top: 125px;
+        /* FIXED: Increased padding to completely prevent the taller header from covering the text */
+        padding-top: 190px !important;
       }
 
       /* Prominent Mobile Watermark */
       body::before {
         width: 360px !important;
         height: 360px !important;
-        opacity: 0.22 !important; /* Increased opacity for clear mobile visibility */
+        opacity: 0.22 !important; 
       }
 
       header {
