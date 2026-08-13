@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
     <title>Student Dashboard | Vidyaalok Classes</title>
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <style>
@@ -50,7 +51,17 @@
         .toast-item:hover { background: rgba(255,255,255,0.15); }
         .toast-item strong { color: var(--gold); }
         
-        @media screen and (max-width: 768px) { body { padding-top: 100px; } header { flex-direction: column; padding: 0.5rem 1rem; } .footer-container { flex-direction: column; text-align: center; } }
+        /* Stop iOS from turning phone numbers blue */
+        a[href^="tel"] { color: inherit; text-decoration: none; pointer-events: none; }
+
+        /* Mobile Fixes */
+        @media screen and (max-width: 768px) { 
+            body { padding-top: 140px; } /* Increased to prevent overlap */
+            header { flex-direction: column; padding: 0.8rem 1rem; gap: 10px; } 
+            nav { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+            .brand img { height: 40px; }
+            .footer-container { flex-direction: column; text-align: center; } 
+        }
         @media screen and (max-width: 600px) { .toast-popup { right: 15px; left: 15px; bottom: 15px; min-width: 0; } }
     </style>
 </head>
@@ -79,7 +90,7 @@
     <!-- Floating Toast Popup container -->
     <div id="toast-notification" class="toast-popup">
         <div class="toast-header">
-            <span>New Profile Updates!</span>
+            <span>New Updates!</span>
             <button class="toast-close" onclick="markNotificationsRead()">&times;</button>
         </div>
         <div class="toast-body" id="toast-body-text">
@@ -229,7 +240,6 @@
         function processNotifications(student) {
             globalStudentRoll = student.roll;
             
-            // Calculate current counts
             globalCurrentCounts = {
                 notices: student.notices ? student.notices.length : 0,
                 homework: student.homework ? student.homework.length : 0,
@@ -249,7 +259,6 @@
             let updates = [];
             let totalNewItems = 0;
 
-            // Generate clickable toast items that jump to the respective section
             if (globalCurrentCounts.notices > (savedCounts.notices || 0)) {
                 let diff = globalCurrentCounts.notices - (savedCounts.notices || 0);
                 updates.push(`<div class="toast-item" onclick="scrollToSection('section-notices')"><span><strong>${diff}</strong> New Notice(s)</span> <span>👉</span></div>`);
@@ -289,19 +298,16 @@
             }
         }
 
-        // Click to Scroll & Highlight feature
         function scrollToSection(sectionId) {
             const section = document.getElementById(sectionId);
             if(section) {
-                // Scroll accounting for the fixed header
-                const headerOffset = 80;
+                const headerOffset = 100;
                 const elementPosition = section.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                 window.scrollTo({ top: offsetPosition, behavior: "smooth" });
                 
-                // Highlight the section briefly so student knows exactly what updated
                 const originalBg = section.style.backgroundColor || "var(--card-bg)";
-                section.style.backgroundColor = "#FEF3C7"; // Light yellow highlight
+                section.style.backgroundColor = "#FEF3C7"; 
                 setTimeout(() => { section.style.backgroundColor = originalBg; }, 2000);
                 
                 markNotificationsRead();
@@ -317,7 +323,7 @@
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
-            localStorage.removeItem("studentId"); // Backup clear
+            localStorage.removeItem("studentId"); 
             localStorage.removeItem("dashboardData");
 
             const studentId = sessionStorage.getItem("studentId");
