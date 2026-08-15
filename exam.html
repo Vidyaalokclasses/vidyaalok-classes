@@ -131,6 +131,7 @@
                 <li id="rule-type-desc"></li>
                 <li><strong>Proctored Environment:</strong> Do not switch tabs, minimize the window, or open other applications during the exam. Doing so 3 times will instantly terminate the test.</li>
                 <li><strong>Single Attempt Rule:</strong> Ensure a stable internet connection before starting.</li>
+                <li><strong>Auto-Save:</strong> Your answers are saved continuously. If you get disconnected, simply reload the page to restore your answers and continue.</li>
             </ul>
             
             <div style="display:flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem;">
@@ -151,7 +152,6 @@
         let tabSwitchCount = 0;
         let isExamActive = false;
         let isHandlingViolation = false;
-        
         let wakeLock = null;
 
         async function requestWakeLock() {
@@ -178,11 +178,9 @@
         }
 
         document.addEventListener("DOMContentLoaded", async function() {
-            // Reads from sessionStorage to ensure tab-close logs out the student
             const studentId = sessionStorage.getItem("studentId");
             if (!studentId) { window.location.href = "login.html"; return; }
 
-            // Keeps timer in localStorage so it doesn't reset if they accidentally close tab!
             const savedTimerState = localStorage.getItem(`active_exam_timer_${studentId}`);
             
             try {
@@ -252,6 +250,7 @@
             
             const studentId = sessionStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
+            localStorage.removeItem(`active_responses_${studentId}_${activeExamObj.examId}`);
             
             document.getElementById("active-test-container").style.display = "none";
             document.getElementById("timer-box").style.display = "none";
@@ -367,6 +366,17 @@
             }
             document.getElementById("pdf-viewer").src = cleanContentUrl;
 
+            activeExamObj = exam;
+            const studentId = sessionStorage.getItem("studentId");
+            
+            // NEW: Fetch saved responses instantly to restore progress if page was reloaded
+            const savedResp = localStorage.getItem(`active_responses_${studentId}_${exam.examId}`);
+            if (savedResp) {
+                try { studentResponses = JSON.parse(savedResp); } catch(e) { studentResponses = {}; }
+            } else {
+                studentResponses = {};
+            }
+
             const pdfPane = document.getElementById("pdf-pane");
             const omrPane = document.getElementById("omr-pane");
             const btnFinishSubj = document.getElementById("btn-finish-subj");
@@ -382,14 +392,10 @@
                 renderOMR(exam.answerKey);
             }
 
-            activeExamObj = exam;
-            studentResponses = {};
             tabSwitchCount = 0;
             isHandlingViolation = false;
 
             let endTimestamp = existingEndTime;
-            const studentId = sessionStorage.getItem("studentId");
-            
             if (!endTimestamp) {
                 endTimestamp = Date.now() + (parseInt(exam.duration) * 60 * 1000);
                 localStorage.setItem(`active_exam_timer_${studentId}`, JSON.stringify({
@@ -434,24 +440,39 @@
             omrContainer.innerHTML = "";
             keys.forEach(k => {
                 let html = `<div class="q-row"><span class="q-num">Q${k.qNo}</span>`;
+                
+                // Read from the saved local storage state
+                let savedAns = studentResponses[k.qNo] || "";
+                
                 if (k.type === "SINGLE") {
                     html += `<div class="options-group">`;
                     ['A', 'B', 'C', 'D'].forEach(opt => {
-                        html += `<div class="omr-btn" onclick="selectSingle('${k.qNo}', '${opt}', this)">${opt}</div>`;
+                        let selClass = (savedAns === opt) ? "selected" : "";
+                        html += `<div class="omr-btn ${selClass}" onclick="selectSingle('${k.qNo}', '${opt}', this)">${opt}</div>`;
                     });
                     html += `</div>`;
                 } else if (k.type === "MULTIPLE") {
                     html += `<div class="options-group">`;
+                    let savedAnsArr = savedAns ? savedAns.split(',') : [];
                     ['A', 'B', 'C', 'D'].forEach(opt => {
-                        html += `<div class="omr-btn" onclick="toggleMulti('${k.qNo}', '${opt}', this)">${opt}</div>`;
+                        let selClass = savedAnsArr.includes(opt) ? "selected" : "";
+                        html += `<div class="omr-btn ${selClass}" onclick="toggleMulti('${k.qNo}', '${opt}', this)">${opt}</div>`;
                     });
                     html += `</div>`;
                 } else if (k.type === "NUMERICAL" || k.type === "INTEGER") {
-                    html += `<input type="number" step="any" class="num-input" placeholder="Value" oninput="setNumResponse('${k.qNo}', this.value)">`;
+                    html += `<input type="number" step="any" class="num-input" placeholder="Value" value="${savedAns}" oninput="setNumResponse('${k.qNo}', this.value)">`;
                 }
                 html += `</div>`;
                 omrContainer.innerHTML += html;
             });
+        }
+
+        // NEW: Saves memory to local storage continuously
+        function saveResponsesLocally() {
+            const studentId = sessionStorage.getItem("studentId");
+            if (studentId && activeExamObj) {
+                localStorage.setItem(`active_responses_${studentId}_${activeExamObj.examId}`, JSON.stringify(studentResponses));
+            }
         }
 
         function selectSingle(qNo, val, el) {
@@ -459,6 +480,7 @@
             parent.querySelectorAll('.omr-btn').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
             studentResponses[qNo] = val;
+            saveResponsesLocally();
         }
 
         function toggleMulti(qNo, val, el) {
@@ -467,10 +489,12 @@
             const selectedBtns = parent.querySelectorAll('.omr-btn.selected');
             const selectedVals = Array.from(selectedBtns).map(b => b.textContent).sort().join(',');
             studentResponses[qNo] = selectedVals;
+            saveResponsesLocally();
         }
 
         function setNumResponse(qNo, val) {
             studentResponses[qNo] = val.trim();
+            saveResponsesLocally();
         }
 
         async function FinishSubjectiveExamTimeout() {
@@ -483,6 +507,7 @@
 
             const studentId = sessionStorage.getItem("studentId");
             localStorage.removeItem(`active_exam_timer_${studentId}`);
+            localStorage.removeItem(`active_responses_${studentId}_${activeExamObj.examId}`);
             
             document.getElementById("active-test-container").style.display = "none";
             document.getElementById("timer-box").style.display = "none";
@@ -523,7 +548,10 @@
             }
             
             const studentId = sessionStorage.getItem("studentId");
+            
+            // Clear memory buffers to prevent reloading the exam later
             localStorage.removeItem(`active_exam_timer_${studentId}`);
+            localStorage.removeItem(`active_responses_${studentId}_${activeExamObj.examId}`);
             
             document.getElementById("active-test-container").style.display = "none";
             document.getElementById("timer-box").style.display = "none";
