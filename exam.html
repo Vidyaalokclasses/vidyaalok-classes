@@ -8,7 +8,8 @@
     <style>
         :root { --navy: #0B2545; --gold: #E5A93C; --light-bg: #F1F5F9; --card-bg: rgba(255, 255, 255, 0.95); --text-dark: #1E293B; --text-muted: #64748B; --success-green: #10B981; --error-red: #EF4444; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        html, body { width: 100%; overflow: hidden; }
+        /* FIXED: Changed to overflow-x to allow vertical page scrolling if needed */
+        html, body { width: 100%; overflow-x: hidden; }
         body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 15px; }
         header { background-color: #FFFFFF; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; }
         .brand img { height: 44px; width: auto; display: block; }
@@ -26,27 +27,35 @@
         .rules-list { margin: 1rem 0; padding-left: 1.2rem; font-size: 0.92rem; color: var(--text-dark); }
         .rules-list li { margin-bottom: 0.5rem; }
         .warning-banner { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: #EF4444; color: #FFFFFF; padding: 12px 20px; border-radius: 8px; font-weight: 700; box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3); z-index: 3000; display: none; text-align: center; width: 90%; max-width: 600px; }
+        
         .split-layout { display: flex; gap: 1.2rem; align-items: flex-start; height: 100%; flex: 1; }
-        .pdf-pane { flex: 1.4; height: 100%; min-width: 0; position: relative; overflow: hidden; border: 1px solid #CBD5E1; border-radius: 8px; background: #334155; }
+        /* FIXED: Locked the PDF pane to exactly 680px */
+        .pdf-pane { flex: 1.4; height: 680px; min-width: 0; position: relative; overflow: hidden; border: 1px solid #CBD5E1; border-radius: 8px; background: #334155; }
         .pdf-pane::after { content: ""; position: absolute; top: 0; right: 0; width: 56px; height: 56px; background: rgba(255, 255, 255, 0.01); z-index: 10; pointer-events: auto; }
-        .pdf-pane iframe { width: 100%; height: 680px; border: none; display: block; }
-        .omr-pane { flex: 0.6; min-width: 320px; background: #FFFFFF; padding: 1.2rem; border-radius: 8px; border: 1px solid #E2E8F0; }
+        .pdf-pane iframe { width: 100%; height: 100%; border: none; display: block; }
+        
+        /* FIXED: Locked the OMR pane height and made it a Flexbox so the Submit Button never gets pushed out */
+        .omr-pane { flex: 0.6; min-width: 320px; background: #FFFFFF; padding: 1.2rem; border-radius: 8px; border: 1px solid #E2E8F0; display: flex; flex-direction: column; height: 680px; }
+        
         .q-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #E2E8F0; }
         .q-num { font-weight: 700; color: var(--navy); width: 40px; }
         .options-group { display: flex; gap: 8px; }
         .omr-btn { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #CBD5E1; background: #F8FAFC; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
         .omr-btn.selected { background: var(--navy); color: #FFFFFF; border-color: var(--navy); }
         .num-input { width: 120px; padding: 6px 10px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.9rem; }
+        
         @media screen and (max-width: 992px) {
             .split-layout { flex-direction: column !important; }
             .pdf-pane, .omr-pane { width: 100% !important; flex: none !important; }
-            .pdf-pane iframe { height: 500px !important; }
+            .pdf-pane { height: 500px !important; }
+            .omr-pane { height: 500px !important; }
             .info-grid { grid-template-columns: 1fr; }
         }
         @media screen and (max-width: 600px) {
             body { padding-top: 70px; }
             header { flex-direction: column; gap: 0.5rem; padding: 0.5rem 1rem; }
-            .pdf-pane iframe { height: 420px !important; }
+            .pdf-pane { height: 420px !important; }
+            .omr-pane { height: 420px !important; }
             .omr-btn { width: 30px; height: 30px; font-size: 0.8rem; }
         }
     </style>
@@ -89,10 +98,12 @@
                 </div>
                 
                 <div class="omr-pane" id="omr-pane" style="display:none;">
-                    <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px;">Response Palette</h3>
-                    <form id="omr-form">
-                        <div id="omr-rows-container" style="max-height: 480px; overflow-y: auto; padding-right: 5px; margin-bottom: 1rem;"></div>
-                        <button type="submit" class="btn btn-submit" id="btn-submit">Submit MCQ Exam</button>
+                    <h3 style="color: var(--navy); margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; flex-shrink: 0;">Response Palette</h3>
+                    
+                    <!-- FIXED: Flexbox form ensures button stays pinned to bottom and questions scroll in between -->
+                    <form id="omr-form" style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+                        <div id="omr-rows-container" style="flex: 1; overflow-y: auto; padding-right: 5px; margin-bottom: 1rem;"></div>
+                        <button type="submit" class="btn btn-submit" id="btn-submit" style="flex-shrink: 0;">Submit MCQ Exam</button>
                     </form>
                 </div>
             </div>
@@ -401,7 +412,7 @@
                 btnFinishSubj.style.display = "inline-block";
             } else {
                 pdfPane.style.flex = "1.4";
-                omrPane.style.display = "block";
+                omrPane.style.display = "flex";
                 btnFinishSubj.style.display = "none";
                 renderOMR(exam.answerKey);
             }
