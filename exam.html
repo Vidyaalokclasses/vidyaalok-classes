@@ -80,7 +80,6 @@
             </div>
         </div>
 
-        <!-- FIXED INLINE CSS: Removed display properties so it perfectly hides on load -->
         <div id="active-test-container" class="card" style="display: none; height: 100%; flex-direction: column; flex: 1;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
                 <div>
@@ -160,6 +159,27 @@
         let isExamActive = false;
         let isHandlingViolation = false;
         let wakeLock = null;
+
+        // NEW: Activity Logger built perfectly for the Exam screen
+        function trackActivity(actionDetail) {
+            const studentId = sessionStorage.getItem("studentId");
+            if (!studentId) return;
+            const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: actionDetail });
+            navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
+        }
+
+        // NEW: Tracks if they close the tab while taking an exam
+        window.addEventListener('pagehide', function(event) {
+            const studentId = sessionStorage.getItem("studentId");
+            if (studentId) {
+                let detail = "Closed Browser Tab (Exam Portal)";
+                if (isExamActive && activeExamObj) {
+                    detail = "Closed Browser Tab DURING Exam: " + activeExamObj.title;
+                }
+                const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: detail });
+                navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
+            }
+        });
 
         async function requestWakeLock() {
             try {
@@ -250,6 +270,9 @@
         async function handleProctoredTermination() {
             clearInterval(timerInterval);
             isExamActive = false;
+            
+            // NEW: Log Termination to ActivityLog
+            trackActivity("Exam Terminated due to Violation: " + activeExamObj.title);
             
             if (wakeLock !== null) {
                 wakeLock.release().then(() => { wakeLock = null; });
@@ -377,7 +400,6 @@
             }
             
             document.getElementById("exam-portal").style.display = "none";
-            // FIXED JAVASCRIPT: Safely inject display flex to show the previously hidden box
             document.getElementById("active-test-container").style.display = "flex";
             document.getElementById("active-test-title").textContent = exam.title;
             document.getElementById("active-test-info").textContent = `Batch: ${exam.batch} | Duration: ${exam.duration} mins`;
@@ -430,6 +452,8 @@
             setTimeout(() => { 
                 isExamActive = true; 
                 requestWakeLock();
+                // NEW: Log Exam Start
+                trackActivity("Started Exam: " + exam.title); 
             }, 1000);
             
             timerInterval = setInterval(function() {
@@ -526,6 +550,9 @@
             clearInterval(timerInterval);
             isExamActive = false;
             
+            // NEW: Log Exam End to ActivityLog
+            trackActivity(isAutoSubmit ? "Auto-Finished Subjective Exam: " + activeExamObj.title : "Manually Finished Subjective Exam: " + activeExamObj.title);
+
             if (wakeLock !== null) {
                 wakeLock.release().then(() => { wakeLock = null; });
             }
@@ -587,6 +614,9 @@
             clearInterval(timerInterval);
             isExamActive = false;
             
+            // NEW: Log Exam End to ActivityLog
+            trackActivity(isAutoSubmit ? "Auto-Submitted MCQ Exam: " + activeExamObj.title : "Manually Submitted MCQ Exam: " + activeExamObj.title);
+
             if (wakeLock !== null) {
                 wakeLock.release().then(() => { wakeLock = null; });
             }
@@ -638,7 +668,6 @@
                         <span style="font-size:0.95rem; color:var(--navy);">Time Taken: <strong>${timeTakenStr}</strong></span>
                     `;
 
-                    // NEW: Shows exactly which questions the student got wrong!
                     if (r.wrongQs && r.wrongQs.length > 0) {
                         scoreHtml += `
                             <div style="margin-top: 1rem; color: var(--error-red); font-size: 0.95rem; font-weight: 600;">
