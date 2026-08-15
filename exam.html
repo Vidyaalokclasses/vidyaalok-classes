@@ -369,7 +369,7 @@
             activeExamObj = exam;
             const studentId = sessionStorage.getItem("studentId");
             
-            // NEW: Fetch saved responses instantly to restore progress if page was reloaded
+            // Fetch saved responses instantly to restore progress if page was reloaded
             const savedResp = localStorage.getItem(`active_responses_${studentId}_${exam.examId}`);
             if (savedResp) {
                 try { studentResponses = JSON.parse(savedResp); } catch(e) { studentResponses = {}; }
@@ -430,6 +430,7 @@
             }, 1000);
         }
 
+        // FIXED: Now perfectly handles "MCQ", "MULTI", "NUMERICAL" or defaults to A B C D options
         function renderOMR(keys) {
             const omrContainer = document.getElementById("omr-rows-container");
             if (!keys || keys.length === 0) {
@@ -444,14 +445,7 @@
                 // Read from the saved local storage state
                 let savedAns = studentResponses[k.qNo] || "";
                 
-                if (k.type === "SINGLE") {
-                    html += `<div class="options-group">`;
-                    ['A', 'B', 'C', 'D'].forEach(opt => {
-                        let selClass = (savedAns === opt) ? "selected" : "";
-                        html += `<div class="omr-btn ${selClass}" onclick="selectSingle('${k.qNo}', '${opt}', this)">${opt}</div>`;
-                    });
-                    html += `</div>`;
-                } else if (k.type === "MULTIPLE") {
+                if (k.type === "MULTIPLE" || k.type === "MULTI" || k.type === "MSQ") {
                     html += `<div class="options-group">`;
                     let savedAnsArr = savedAns ? savedAns.split(',') : [];
                     ['A', 'B', 'C', 'D'].forEach(opt => {
@@ -459,15 +453,22 @@
                         html += `<div class="omr-btn ${selClass}" onclick="toggleMulti('${k.qNo}', '${opt}', this)">${opt}</div>`;
                     });
                     html += `</div>`;
-                } else if (k.type === "NUMERICAL" || k.type === "INTEGER") {
+                } else if (k.type === "NUMERICAL" || k.type === "INTEGER" || k.type === "NAT") {
                     html += `<input type="number" step="any" class="num-input" placeholder="Value" value="${savedAns}" oninput="setNumResponse('${k.qNo}', this.value)">`;
+                } else {
+                    // DEFAULT fallback to Single Choice (A,B,C,D) for "MCQ", "SINGLE", blank, or misspelled types
+                    html += `<div class="options-group">`;
+                    ['A', 'B', 'C', 'D'].forEach(opt => {
+                        let selClass = (savedAns === opt) ? "selected" : "";
+                        html += `<div class="omr-btn ${selClass}" onclick="selectSingle('${k.qNo}', '${opt}', this)">${opt}</div>`;
+                    });
+                    html += `</div>`;
                 }
                 html += `</div>`;
                 omrContainer.innerHTML += html;
             });
         }
 
-        // NEW: Saves memory to local storage continuously
         function saveResponsesLocally() {
             const studentId = sessionStorage.getItem("studentId");
             if (studentId && activeExamObj) {
