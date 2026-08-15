@@ -80,7 +80,8 @@
             </div>
         </div>
 
-        <div id="active-test-container" class="card" style="display: none; height: 100%; display: flex; flex-direction: column; flex: 1;">
+        <!-- FIXED INLINE CSS: Removed display properties so it perfectly hides on load -->
+        <div id="active-test-container" class="card" style="display: none; height: 100%; flex-direction: column; flex: 1;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
                 <div>
                     <h2 id="active-test-title" style="color: var(--navy); margin-bottom: 4px;"></h2>
@@ -376,6 +377,7 @@
             }
             
             document.getElementById("exam-portal").style.display = "none";
+            // FIXED JAVASCRIPT: Safely inject display flex to show the previously hidden box
             document.getElementById("active-test-container").style.display = "flex";
             document.getElementById("active-test-title").textContent = exam.title;
             document.getElementById("active-test-info").textContent = `Batch: ${exam.batch} | Duration: ${exam.duration} mins`;
@@ -628,7 +630,6 @@
                 if (data && data.status === "success") {
                     const r = data.result;
                     
-                    // Main Aggregate Score
                     let scoreHtml = `
                         Score: <strong>${r.marksObtained} / ${r.totalMarks}</strong> (${r.percentage}%)<br><br>
                         Correct: <span style="color:#10B981;">${r.correct}</span> | 
@@ -637,7 +638,15 @@
                         <span style="font-size:0.95rem; color:var(--navy);">Time Taken: <strong>${timeTakenStr}</strong></span>
                     `;
 
-                    // Dynamic Section-Wise Breakdown Table
+                    // NEW: Shows exactly which questions the student got wrong!
+                    if (r.wrongQs && r.wrongQs.length > 0) {
+                        scoreHtml += `
+                            <div style="margin-top: 1rem; color: var(--error-red); font-size: 0.95rem; font-weight: 600;">
+                                Incorrect Questions: <span style="font-weight: normal; color: var(--text-dark);">${r.wrongQs.join(", ")}</span>
+                            </div>
+                        `;
+                    }
+
                     if (r.sectionStats) {
                         scoreHtml += `
                         <div style="margin-top: 1.5rem; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 1rem; text-align: left;">
