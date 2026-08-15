@@ -80,7 +80,7 @@
                     <h2 id="active-test-title" style="color: var(--navy); margin-bottom: 4px;"></h2>
                     <p id="active-test-info" style="color: var(--text-muted); font-size: 0.9rem;"></p>
                 </div>
-                <button id="btn-finish-subj" class="btn" style="display:none; background:#25D366;" onclick="FinishSubjectiveExamTimeout()">Finish & Submit (WhatsApp)</button>
+                <button id="btn-finish-subj" class="btn" style="display:none; background:#25D366;" onclick="FinishSubjectiveExamTimeout(false)">Finish & Submit (WhatsApp)</button>
             </div>
 
             <div class="split-layout" id="exam-split-layout">
@@ -249,6 +249,20 @@
             }
             
             const studentId = sessionStorage.getItem("studentId");
+            
+            // Calculate time taken up to the point of termination
+            let timeTakenStr = "Unknown";
+            const stateStr = localStorage.getItem(`active_exam_timer_${studentId}`);
+            if (stateStr) {
+                const state = JSON.parse(stateStr);
+                const totalSecs = parseInt(activeExamObj.duration) * 60;
+                const remainingSecs = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+                const takenSecs = totalSecs - remainingSecs;
+                const m = Math.floor(takenSecs / 60);
+                const s = takenSecs % 60;
+                timeTakenStr = `${m}m ${s}s`;
+            }
+            
             localStorage.removeItem(`active_exam_timer_${studentId}`);
             localStorage.removeItem(`active_responses_${studentId}_${activeExamObj.examId}`);
             
@@ -271,7 +285,8 @@
                 roll: studentId,
                 examId: activeExamObj.examId,
                 examTitle: activeExamObj.title,
-                switchCount: tabSwitchCount
+                switchCount: tabSwitchCount,
+                timeTaken: timeTakenStr
             };
 
             try {
@@ -369,7 +384,6 @@
             activeExamObj = exam;
             const studentId = sessionStorage.getItem("studentId");
             
-            // Fetch saved responses instantly to restore progress if page was reloaded
             const savedResp = localStorage.getItem(`active_responses_${studentId}_${exam.examId}`);
             if (savedResp) {
                 try { studentResponses = JSON.parse(savedResp); } catch(e) { studentResponses = {}; }
@@ -413,12 +427,14 @@
             
             timerInterval = setInterval(function() {
                 const diff = Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000));
+                
+                // If time naturally runs out, auto-submit
                 if (diff <= 0) {
                     clearInterval(timerInterval);
                     if (exam.type === "SUBJECTIVE") {
-                        FinishSubjectiveExamTimeout();
+                        FinishSubjectiveExamTimeout(true); // true = auto-submit
                     } else {
-                        document.getElementById("btn-submit").click(); 
+                        submitMCQExamData(true); // true = auto-submit
                     }
                     return;
                 }
@@ -430,7 +446,6 @@
             }, 1000);
         }
 
-        // FIXED: Now perfectly handles "MCQ", "MULTI", "NUMERICAL" or defaults to A B C D options
         function renderOMR(keys) {
             const omrContainer = document.getElementById("omr-rows-container");
             if (!keys || keys.length === 0) {
@@ -441,8 +456,6 @@
             omrContainer.innerHTML = "";
             keys.forEach(k => {
                 let html = `<div class="q-row"><span class="q-num">Q${k.qNo}</span>`;
-                
-                // Read from the saved local storage state
                 let savedAns = studentResponses[k.qNo] || "";
                 
                 if (k.type === "MULTIPLE" || k.type === "MULTI" || k.type === "MSQ") {
@@ -456,7 +469,6 @@
                 } else if (k.type === "NUMERICAL" || k.type === "INTEGER" || k.type === "NAT") {
                     html += `<input type="number" step="any" class="num-input" placeholder="Value" value="${savedAns}" oninput="setNumResponse('${k.qNo}', this.value)">`;
                 } else {
-                    // DEFAULT fallback to Single Choice (A,B,C,D) for "MCQ", "SINGLE", blank, or misspelled types
                     html += `<div class="options-group">`;
                     ['A', 'B', 'C', 'D'].forEach(opt => {
                         let selClass = (savedAns === opt) ? "selected" : "";
@@ -498,7 +510,15 @@
             saveResponsesLocally();
         }
 
-        async function FinishSubjectiveExamTimeout() {
+        // Handles Subjective form
+        async function FinishSubjectiveExamTimeout(isAutoSubmit = false) {
+            // Add a manual confirmation prompt so students do not accidentally click submit
+            if (!isAutoSubmit) {
+                if (!confirm("Are you sure you want to finish and submit your exam now?")) {
+                    return; // Cancels submission if they click 'No'
+                }
+            }
+
             clearInterval(timerInterval);
             isExamActive = false;
             
@@ -507,6 +527,20 @@
             }
 
             const studentId = sessionStorage.getItem("studentId");
+            
+            // Calculate time taken
+            let timeTakenStr = "Unknown";
+            const stateStr = localStorage.getItem(`active_exam_timer_${studentId}`);
+            if (stateStr) {
+                const state = JSON.parse(stateStr);
+                const totalSecs = parseInt(activeExamObj.duration) * 60;
+                const remainingSecs = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+                const takenSecs = totalSecs - remainingSecs;
+                const m = Math.floor(takenSecs / 60);
+                const s = takenSecs % 60;
+                timeTakenStr = `${m}m ${s}s`;
+            }
+
             localStorage.removeItem(`active_exam_timer_${studentId}`);
             localStorage.removeItem(`active_responses_${studentId}_${activeExamObj.examId}`);
             
@@ -514,10 +548,10 @@
             document.getElementById("timer-box").style.display = "none";
             
             const titleEl = document.getElementById("subj-status-title");
-            titleEl.textContent = "Timeout: Time Expired!";
+            titleEl.textContent = isAutoSubmit ? "Timeout: Time Expired!" : "Exam Finished Successfully!";
             titleEl.style.color = "var(--navy)";
             
-            const msg = encodeURIComponent(`Hello Sir, I have completed the Subjective Exam (${activeExamObj.title}). Here are my answer sheets.`);
+            const msg = encodeURIComponent(`Hello Sir, I have completed the Subjective Exam (${activeExamObj.title}) in ${timeTakenStr}. Here are my answer sheets.`);
             document.getElementById("wa-submit-btn").href = `https://wa.me/918240949137?text=${msg}`;
             document.getElementById("subj-complete-screen").style.display = "block";
 
@@ -525,7 +559,8 @@
                 action: "logSubjectiveAttempt",
                 roll: studentId,
                 examId: activeExamObj.examId,
-                examTitle: activeExamObj.title
+                examTitle: activeExamObj.title,
+                timeTaken: timeTakenStr
             };
 
             try {
@@ -539,8 +574,15 @@
             }
         }
 
-        document.getElementById("omr-form").addEventListener("submit", async function(e) {
-            e.preventDefault();
+        // Handles MCQ form (Separated out for manual & auto-submit)
+        async function submitMCQExamData(isAutoSubmit = false) {
+            // Add a manual confirmation prompt so students do not accidentally click submit
+            if (!isAutoSubmit) {
+                if (!confirm("Are you sure you want to submit your exam now? You cannot change your answers after submission.")) {
+                    return; // Cancels submission if they click 'No'
+                }
+            }
+
             clearInterval(timerInterval);
             isExamActive = false;
             
@@ -550,7 +592,19 @@
             
             const studentId = sessionStorage.getItem("studentId");
             
-            // Clear memory buffers to prevent reloading the exam later
+            // Calculate time taken
+            let timeTakenStr = "Unknown";
+            const stateStr = localStorage.getItem(`active_exam_timer_${studentId}`);
+            if (stateStr) {
+                const state = JSON.parse(stateStr);
+                const totalSecs = parseInt(activeExamObj.duration) * 60;
+                const remainingSecs = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+                const takenSecs = totalSecs - remainingSecs;
+                const m = Math.floor(takenSecs / 60);
+                const s = takenSecs % 60;
+                timeTakenStr = `${m}m ${s}s`;
+            }
+
             localStorage.removeItem(`active_exam_timer_${studentId}`);
             localStorage.removeItem(`active_responses_${studentId}_${activeExamObj.examId}`);
             
@@ -562,7 +616,8 @@
                 roll: studentId,
                 examId: activeExamObj.examId,
                 examTitle: activeExamObj.title,
-                responses: studentResponses
+                responses: studentResponses,
+                timeTaken: timeTakenStr
             };
 
             try {
@@ -578,7 +633,8 @@
                         Score: <strong>${r.marksObtained} / ${r.totalMarks}</strong> (${r.percentage}%)<br><br>
                         Correct: <span style="color:#10B981;">${r.correct}</span> | 
                         Wrong: <span style="color:#EF4444;">${r.wrong}</span> | 
-                        Unattempted: ${r.unattempted}
+                        Unattempted: ${r.unattempted}<br><br>
+                        <span style="font-size:0.95rem; color:var(--navy);">Time Taken: <strong>${timeTakenStr}</strong></span>
                     `;
                     document.getElementById("result-screen").style.display = "block";
                 }
@@ -586,7 +642,14 @@
                 alert("Submission recorded. Return to dashboard.");
                 window.location.href = "dashboard.html";
             }
+        }
+
+        // Listener for the Manual Submit Button click
+        document.getElementById("omr-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            submitMCQExamData(false); // false triggers the confirmation popup
         });
+
     </script>
 </body>
 </html>
