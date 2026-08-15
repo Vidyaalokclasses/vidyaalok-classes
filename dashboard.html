@@ -16,7 +16,6 @@
         nav { display: flex; gap: 1rem; align-items: center; }
         nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 4px 8px; }
         
-        /* Notification Bell Styles */
         .notification-bell { position: relative; cursor: pointer; padding: 4px 8px; display: flex; align-items: center; margin-right: 5px; }
         .notification-bell svg { width: 22px; height: 22px; stroke: var(--navy); }
         .notification-bell:hover svg { stroke: var(--gold); }
@@ -40,7 +39,6 @@
         footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
         .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
         
-        /* Toast Popup Styles */
         .toast-popup { position: fixed; bottom: 30px; right: 30px; background-color: var(--navy); color: white; padding: 16px 20px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-left: 4px solid var(--gold); display: flex; flex-direction: column; gap: 6px; z-index: 4000; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); min-width: 280px; }
         .toast-popup.show { transform: translateX(0); }
         .toast-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1rem; color: var(--gold); border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; margin-bottom: 4px; }
@@ -51,12 +49,10 @@
         .toast-item:hover { background: rgba(255,255,255,0.15); }
         .toast-item strong { color: var(--gold); }
         
-        /* Stop iOS from turning phone numbers blue */
         a[href^="tel"] { color: inherit; text-decoration: none; pointer-events: none; }
 
-        /* Mobile Fixes */
         @media screen and (max-width: 768px) { 
-            body { padding-top: 140px; } /* Increased to prevent overlap */
+            body { padding-top: 140px; } 
             header { flex-direction: column; padding: 0.8rem 1rem; gap: 10px; } 
             nav { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
             .brand img { height: 40px; }
@@ -74,7 +70,6 @@
             <a href="index.html">Home</a>
             <a href="schedule.html">Schedule</a>
             
-            <!-- Notification Bell Icon -->
             <div class="notification-bell" onclick="markNotificationsRead()" title="Notifications">
                 <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
@@ -87,19 +82,16 @@
         </nav>
     </header>
 
-    <!-- Floating Toast Popup container -->
     <div id="toast-notification" class="toast-popup">
         <div class="toast-header">
             <span>New Updates!</span>
             <button class="toast-close" onclick="markNotificationsRead()">&times;</button>
         </div>
         <div class="toast-body" id="toast-body-text">
-            <!-- Dynamic Clickable Messages go here -->
         </div>
     </div>
 
     <main class="container">
-        <!-- Integrated Profile & Fee Card -->
         <div class="profile-card">
             <div class="profile-info">
                 <h2 id="student-name">Welcome, Student</h2>
@@ -185,10 +177,10 @@
             <div class="table-responsive">
                 <table>
                     <thead>
-                        <tr><th>Date</th><th>Exam Title</th><th>Total Qs</th><th>Attempted</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Total Marks</th><th>Marks Obtained</th><th>Percentage</th><th>Rank</th></tr>
+                        <tr><th>Date</th><th>Exam Title</th><th>Total Qs</th><th>Attempted</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Total Marks</th><th>Marks Obtained</th><th>Percentage</th><th>Rank</th><th>Section Breakdown</th></tr>
                     </thead>
                     <tbody id="results-table-body">
-                        <tr><td colspan="11" style="text-align:center;">Fetching test results...</td></tr>
+                        <tr><td colspan="12" style="text-align:center;">Fetching test results...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -236,7 +228,6 @@
             }
         });
 
-        // NOTIFICATION LOGIC
         function processNotifications(student) {
             globalStudentRoll = student.roll;
             
@@ -456,11 +447,12 @@
                             <td>${safeVal(item.marksObtained)}</td>
                             <td>${safeVal(item.percentage)}%</td>
                             <td>${safeVal(item.rank)}</td>
+                            <td style="font-size: 0.85rem; line-height: 1.4;">${safeVal(item.sectionBreakdown).replace(/ \| /g, '<br>')}</td>
                         </tr>
                     `;
                 });
             } else {
-                resultsBody.innerHTML = `<tr><td colspan="11" style="text-align:center;">No exam submission records found.</td></tr>`;
+                resultsBody.innerHTML = `<tr><td colspan="12" style="text-align:center;">No exam submission records found.</td></tr>`;
             }
         }
 
