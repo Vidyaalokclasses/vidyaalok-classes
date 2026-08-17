@@ -137,7 +137,7 @@
                 <li id="rule-type-desc"></li>
                 <li><strong>Proctored Environment:</strong> Do not switch tabs or open other applications during the exam. Doing so 3 times will instantly terminate the test.</li>
                 <li><strong>Single Attempt Rule:</strong> Ensure a stable internet connection before starting.</li>
-                <li><strong>Auto-Save:</strong> Your answers are saved continuously. If you get disconnected, simply reload the page to restore your answers and continue.</li>
+                <li><strong>Auto-Save & Erase:</strong> Answers are saved continuously. <strong>To erase a selected answer, simply click it again.</strong> If disconnected, reload the page to restore answers.</li>
             </ul>
             
             <div style="display:flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem;">
@@ -256,8 +256,6 @@
             }
         }
 
-        // FIXED: Removed window.addEventListener("blur") to prevent false positives when clicking inside the PDF on Windows.
-        // We now solely rely on visibilitychange (tab switching/minimizing).
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
                 detectFocusLoss();
@@ -515,25 +513,46 @@
             }
         }
 
+        // FIXED: Click an option again to erase/deselect it
         function selectSingle(qNo, val, el) {
             const parent = el.parentElement;
-            parent.querySelectorAll('.omr-btn').forEach(b => b.classList.remove('selected'));
-            el.classList.add('selected');
-            studentResponses[qNo] = val;
+            
+            if (el.classList.contains('selected')) {
+                // Erase answer
+                el.classList.remove('selected');
+                delete studentResponses[qNo];
+            } else {
+                // Select answer
+                parent.querySelectorAll('.omr-btn').forEach(b => b.classList.remove('selected'));
+                el.classList.add('selected');
+                studentResponses[qNo] = val;
+            }
             saveResponsesLocally();
         }
 
+        // FIXED: Toggle multi-select and clean up empty arrays
         function toggleMulti(qNo, val, el) {
             el.classList.toggle('selected');
             const parent = el.parentElement;
             const selectedBtns = parent.querySelectorAll('.omr-btn.selected');
-            const selectedVals = Array.from(selectedBtns).map(b => b.textContent).sort().join(',');
-            studentResponses[qNo] = selectedVals;
+            
+            if (selectedBtns.length === 0) {
+                delete studentResponses[qNo];
+            } else {
+                const selectedVals = Array.from(selectedBtns).map(b => b.textContent).sort().join(',');
+                studentResponses[qNo] = selectedVals;
+            }
             saveResponsesLocally();
         }
 
+        // FIXED: Clean up empty numeric inputs
         function setNumResponse(qNo, val) {
-            studentResponses[qNo] = val.trim();
+            const trimmed = val.trim();
+            if (trimmed === "") {
+                delete studentResponses[qNo];
+            } else {
+                studentResponses[qNo] = trimmed;
+            }
             saveResponsesLocally();
         }
 
