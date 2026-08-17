@@ -60,7 +60,7 @@
 <body>
 
     <div id="warning-banner" class="warning-banner">
-        ⚠️ WARNING! Focus lost (<span id="switch-count">0</span>/3). Repeatedly leaving the exam window will terminate your test.
+        ⚠️ WARNING! Tab switch detected (<span id="switch-count">0</span>/3). Repeatedly switching tabs will terminate your test.
     </div>
 
     <header>
@@ -135,7 +135,7 @@
             <ul class="rules-list">
                 <li><strong>Automatic Timer:</strong> When the duration expires (00:00:00), the question paper will automatically lock.</li>
                 <li id="rule-type-desc"></li>
-                <li><strong>Proctored Environment:</strong> Do not switch tabs, minimize the window, or open other applications during the exam. Doing so 3 times will instantly terminate the test.</li>
+                <li><strong>Proctored Environment:</strong> Do not switch tabs or open other applications during the exam. Doing so 3 times will instantly terminate the test.</li>
                 <li><strong>Single Attempt Rule:</strong> Ensure a stable internet connection before starting.</li>
                 <li><strong>Auto-Save:</strong> Your answers are saved continuously. If you get disconnected, simply reload the page to restore your answers and continue.</li>
             </ul>
@@ -160,7 +160,6 @@
         let isHandlingViolation = false;
         let wakeLock = null;
 
-        // NEW: Activity Logger built perfectly for the Exam screen
         function trackActivity(actionDetail) {
             const studentId = sessionStorage.getItem("studentId");
             if (!studentId) return;
@@ -168,7 +167,6 @@
             navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
         }
 
-        // NEW: Tracks if they close the tab while taking an exam
         window.addEventListener('pagehide', function(event) {
             const studentId = sessionStorage.getItem("studentId");
             if (studentId) {
@@ -245,7 +243,7 @@
             
             if (tabSwitchCount < 3) {
                 banner.style.display = "block";
-                banner.innerHTML = `⚠️ WARNING! Focus lost or window change detected (<span id="switch-count">${tabSwitchCount}</span>/3). Repeatedly leaving the exam window will terminate your test.`;
+                banner.innerHTML = `⚠️ WARNING! Tab switch detected (<span id="switch-count">${tabSwitchCount}</span>/3). Repeatedly switching tabs will terminate your test.`;
                 
                 setTimeout(() => { 
                     banner.style.display = "none"; 
@@ -253,12 +251,13 @@
                 }, 3000); 
             } else {
                 banner.style.display = "block";
-                banner.innerHTML = `🚨 VIOLATION LIMIT REACHED! Focus lost 3 times. Terminating exam...`;
+                banner.innerHTML = `🚨 VIOLATION LIMIT REACHED! Tab switched 3 times. Terminating exam...`;
                 handleProctoredTermination();
             }
         }
 
-        window.addEventListener("blur", detectFocusLoss);
+        // FIXED: Removed window.addEventListener("blur") to prevent false positives when clicking inside the PDF on Windows.
+        // We now solely rely on visibilitychange (tab switching/minimizing).
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
                 detectFocusLoss();
@@ -271,7 +270,6 @@
             clearInterval(timerInterval);
             isExamActive = false;
             
-            // NEW: Log Termination to ActivityLog
             trackActivity("Exam Terminated due to Violation: " + activeExamObj.title);
             
             if (wakeLock !== null) {
@@ -302,7 +300,7 @@
             document.getElementById("subj-status-title").style.color = "var(--error-red)";
             
             const completeScreen = document.getElementById("subj-complete-screen");
-            completeScreen.querySelector("p").textContent = "Your exam was automatically terminated because you switched tabs or left the browser window 3 times.";
+            completeScreen.querySelector("p").textContent = "Your exam was automatically terminated because you switched tabs or minimized the browser window 3 times.";
             
             if(document.getElementById("btn-submit")) {
                 document.getElementById("btn-submit").style.display = "none";
@@ -452,7 +450,6 @@
             setTimeout(() => { 
                 isExamActive = true; 
                 requestWakeLock();
-                // NEW: Log Exam Start
                 trackActivity("Started Exam: " + exam.title); 
             }, 1000);
             
@@ -550,7 +547,6 @@
             clearInterval(timerInterval);
             isExamActive = false;
             
-            // NEW: Log Exam End to ActivityLog
             trackActivity(isAutoSubmit ? "Auto-Finished Subjective Exam: " + activeExamObj.title : "Manually Finished Subjective Exam: " + activeExamObj.title);
 
             if (wakeLock !== null) {
@@ -614,7 +610,6 @@
             clearInterval(timerInterval);
             isExamActive = false;
             
-            // NEW: Log Exam End to ActivityLog
             trackActivity(isAutoSubmit ? "Auto-Submitted MCQ Exam: " + activeExamObj.title : "Manually Submitted MCQ Exam: " + activeExamObj.title);
 
             if (wakeLock !== null) {
