@@ -2,14 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- FIXED: Unlocked zooming so students can pinch-to-zoom on mobile and tablets -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Online Exams | Vidyaalok Classes</title>
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <style>
         :root { --navy: #0B2545; --gold: #E5A93C; --light-bg: #F1F5F9; --card-bg: rgba(255, 255, 255, 0.95); --text-dark: #1E293B; --text-muted: #64748B; --success-green: #10B981; --error-red: #EF4444; }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        html, body { width: 100%; overflow-x: hidden; }
-        body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 15px; }
+        
+        /* ANTI-PIRACY: Prevent text highlighting */
+        body { 
+            background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 15px; 
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+        }
+        /* Allow typing inside the numerical input box */
+        input { -webkit-user-select: auto; user-select: auto; }
+
+        html { width: 100%; overflow-x: hidden; }
         header { background-color: #FFFFFF; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; }
         .brand img { height: 44px; width: auto; display: block; }
         .timer-display { font-size: 1.4rem; font-weight: 700; color: #FFFFFF; background: var(--navy); padding: 6px 16px; border-radius: 8px; }
@@ -136,7 +146,7 @@
                 <li><strong>Automatic Timer:</strong> When the duration expires (00:00:00), the question paper will automatically lock.</li>
                 <li id="rule-type-desc"></li>
                 <li><strong>Proctored Environment:</strong> Do not switch tabs or open other applications during the exam. Doing so 3 times will instantly terminate the test.</li>
-                <li><strong>Single Attempt Rule:</strong> Ensure a stable internet connection before starting.</li>
+                <li><strong>Anti-Piracy Shield:</strong> Screenshots, copying, and printing are strictly prohibited and actively blocked by the system.</li>
                 <li><strong>Auto-Save & Erase:</strong> Answers are saved continuously. <strong>To erase a selected answer, simply click it again.</strong> If disconnected, reload the page to restore answers.</li>
             </ul>
             
@@ -159,6 +169,55 @@
         let isExamActive = false;
         let isHandlingViolation = false;
         let wakeLock = null;
+
+        // ==========================================
+        // ANTI-PIRACY SHIELD (SCREENSHOT/COPY DETERRENT)
+        // ==========================================
+        
+        // 1. Disable Right Click (Context Menu)
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        // 2. Disable Text Selection, Copy, Cut, and Paste
+        document.addEventListener('selectstart', event => { if(event.target.tagName !== "INPUT") event.preventDefault(); });
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        // 3. Blackout function to ruin screenshots
+        function triggerBlackout() {
+            if (document.getElementById('blackout-screen')) return;
+            const overlay = document.createElement('div');
+            overlay.id = 'blackout-screen';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0'; overlay.style.left = '0';
+            overlay.style.width = '100vw'; overlay.style.height = '100vh';
+            overlay.style.backgroundColor = '#000000';
+            overlay.style.color = '#EF4444';
+            overlay.style.display = 'flex'; overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center';
+            overlay.style.fontSize = '2rem'; overlay.style.fontWeight = 'bold'; overlay.style.zIndex = '999999';
+            overlay.innerText = 'SCREENSHOTS PROHIBITED';
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => { if (document.body.contains(overlay)) document.body.removeChild(overlay); }, 3000);
+        }
+
+        // 4. Listen for Keyboard Screenshot/Print combos (Mac & Windows)
+        document.addEventListener('keydown', (e) => {
+            // Mac: Cmd + Shift + (3, 4, 5)
+            if (e.metaKey && e.shiftKey) { triggerBlackout(); }
+            // Windows: Ctrl + P (Print) or Ctrl + S (Save)
+            if (e.ctrlKey && (e.key === 'p' || e.key === 's')) { e.preventDefault(); }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            // Windows: Print Screen key
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText(''); // Attempt to clear the copied screenshot
+                triggerBlackout();
+            }
+        });
+        // ==========================================
+
 
         function trackActivity(actionDetail) {
             const studentId = sessionStorage.getItem("studentId");
@@ -513,16 +572,13 @@
             }
         }
 
-        // FIXED: Click an option again to erase/deselect it
         function selectSingle(qNo, val, el) {
             const parent = el.parentElement;
             
             if (el.classList.contains('selected')) {
-                // Erase answer
                 el.classList.remove('selected');
                 delete studentResponses[qNo];
             } else {
-                // Select answer
                 parent.querySelectorAll('.omr-btn').forEach(b => b.classList.remove('selected'));
                 el.classList.add('selected');
                 studentResponses[qNo] = val;
@@ -530,7 +586,6 @@
             saveResponsesLocally();
         }
 
-        // FIXED: Toggle multi-select and clean up empty arrays
         function toggleMulti(qNo, val, el) {
             el.classList.toggle('selected');
             const parent = el.parentElement;
@@ -545,7 +600,6 @@
             saveResponsesLocally();
         }
 
-        // FIXED: Clean up empty numeric inputs
         function setNumResponse(qNo, val) {
             const trimmed = val.trim();
             if (trimmed === "") {
