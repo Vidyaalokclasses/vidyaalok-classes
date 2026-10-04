@@ -140,6 +140,7 @@
  .batch-card.prabha { border-top-color: #EA580C; }
  .batch-card.pradeep { border-top-color: #16A34A; }
  .batch-card.agni { border-top-color: #DC2626; }
+ .batch-card.agni2 { border-top-color: #9333EA; }
 
  .batch-title {
  font-size: 1.15rem;
@@ -334,20 +335,36 @@
  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
 
  document.addEventListener("DOMContentLoaded", function() {
- if (SCRIPT_URL !== "YOUR_WEB_APP_URL_HERE") {
- fetch(`${SCRIPT_URL}?action=getSchedule`)
+ if (SCRIPT_URL && SCRIPT_URL !== "YOUR_WEB_APP_URL_HERE") {
+ fetch(`${SCRIPT_URL}?action=getSchedule`, { method: "GET", redirect: "follow" })
  .then(res => res.json())
  .then(data => {
- if (data.success && data.schedule.length > 0) {
+ if (data.success && data.schedule && data.schedule.length > 0) {
  const grid = document.querySelector('.batch-grid');
  grid.innerHTML = "";
  const batches = {};
 
+ const subtitleMap = {
+ "kiran": "Class 8 Foundation",
+ "prabha": "Class 9 Foundation",
+ "tejas": "Class 10 Foundation",
+ "pradeep": "Class 11 Target",
+ "jyoti": "Class 12 Target",
+ "agni": "NEET Repeater",
+ "agni2": "NEET Repeater (Batch 2)"
+ };
+
  data.schedule.forEach(row => {
- if (!batches[row.batchKey]) {
- batches[row.batchKey] = { name: row.batchName, sub: row.subtitle, timings: [] };
+ const bName = row.batch || row.batchName || "";
+ if (!bName) return;
+
+ const key = bName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+ if (!batches[key]) {
+ const sub = subtitleMap[key] || `${bName} Batch`;
+ batches[key] = { name: bName.includes("Batch") ? bName : `${bName} Batch`, sub: sub, timings: [] };
  }
- batches[row.batchKey].timings.push({ day: row.day, timing: row.timing });
+ batches[key].timings.push({ day: row.day, timing: row.time || row.timing });
  });
 
  for (let key in batches) {
@@ -359,13 +376,23 @@
  grid.innerHTML += `<div class="batch-card ${key}"><div class="batch-title">${b.name}</div><div class="batch-subtitle">${b.sub}</div>${timingRows}</div>`;
  }
 
+ // Topic Log integration from sheet
+ const topicRows = data.schedule.filter(r => r.topic && r.topic.trim() !== "");
+ if (topicRows.length > 0) {
+ const latest = topicRows[topicRows.length - 1];
+ const topicElem = document.querySelector('.log-topic');
+ if (topicElem) topicElem.textContent = `${latest.batch} Batch: ${latest.topic}`;
+ }
+
  if (data.latestTopic) {
- document.querySelector('.log-topic').textContent = `${data.latestTopic.batchName}: ${data.latestTopic.topic}`;
- document.querySelector('.log-homework').innerHTML = `<strong>Homework:</strong> ${data.latestTopic.homework}`;
+ const topicElem = document.querySelector('.log-topic');
+ const hwElem = document.querySelector('.log-homework');
+ if (topicElem && data.latestTopic.topic) topicElem.textContent = `${data.latestTopic.batchName || data.latestTopic.batch}: ${data.latestTopic.topic}`;
+ if (hwElem && data.latestTopic.homework) hwElem.innerHTML = `<strong>Homework:</strong> ${data.latestTopic.homework}`;
  }
  }
  })
- .catch(err => console.log("Using static schedule fallback."));
+ .catch(err => console.log("Using static schedule fallback:", err));
  }
  });
  </script>
