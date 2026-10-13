@@ -3,268 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal Login | Vidyaalok Classes</title>
+    <meta name="format-detection" content="telephone=no">
+    <title>Parent & Student Portal | Vidyaalok Classes</title>
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <style>
-        :root {
-            --navy: #0B2545;
-            --gold: #E5A93C;
-            --light-bg: #F1F5F9;
-            --card-bg: #FFFFFF;
-            --text-dark: #1E293B;
-            --text-muted: #64748B;
-            --error-red: #DC2626;
-            --success-green: #10B981;
-        }
+        :root { --navy: #0B2545; --gold: #E5A93C; --card-bg: rgba(255, 255, 255, 0.95); --text-dark: #1E293B; --text-muted: #64748B; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body {
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        header {
-            background-color: var(--navy);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .brand img { height: 45px; width: auto; }
-        .brand-text { color: #FFFFFF; font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; }
-        nav { display: flex; gap: 1.5rem; }
-        nav a { color: #E2E8F0; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
-        nav a:hover, nav a.active { color: var(--gold); }
-
-        main {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 1rem;
-        }
-        .card {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(11, 37, 69, 0.08);
-            width: 100%;
-            max-width: 420px;
-            border-top: 5px solid var(--gold);
-        }
-        .card h2 {
-            color: var(--navy);
-            text-align: center;
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-        }
-        .card p.subtitle {
-            color: var(--text-muted);
-            text-align: center;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
+        body { background-color: #F1F5F9; background-image: url('logo.png'); background-repeat: no-repeat; background-position: center 250px; background-attachment: fixed; background-size: 550px; color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; }
+        header { background-color: #FFFFFF; padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); position: sticky; top: 0; z-index: 100; }
+        .brand img { height: 52px; width: auto; display: block; }
+        nav { display: flex; gap: 1.2rem; align-items: center; }
+        nav a { color: var(--navy); text-decoration: none; font-size: 0.95rem; font-weight: 600; padding: 6px 12px; border-radius: 6px; transition: all 0.2s; }
+        nav a:hover, nav a.active { color: var(--gold); background-color: #F1F5F9; }
+        .btn-portal { background-color: var(--navy); color: #FFFFFF !important; border-radius: 6px; padding: 8px 16px !important; }
+        .btn-portal:hover { background-color: #133966; color: var(--gold) !important; }
+        .container { max-width: 500px; margin: 3rem auto; padding: 0 1.5rem; flex: 1; }
+        .card { background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 16px rgba(11, 37, 69, 0.08); border: 1px solid rgba(226, 232, 240, 0.9); }
         .form-group { margin-bottom: 1.2rem; }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--navy);
-            font-size: 0.9rem;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #CBD5E1;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(229, 169, 60, 0.2);
-        }
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--navy);
-            color: #FFFFFF;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 0.5rem;
-        }
-        .btn-login:hover { background-color: #13315c; }
-        .btn-login:disabled { background-color: #94A3B8; cursor: not-allowed; }
-
-        #errorMsg {
-            background-color: #FEF2F2;
-            color: var(--error-red);
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            display: none;
-            border: 1px solid #FECACA;
-        }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 0.4rem; color: var(--navy); font-size: 0.9rem; }
+        .form-group input { width: 100%; padding: 10px 14px; border: 1px solid #CBD5E1; border-radius: 6px; font-size: 0.95rem; }
+        .btn-login { width: 100%; background-color: var(--navy); color: #FFFFFF; border: none; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+        .btn-login:hover { background-color: #133966; color: var(--gold); }
+        footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); text-align: center; font-size: 0.85rem; margin-top: auto; }
         
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 8px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Stop iOS from turning phone numbers blue */
+        a[href^="tel"] { color: inherit; text-decoration: none; pointer-events: none; }
 
-        footer {
-            background-color: var(--navy);
-            color: #94A3B8;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            font-size: 0.85rem;
-            border-top: 3px solid var(--gold);
-        }
-        footer strong { color: #FFFFFF; }
-
-        @media (max-width: 600px) {
-            header { flex-direction: column; gap: 1rem; padding: 1rem; }
-            nav { gap: 1rem; }
-            .card { padding: 1.5rem; }
+        /* Mobile Fixes for overlapping navigation */
+        @media screen and (max-width: 768px) {
+            header { flex-direction: column; padding: 1rem; gap: 12px; }
+            nav { flex-wrap: wrap; justify-content: center; gap: 8px; }
+            .brand img { height: 40px; }
+            .container { margin: 2rem auto; }
         }
     </style>
 </head>
 <body>
-
     <header>
-        <a href="index.html" class="brand">
-            <img src="horizontal-logo.jpg" alt="Vidyaalok Classes Logo">
-            <span class="brand-text">Vidyaalok Classes</span>
-        </a>
+        <div class="brand">
+            <a href="index.html"><img src="horizontal-logo.jpg" alt="Vidyaalok Classes"></a>
+        </div>
         <nav>
             <a href="index.html">Home</a>
             <a href="schedule.html">Schedule</a>
             <a href="notes.html">Class Notes</a>
-            <a href="login.html" class="active">Student Portal</a>
+            <a href="exam.html">Online Exams</a>
+            <a href="login.html" class="btn-portal">Student Portal</a>
         </nav>
     </header>
 
-    <main>
+    <div class="container">
         <div class="card" id="loginCard">
-            <h2>Student Portal Login</h2>
-            <p class="subtitle">Access your dashboard, test results, and study materials.</p>
+            <h2 style="color: var(--navy); text-align: center; margin-bottom: 1.5rem;">Parent & Student Login</h2>
+            <div id="errorMsg" style="font-size: 0.88rem; margin-bottom: 1rem; text-align: center;"></div>
             
-            <div id="errorMsg"></div>
-            
-            <form id="loginForm" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label for="studentId">Student ID</label>
-                    <input type="text" id="studentId" placeholder="e.g., AGN26001" required style="text-transform: uppercase;">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="btn-login" id="loginBtn">Login to Dashboard</button>
-            </form>
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="studentId" placeholder="Enter Student ID (e.g., VAK26001)">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter Password">
+            </div>
+            <button class="btn-login" onclick="login()">Login to Dashboard</button>
         </div>
-    </main>
+    </div>
 
     <footer>
         <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
-        <p style="margin-top: 4px; color:#64748B;">Kharagpur, West Bengal, India, Pin-721301 | +91 8240949137</p>
+        <p style="margin-top: 4px; color: #64748B;">Kharagpur, West Bengal, India, Pin-721301</p>
     </footer>
 
     <script>
-        // ⚠️ REPLACE THIS WITH YOUR ACTUAL GOOGLE APPS SCRIPT WEB APP URL
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; 
+        // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
 
-        // Check if user is already logged in when page loads
-        document.addEventListener("DOMContentLoaded", () => {
-            if (localStorage.getItem("studentId")) {
-                // Already logged in, send them straight to the dashboard
-                window.location.href = "dashboard.html";
-            }
-        });
+        localStorage.removeItem("studentId");
+        localStorage.removeItem("dashboardData");
 
-        function handleLogin(event) {
-            event.preventDefault(); // Prevent page reload
-            
-            const studentId = document.getElementById('studentId').value.trim().toUpperCase();
+        function login() {
+            const studentId = document.getElementById('studentId').value.trim();
             const password = document.getElementById('password').value.trim();
             const errorMsg = document.getElementById('errorMsg');
-            const loginBtn = document.getElementById('loginBtn');
-
-            // Reset error message
-            errorMsg.style.display = 'none';
-            errorMsg.textContent = '';
+            const loginBtn = document.querySelector('.btn-login');
 
             if (!studentId || !password) {
-                showError("Please enter both Student ID and Password.");
+                errorMsg.style.color = "#DC2626";
+                errorMsg.textContent = "Please enter both Student ID and Password.";
                 return;
             }
 
-            // Show loading state
+            errorMsg.style.color = "#0284C7";
+            errorMsg.textContent = "Authenticating... Please wait.";
+            loginBtn.textContent = "Loading...";
             loginBtn.disabled = true;
-            loginBtn.innerHTML = '<span class="loader"></span> Verifying...';
+            loginBtn.style.opacity = "0.7";
 
-            // Construct URL (Using 'roll' and 'pass' to match your Code.gs backend)
-            const requestUrl = `${SCRIPT_URL}?action=login&roll=${encodeURIComponent(studentId)}&pass=${encodeURIComponent(password)}`;
+            const requestUrl = `${SCRIPT_URL}?studentId=${encodeURIComponent(studentId)}&password=${encodeURIComponent(password)}&nocache=${Date.now()}`;
 
-            fetch(requestUrl, { method: "GET", redirect: "follow" })
+            fetch(requestUrl, { 
+                method: "GET", 
+                redirect: "follow",
+                cache: "no-store" 
+            })
                 .then(response => response.json())
                 .then(data => {
-                    // Your API returns either data.success === true OR data.status === "success"
-                    if (data.success === true || data.status === "success") {
+                    if (data.success) {
+                        sessionStorage.setItem("studentId", studentId);
+                        sessionStorage.setItem("dashboardData", JSON.stringify(data.student));
                         
-                        // ✅ CRITICAL FIX: Save the session in the browser
-                        localStorage.setItem("studentId", studentId);
-                        
-                        // Show success message briefly, then redirect
-                        loginBtn.innerHTML = 'Success! Redirecting...';
-                        loginBtn.style.backgroundColor = '#10B981';
-                        
-                        // Redirect to the main dashboard
-                        setTimeout(() => {
-                            window.location.href = "dashboard.html";
-                        }, 500); // Half second delay so they see the green success button
+                        const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged into Portal" });
+                        navigator.sendBeacon(SCRIPT_URL, payload);
+
+                        window.location.href = "dashboard.html";
 
                     } else {
-                        // Login failed
-                        showError(data.message || "Invalid Student ID or Password.");
-                        resetButton();
+                        errorMsg.style.color = "#DC2626";
+                        errorMsg.textContent = data.message || "Invalid Student ID or Password.";
+                        loginBtn.textContent = "Login to Dashboard";
+                        loginBtn.disabled = false;
+                        loginBtn.style.opacity = "1";
                     }
                 })
                 .catch(error => {
                     console.error("Fetch Error:", error);
-                    showError("Network error. Please check your connection or deployment settings.");
-                    resetButton();
+                    errorMsg.style.color = "#DC2626";
+                    errorMsg.textContent = "Error: Connection blocked. Try clearing browser cache or check deployment settings.";
+                    loginBtn.textContent = "Login to Dashboard";
+                    loginBtn.disabled = false;
+                    loginBtn.style.opacity = "1";
                 });
-        }
-
-        function showError(msg) {
-            const errorMsg = document.getElementById('errorMsg');
-            errorMsg.textContent = msg;
-            errorMsg.style.display = 'block';
-        }
-
-        function resetButton() {
-            const loginBtn = document.getElementById('loginBtn');
-            loginBtn.disabled = false;
-            loginBtn.innerHTML = 'Login to Dashboard';
-            loginBtn.style.backgroundColor = 'var(--navy)';
         }
     </script>
 </body>
