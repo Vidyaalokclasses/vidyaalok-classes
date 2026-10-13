@@ -3,108 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
     <title>Student Dashboard | Vidyaalok Classes</title>
     <link rel="icon" type="image/jpeg" href="icon.jpg">
-    <!-- Free Charting Library (Zero Cost) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --navy: #0B2545;
-            --gold: #E5A93C;
-            --light-bg: #F1F5F9;
-            --card-bg: rgba(255, 255, 255, 0.96);
-            --text-dark: #1E293B;
-            --success-green: #10B981;
-            --error-red: #EF4444;
-        }
+        :root { --navy: #0B2545; --gold: #E5A93C; --light-bg: #F1F5F9; --card-bg: rgba(255, 255, 255, 0.96); --text-dark: #1E293B; --text-muted: #64748B; --success-green: #10B981; --error-red: #EF4444; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        html, body { width: 100%; overflow-x: hidden; }
-        body {
-            background-color: var(--light-bg);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 80px;
-        }
-        header {
-            background-color: #FFFFFF;
-            padding: 0.6rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #E2E8F0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        .brand img { height: 48px; width: auto; display: block; }
-        nav { display: flex; gap: 0.8rem; align-items: center; }
-        nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 6px 10px; border-radius: 6px; }
-        .btn-logout { background-color: #EF4444; color: #FFFFFF!important; border-radius: 6px; padding: 6px 14px!important; }
+        html, body { width: 100%; overflow-x: hidden; scroll-behavior: smooth; }
+        body { background-color: var(--light-bg); color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; padding-top: 15px; }
+        header { background-color: #FFFFFF; padding: 0.62rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E2E8F0; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; }
+        .brand img { height: 44px; width: auto; display: block; }
+        nav { display: flex; gap: 1rem; align-items: center; }
+        nav a { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 4px 8px; }
         
-        .container { max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem; width: 100%; flex: 1; }
+        .notification-bell { position: relative; cursor: pointer; padding: 4px 8px; display: flex; align-items: center; margin-right: 5px; }
+        .notification-bell svg { width: 22px; height: 22px; stroke: var(--navy); }
+        .notification-bell:hover svg { stroke: var(--gold); }
+        .badge-count { position: absolute; top: -2px; right: 2px; background-color: var(--error-red); color: white; font-size: 0.7rem; font-weight: bold; padding: 2px 6px; border-radius: 12px; border: 2px solid white; display: none; }
         
-        .profile-card {
-            background: var(--navy);
-            color: #FFFFFF;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-        }
-        .profile-info h1 { font-size: 1.6rem; color: #FFFFFF; margin-bottom: 0.2rem; }
-        .profile-badges { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-        .badge { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; }
+        .btn-logout { background-color: var(--error-red); color: #FFFFFF !important; border-radius: 5px; padding: 6px 14px !important; cursor: pointer; text-decoration: none; font-weight: 600; transition: opacity 0.2s; }
+        .container { max-width: 1200px; margin: 4rem auto 2rem; padding: 1rem; width: 100%; flex: 1; }
+        .profile-card { background: var(--navy); color: #FFFFFF; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem; }
+        .profile-info h2 { font-size: 1.6rem; color: #FFFFFF; margin-bottom: 4px; }
+        .profile-badges { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 12px; }
+        .badge { background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; }
         .badge strong { color: var(--gold); }
-
-        .dashboard-section {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.4rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04);
-        }
-        .section-heading { color: var(--navy); font-size: 1.2rem; font-weight: 800; margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; }
-        
+        .dashboard-section { background: var(--card-bg); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid rgba(226, 232, 240, 0.9); box-shadow: 0 4px 16px rgba(11, 37, 69, 0.04); transition: background-color 0.8s ease; }
+        .section-heading { color: var(--navy); font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 2px solid #E2E8F0; padding-bottom: 0.5rem; }
         .table-responsive { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
         th { background-color: var(--navy); color: #FFFFFF; padding: 10px 12px; font-weight: 600; white-space: nowrap; }
         td { padding: 10px 12px; border-bottom: 1px solid #E2E8F0; white-space: nowrap; }
+        .btn-download { background-color: var(--navy); color: #FFFFFF; padding: 5px 12px; border-radius: 5px; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: inline-block; }
+        .btn-download:hover { background-color: #133966; color: var(--gold); }
+        footer { background-color: var(--navy); color: #94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); margin-top: auto; }
+        .footer-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
         
-        .btn-download { background-color: var(--navy); color: #FFFFFF; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-weight: 600; }
+        .toast-popup { position: fixed; bottom: 30px; right: 30px; background-color: var(--navy); color: white; padding: 16px 20px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-left: 4px solid var(--gold); display: flex; flex-direction: column; gap: 6px; z-index: 4000; transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); min-width: 280px; }
+        .toast-popup.show { transform: translateX(0); }
+        .toast-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1rem; color: var(--gold); border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; margin-bottom: 4px; }
+        .toast-close { background: none; border: none; color: #94A3B8; cursor: pointer; font-size: 1.2rem; }
+        .toast-close:hover { color: white; }
+        .toast-body { font-size: 0.9rem; line-height: 1.4; display: flex; flex-direction: column; gap: 4px; }
+        .toast-item { cursor: pointer; padding: 6px 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); transition: background 0.2s; }
+        .toast-item:hover { background: rgba(255,255,255,0.15); }
+        .toast-item strong { color: var(--gold); }
+        
+        a[href^="tel"] { color: inherit; text-decoration: none; pointer-events: none; }
 
-        /* --- NEW CHART STYLES --- */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 1.5rem;
+        @media screen and (max-width: 768px) { 
+            body { padding-top: 140px; } 
+            header { flex-direction: column; padding: 0.8rem 1rem; gap: 10px; } 
+            nav { flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+            .brand img { height: 40px; }
+            .footer-container { flex-direction: column; text-align: center; } 
         }
-        .chart-card {
-            background: #F8FAFC;
-            padding: 1.2rem;
-            border-radius: 10px;
-            border: 1px solid #E2E8F0;
-        }
-        .chart-card h4 {
-            color: var(--navy);
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-weight: 700;
-        }
-        @media screen and (max-width: 768px) {
-            body { padding-top: 110px; }
-            header { flex-direction: column; padding: 0.5rem; gap: 0.5rem; }
-            .charts-grid { grid-template-columns: 1fr; }
-        }
+        @media screen and (max-width: 600px) { .toast-popup { right: 15px; left: 15px; bottom: 15px; min-width: 0; } }
     </style>
 </head>
 <body>
@@ -115,285 +69,413 @@
         <nav>
             <a href="index.html">Home</a>
             <a href="schedule.html">Schedule</a>
-            <a class="btn-logout" onclick="logoutStudent()">Logout</a>
+            
+            <div class="notification-bell" onclick="markNotificationsRead()" title="Notifications">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="badge-count" id="notif-badge">0</span>
+            </div>
+            
+            <a class="btn-logout" id="logoutBtn" onclick="logoutStudent()">Student Logout</a>
         </nav>
     </header>
 
+    <div id="toast-notification" class="toast-popup">
+        <div class="toast-header">
+            <span>New Updates!</span>
+            <button class="toast-close" onclick="markNotificationsRead()">&times;</button>
+        </div>
+        <div class="toast-body" id="toast-body-text">
+        </div>
+    </div>
+
     <main class="container">
-        <!-- Profile Card -->
         <div class="profile-card">
             <div class="profile-info">
-                <h1 id="student-name">Loading Profile...</h1>
-                <p id="student-target" style="color: #94A3B8; font-size: 0.9rem;">Vidyaalok Scholar</p>
-            </div>
-            <div class="profile-badges">
-                <div class="badge">Roll No: <strong id="student-roll">-</strong></div>
-                <div class="badge">Batch: <strong id="student-batch">-</strong></div>
-                <div class="badge">Attendance: <strong id="student-attendance">-</strong></div>
-            </div>
-        </div>
-
-        <!-- 1. Active Examinations Portal Card -->
-        <div class="dashboard-section" style="border-left: 4px solid var(--gold);">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                <div>
-                    <h3 style="color:var(--navy); font-size:1.15rem;">Active Examinations Portal</h3>
-                    <p style="color:#64748B; font-size:0.88rem;">Access assigned subjective and auto-graded MCQ tests.</p>
+                <h2 id="student-name">Welcome, Student</h2>
+                <div style="color: var(--gold); font-size: 0.9rem;">Vidyaalok Scholar</div>
+                <div class="profile-badges">
+                    <div class="badge">Roll No: <strong id="student-roll">--</strong></div>
+                    <div class="badge">Batch: <strong id="student-batch">--</strong></div>
+                    <div class="badge">Attendance: <strong id="student-attendance">--</strong></div>
                 </div>
-                <a href="exam.html" class="btn-download" style="padding: 8px 16px; font-size:0.9rem;">Open Online Exam Engine</a>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; min-width: 260px; border: 1px solid rgba(255,255,255,0.2);">
+                <h4 style="margin-bottom: 10px; color: var(--gold); border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 6px; font-size: 1rem;">Fee Status</h4>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;"><span>Total:</span> <strong id="fee-total">₹0</strong></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px;"><span>Paid:</span> <strong id="fee-paid" style="color: #10B981;">₹0</strong></div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 10px;"><span>Balance:</span> <strong id="fee-balance" style="color: #EF4444;">₹0</strong></div>
+                <div style="text-align: right;">
+                    <span id="fee-badge" style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">PENDING</span>
+                </div>
             </div>
         </div>
 
-        <!-- 2. Batch Schedule & Timings -->
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-exams" style="border-left: 4px solid var(--navy);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h3 style="color: var(--navy); font-size: 1.15rem;">Active Examinations Portal</h3>
+                    <p style="color: #64748B; font-size: 0.85rem;">Access assigned subjective and auto-graded MCQ tests.</p>
+                </div>
+                <a href="exam.html" class="btn-download" style="padding: 8px 16px; font-size: 0.9rem;">Open Online Exam Engine</a>
+            </div>
+        </div>
+
+        <div class="dashboard-section" id="section-schedule">
             <div class="section-heading">Batch Schedules & Timings</div>
             <div class="table-responsive">
                 <table>
                     <thead><tr><th>Day</th><th>Time Slot</th><th>Subject / Topics</th><th>Mode</th></tr></thead>
-                    <tbody id="schedule-table-body"><tr><td colspan="4" style="text-align:center;">Fetching live schedule...</td></tr></tbody>
+                    <tbody id="schedule-table-body">
+                        <tr><td colspan="4" style="text-align:center;">Fetching live schedule...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- 3. Batch Notice Board -->
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-notices">
             <div class="section-heading">Batch Notice Board</div>
             <div class="table-responsive">
                 <table>
                     <thead><tr><th>Date</th><th>Notice Title / Subject</th><th>Category</th><th>Attachment</th></tr></thead>
-                    <tbody id="notice-table-body"><tr><td colspan="4" style="text-align:center;">Fetching notices...</td></tr></tbody>
+                    <tbody id="notice-table-body">
+                        <tr><td colspan="4" style="text-align:center;">Fetching notices...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- 4. Batch Homework & Assignments -->
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-homework">
             <div class="section-heading">Batch Homework & Assignments</div>
             <div class="table-responsive">
                 <table>
                     <thead><tr><th>Title</th><th>Batch</th><th>Class Date</th><th>Due Date</th><th>Assignment PDF</th></tr></thead>
-                    <tbody id="homework-table-body"><tr><td colspan="5" style="text-align:center;">Fetching homework...</td></tr></tbody>
+                    <tbody id="homework-table-body">
+                        <tr><td colspan="5" style="text-align:center;">Fetching homework...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- 5. Class Notes & Study Resources -->
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-notes">
             <div class="section-heading">Class Notes & Study Resources</div>
             <div class="table-responsive">
                 <table>
                     <thead><tr><th>Date</th><th>Topic / Chapter</th><th>Resource Type</th><th>Action</th></tr></thead>
-                    <tbody id="notes-table-body"><tr><td colspan="4" style="text-align:center;">Fetching class notes...</td></tr></tbody>
+                    <tbody id="notes-table-body">
+                        <tr><td colspan="4" style="text-align:center;">Fetching class notes...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- 6. NEW: Performance Analytics (Charts) -->
-        <div class="dashboard-section">
-            <div class="section-heading">Performance Analytics</div>
-            <div class="charts-grid">
-                <div class="chart-card">
-                    <h4>Overall Progress Trend</h4>
-                    <canvas id="trendChart"></canvas>
-                </div>
-                <div class="chart-card">
-                    <h4>Subject-wise Average</h4>
-                    <canvas id="subjectChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- 7. Examination Results Matrix -->
-        <div class="dashboard-section">
+        <div class="dashboard-section" id="section-results">
             <div class="section-heading">Examination Results Matrix</div>
             <div class="table-responsive">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Date</th><th>Exam Title</th><th>Total Qs</th><th>Attempted</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Total Marks</th><th>Marks Obtained</th><th>Percentage</th><th>Rank</th>
-                        </tr>
+                        <tr><th>Date</th><th>Exam Title</th><th>Total Qs</th><th>Attempted</th><th>Correct</th><th>Wrong</th><th>Unattempted</th><th>Total Marks</th><th>Marks Obtained</th><th>Percentage</th><th>Rank</th><th>Section Breakdown</th></tr>
                     </thead>
-                    <tbody id="results-table-body"><tr><td colspan="11" style="text-align:center;">Fetching test results...</td></tr></tbody>
+                    <tbody id="results-table-body">
+                        <tr><td colspan="12" style="text-align:center;">Fetching test results...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </main>
 
-    <footer style="background-color: var(--navy); color:#94A3B8; padding: 2rem 1rem; border-top: 3px solid var(--gold); text-align: center; font-size: 0.85rem; margin-top: auto;">
-        <p><strong>Vidyaalok Classes</strong> — The Light of Knowledge</p>
-        <p style="margin-top: 4px; color:#64748B;">Kharagpur, West Bengal, India, Pin-721301 | +91 8240949137</p>
+    <footer>
+        <div class="footer-container">
+            <div>
+                <h3 style="color: #FFFFFF;">Vidyaalok Classes</h3>
+                <p style="color: var(--gold); font-size: 0.85rem;">The Light of Knowledge</p>
+            </div>
+            <div style="font-size: 0.85rem; color: #E2E8F0;">
+                Kharagpur, West Bengal, India, Pin-721301<br>
+                +91 8240949137
+            </div>
+        </div>
     </footer>
 
     <script>
-        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec"; // Keep your existing URL here
+        // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+        const GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8noXjpAwnp67h4tiaSkVKmx9usHvrQBM4pC7QlJI60AnRtsOUM12iW6_MkzuAQla3/exec";
+        
+        let globalCurrentCounts = null;
+        let globalStudentRoll = null;
 
         function safeVal(val) {
             if (val === null || val === undefined) return "-";
             const str = String(val).trim();
-            return str === "" ? "-" : str;
+            return str.length > 0 ? str : "-";
         }
 
-        document.addEventListener("DOMContentLoaded", async function () {
-            const studentId = localStorage.getItem("studentId");
-            if (!studentId) { window.location.href = "login.html"; return; }
+        function trackActivity(actionDetail) {
+            const studentId = sessionStorage.getItem("studentId");
+            if (!studentId) return;
+            const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: actionDetail });
+            navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
+        }
+
+        window.addEventListener('pagehide', function(event) {
+            const studentId = sessionStorage.getItem("studentId");
+            if (studentId) {
+                const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Closed Browser Tab" });
+                navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
+            }
+        });
+
+        function processNotifications(student) {
+            globalStudentRoll = student.roll;
+            
+            globalCurrentCounts = {
+                notices: student.notices ? student.notices.length : 0,
+                homework: student.homework ? student.homework.length : 0,
+                notes: student.notes ? student.notes.length : 0,
+                exams: student.exams ? student.exams.length : 0,
+                results: student.results ? student.results.length : 0
+            };
+
+            const savedCountsStr = localStorage.getItem("notifyBaseline_" + student.roll);
+            
+            if (!savedCountsStr) {
+                localStorage.setItem("notifyBaseline_" + student.roll, JSON.stringify(globalCurrentCounts));
+                return;
+            }
+
+            const savedCounts = JSON.parse(savedCountsStr);
+            let updates = [];
+            let totalNewItems = 0;
+
+            if (globalCurrentCounts.notices > (savedCounts.notices || 0)) {
+                let diff = globalCurrentCounts.notices - (savedCounts.notices || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-notices')"><span><strong>${diff}</strong> New Notice(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.homework > (savedCounts.homework || 0)) {
+                let diff = globalCurrentCounts.homework - (savedCounts.homework || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-homework')"><span><strong>${diff}</strong> New Assignment(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.notes > (savedCounts.notes || 0)) {
+                let diff = globalCurrentCounts.notes - (savedCounts.notes || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-notes')"><span><strong>${diff}</strong> New Class Note(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.exams > (savedCounts.exams || 0)) {
+                let diff = globalCurrentCounts.exams - (savedCounts.exams || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-exams')"><span><strong>${diff}</strong> New Active Exam(s)</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+            if (globalCurrentCounts.results > (savedCounts.results || 0)) {
+                let diff = globalCurrentCounts.results - (savedCounts.results || 0);
+                updates.push(`<div class="toast-item" onclick="scrollToSection('section-results')"><span><strong>${diff}</strong> New Result(s) Published</span> <span>👉</span></div>`);
+                totalNewItems += diff;
+            }
+
+            if (updates.length > 0) {
+                const badge = document.getElementById("notif-badge");
+                badge.textContent = totalNewItems;
+                badge.style.display = "block";
+
+                document.getElementById("toast-body-text").innerHTML = updates.join("");
+                const toast = document.getElementById("toast-notification");
+                toast.classList.add("show");
+            } else {
+                localStorage.setItem("notifyBaseline_" + student.roll, JSON.stringify(globalCurrentCounts));
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if(section) {
+                const headerOffset = 100;
+                const elementPosition = section.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                
+                const originalBg = section.style.backgroundColor || "var(--card-bg)";
+                section.style.backgroundColor = "#FEF3C7"; 
+                setTimeout(() => { section.style.backgroundColor = originalBg; }, 2000);
+                
+                markNotificationsRead();
+            }
+        }
+
+        function markNotificationsRead() {
+            if (globalStudentRoll && globalCurrentCounts) {
+                localStorage.setItem("notifyBaseline_" + globalStudentRoll, JSON.stringify(globalCurrentCounts));
+                document.getElementById("notif-badge").style.display = "none";
+                document.getElementById("toast-notification").classList.remove("show");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            localStorage.removeItem("studentId"); 
+            localStorage.removeItem("dashboardData");
+
+            const studentId = sessionStorage.getItem("studentId");
+            if (!studentId) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const cachedData = sessionStorage.getItem("dashboardData");
+            if (cachedData) {
+                const parsedData = JSON.parse(cachedData);
+                renderDashboard(parsedData);
+                processNotifications(parsedData); 
+            }
 
             try {
-                const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}`);
+                const response = await fetch(`${GOOGLE_WEB_APP_URL}?action=getDashboard&roll=${encodeURIComponent(studentId)}&nocache=${Date.now()}`, { cache: "no-store" });
                 const data = await response.json();
-                if (data.status === "success") {
+                
+                if (data.status === "success" && data.student) {
+                    sessionStorage.setItem("dashboardData", JSON.stringify(data.student));
                     renderDashboard(data.student);
+                    processNotifications(data.student); 
+                } else if (!cachedData) {
+                    alert("Student record not found. Please log in again.");
+                    finishLogout();
                 }
-            } catch (err) { console.error("Dashboard fetch error:", err); }
+            } catch (e) {
+                console.error("Error loading fresh dashboard data:", e);
+            }
         });
 
         function renderDashboard(student) {
             if (!student) return;
+
             document.getElementById("student-name").textContent = "Welcome, " + safeVal(student.name);
             document.getElementById("student-roll").textContent = safeVal(student.roll);
             document.getElementById("student-batch").textContent = safeVal(student.batch);
-            document.getElementById("student-attendance").textContent = safeVal(student.attendance || "N/A");
+            document.getElementById("student-attendance").textContent = safeVal(student.attendance);
 
-            // Render Tables (Schedule, Notices, Homework, Notes, Results)
-            renderTable("schedule-table-body", student.schedule, ["day", "time", "topic", "mode"]);
-            renderTable("notice-table-body", student.notices, ["date", "title", "type", "link"], true);
-            renderTable("homework-table-body", student.homework, ["title", "batch", "classDate", "dueDate", "link"], true);
-            renderTable("notes-table-body", student.notes, ["date", "topic", "type", "link"], true);
-            renderResultsTable(student.results);
+            document.getElementById("fee-total").textContent = "₹" + safeVal(student.totalFees);
+            document.getElementById("fee-paid").textContent = "₹" + safeVal(student.amountPaid);
+            const balance = Number(student.totalFees || 0) - Number(student.amountPaid || 0);
+            document.getElementById("fee-balance").textContent = "₹" + balance;
 
-            // Render Charts
-            renderCharts(student.results);
-        }
-
-        function renderTable(tbodyId, dataArr, keys, hasLink = false) {
-            const tbody = document.getElementById(tbodyId);
-            if (!dataArr || dataArr.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${keys.length}" style="text-align:center; color:#64748B;">No records found.</td></tr>`;
-                return;
+            const statusElem = document.getElementById("fee-badge");
+            const feeStatus = safeVal(student.feeStatus);
+            statusElem.textContent = feeStatus;
+            const statusLower = feeStatus.toLowerCase();
+            
+            if (statusLower.includes('paid') && !statusLower.includes('partial')) {
+                statusElem.style.backgroundColor = "#DCFCE7";
+                statusElem.style.color = "#15803D";
+            } else if (statusLower.includes('partial')) {
+                statusElem.style.backgroundColor = "#FEF3C7";
+                statusElem.style.color = "#92400E";
+            } else {
+                statusElem.style.backgroundColor = "#FEE2E2";
+                statusElem.style.color = "#B91C1C";
             }
-            tbody.innerHTML = "";
-            dataArr.forEach(item => {
-                let row = "<tr>";
-                keys.forEach(key => {
-                    let val = safeVal(item[key]);
-                    if (hasLink && key === "link" && val !== "-" && val !== "#") {
-                        row += `<td><a href="${val}" target="_blank" class="btn-download">View / Download</a></td>`;
-                    } else {
-                        row += `<td>${val}</td>`;
-                    }
+
+            const schedBody = document.getElementById("schedule-table-body");
+            if (student.schedule && student.schedule.length > 0) {
+                schedBody.innerHTML = "";
+                student.schedule.forEach(item => {
+                    schedBody.innerHTML += `<tr><td><strong>${safeVal(item.day)}</strong></td><td>${safeVal(item.time)}</td><td>${safeVal(item.topic)}</td><td>${safeVal(item.mode)}</td></tr>`;
                 });
-                row += "</tr>";
-                tbody.innerHTML += row;
-            });
-        }
-
-        function renderResultsTable(results) {
-            const tbody = document.getElementById("results-table-body");
-            if (!results || results.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:#64748B;">No test submission records found.</td></tr>`;
-                return;
+            } else {
+                schedBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No schedule records found.</td></tr>`;
             }
-            tbody.innerHTML = "";
-            results.forEach(item => {
-                tbody.innerHTML += `<tr>
-                    <td>${safeVal(item.date)}</td>
-                    <td><strong>${safeVal(item.examTitle)}</strong></td>
-                    <td>${safeVal(item.totalQuestions)}</td>
-                    <td>${safeVal(item.attempted)}</td>
-                    <td style="color:#10B981; font-weight:700;">${safeVal(item.correct)}</td>
-                    <td style="color:#EF4444; font-weight:700;">${safeVal(item.wrong)}</td>
-                    <td>${safeVal(item.unattempted)}</td>
-                    <td>${safeVal(item.totalMarks)}</td>
-                    <td><strong>${safeVal(item.marksObtained)}</strong></td>
-                    <td><strong>${safeVal(item.percentage)}</strong></td>
-                    <td>${safeVal(item.rank)}</td>
-                </tr>`;
-            });
-        }
 
-        // --- NEW CHART RENDERING LOGIC ---
-        function renderCharts(results) {
-            if (!results || results.length === 0) return;
+            const noticeBody = document.getElementById("notice-table-body");
+            if (student.notices && student.notices.length > 0) {
+                noticeBody.innerHTML = "";
+                student.notices.forEach(item => {
+                    const rawLink = safeVal(item.link);
+                    const linkBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download" onclick="trackActivity('Viewed Notice: ${safeVal(item.title).replace(/'/g, "\\'")}')">View Attachment</a>` : "-";
+                    noticeBody.innerHTML += `<tr><td>${safeVal(item.date)}</td><td><strong>${safeVal(item.title)}</strong></td><td>${safeVal(item.type)}</td><td>${linkBtn}</td></tr>`;
+                });
+            } else {
+                noticeBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No notices available for your batch.</td></tr>`;
+            }
 
-            // 1. Overall Trend Line Chart
-            // Reverse array so oldest test is on the left, newest on the right
-            const sortedResults = [...results].reverse(); 
-            const trendLabels = sortedResults.map(r => safeVal(r.date));
-            const trendData = sortedResults.map(r => {
-                let pct = String(r.percentage).replace('%', '');
-                return parseFloat(pct) || 0;
-            });
+            const hwBody = document.getElementById("homework-table-body");
+            if (student.homework && student.homework.length > 0) {
+                hwBody.innerHTML = "";
+                student.homework.forEach(item => {
+                    const rawLink = safeVal(item.link);
+                    const downloadBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download" onclick="trackActivity('Viewed Homework: ${safeVal(item.title).replace(/'/g, "\\'")}')">Download PDF</a>` : "-";
+                    hwBody.innerHTML += `
+                        <tr>
+                            <td><strong>${safeVal(item.title)}</strong></td>
+                            <td>${safeVal(item.batch)}</td>
+                            <td>${safeVal(item.classDate)}</td>
+                            <td>${safeVal(item.due)}</td>
+                            <td>${downloadBtn}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                hwBody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No pending homework for your batch.</td></tr>`;
+            }
 
-            new Chart(document.getElementById('trendChart'), {
-                type: 'line',
-                data: {
-                    labels: trendLabels,
-                    datasets: [{
-                        label: 'Test Percentage (%)',
-                        data: trendData,
-                        borderColor: '#E5A93C', // Vidyaalok Gold
-                        backgroundColor: 'rgba(229, 169, 60, 0.15)',
-                        borderWidth: 3,
-                        tension: 0.3,
-                        fill: true,
-                        pointBackgroundColor: '#0B2545',
-                        pointRadius: 5
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, max: 100, ticks: { callback: value => value + '%' } } }
-                }
-            });
+            const notesBody = document.getElementById("notes-table-body");
+            if (student.notes && student.notes.length > 0) {
+                notesBody.innerHTML = "";
+                student.notes.forEach(item => {
+                    const rawLink = safeVal(item.link);
+                    const downloadBtn = rawLink !== "-" ? `<a href="${rawLink}" target="_blank" class="btn-download" onclick="trackActivity('Viewed Class Note: ${safeVal(item.topic).replace(/'/g, "\\'")}')">View Resource</a>` : "-";
+                    notesBody.innerHTML += `<tr><td>${safeVal(item.date)}</td><td><strong>${safeVal(item.topic)}</strong></td><td>${safeVal(item.type)}</td><td>${downloadBtn}</td></tr>`;
+                });
+            } else {
+                notesBody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No class notes available.</td></tr>`;
+            }
 
-            // 2. Subject-wise Average Bar Chart
-            // Automatically detects subject from the Exam Title in your Google Sheet
-            const subjectMap = {};
-            results.forEach(r => {
-                let subject = "General / Mixed";
-                const title = String(r.examTitle).toLowerCase();
-                
-                if (title.includes("phys")) subject = "Physics";
-                else if (title.includes("chem")) subject = "Chemistry";
-                else if (title.includes("math")) subject = "Mathematics";
-                else if (title.includes("bio")) subject = "Biology";
-
-                if (!subjectMap[subject]) subjectMap[subject] = [];
-                
-                let pct = String(r.percentage).replace('%', '');
-                subjectMap[subject].push(parseFloat(pct) || 0);
-            });
-
-            const subjectLabels = Object.keys(subjectMap);
-            const subjectAverages = subjectLabels.map(sub => {
-                const arr = subjectMap[sub];
-                return (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1);
-            });
-
-            const barColors = ['#0B2545', '#E5A93C', '#10B981', '#EF4444', '#8B5CF6'];
-
-            new Chart(document.getElementById('subjectChart'), {
-                type: 'bar',
-                data: {
-                    labels: subjectLabels,
-                    datasets: [{
-                        label: 'Average %',
-                        data: subjectAverages,
-                        backgroundColor: barColors,
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, max: 100, ticks: { callback: value => value + '%' } } }
-                }
-            });
+            const resultsBody = document.getElementById("results-table-body");
+            if (student.results && student.results.length > 0) {
+                resultsBody.innerHTML = "";
+                student.results.forEach(item => {
+                    resultsBody.innerHTML += `
+                        <tr>
+                            <td>${safeVal(item.date)}</td>
+                            <td><strong>${safeVal(item.examTitle)}</strong></td>
+                            <td>${safeVal(item.totalQuestions)}</td>
+                            <td>${safeVal(item.attempted)}</td>
+                            <td>${safeVal(item.correct)}</td>
+                            <td>${safeVal(item.wrong)}</td>
+                            <td>${safeVal(item.unattempted)}</td>
+                            <td>${safeVal(item.totalMarks)}</td>
+                            <td>${safeVal(item.marksObtained)}</td>
+                            <td>${safeVal(item.percentage)}%</td>
+                            <td>${safeVal(item.rank)}</td>
+                            <td style="font-size: 0.85rem; line-height: 1.4;">${safeVal(item.sectionBreakdown).replace(/ \| /g, '<br>')}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                resultsBody.innerHTML = `<tr><td colspan="12" style="text-align:center;">No exam submission records found.</td></tr>`;
+            }
         }
 
         function logoutStudent() {
-            localStorage.removeItem("studentId");
-            localStorage.removeItem("studentData");
+            const studentId = sessionStorage.getItem("studentId");
+            const logoutBtn = document.getElementById("logoutBtn");
+            
+            if (studentId) {
+                if(logoutBtn) {
+                    logoutBtn.textContent = "Logging out...";
+                    logoutBtn.style.opacity = "0.7";
+                    logoutBtn.style.pointerEvents = "none";
+                }
+                const payload = JSON.stringify({ action: "logActivity", roll: studentId, actionDetail: "Logged out manually via Button" });
+                navigator.sendBeacon(GOOGLE_WEB_APP_URL, payload);
+            }
+            
+            finishLogout();
+        }
+
+        function finishLogout() {
+            sessionStorage.removeItem("studentId");
+            sessionStorage.removeItem("dashboardData");
             window.location.href = "login.html";
         }
     </script>
